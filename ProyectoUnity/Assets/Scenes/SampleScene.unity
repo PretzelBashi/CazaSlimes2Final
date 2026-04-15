@@ -822,6 +822,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 86a96c891aa44514b831e007d75e2d81, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1608166018}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 86a96c891aa44514b831e007d75e2d81, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1608166019}
   m_SourcePrefab: {fileID: 100100000, guid: 86a96c891aa44514b831e007d75e2d81, type: 3}
 --- !u!1 &832575517
 GameObject:
@@ -1280,6 +1283,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1608166019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608166016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5eab26f58147d9428f6e9e89f51f5dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacionTemrinada
 --- !u!1 &1992017845
 GameObject:
   m_ObjectHideFlags: 0
