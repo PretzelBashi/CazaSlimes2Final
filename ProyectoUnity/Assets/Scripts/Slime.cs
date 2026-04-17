@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
@@ -5,8 +6,10 @@ public class Slime : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     GameObject jugador;
     GameObject modeloSlime;
+
     Vector3 rotacion;
     Vector3 velocidad;
+    Vector3 velocidadFrontal;
 
     CharacterController characterController;
     bool apuntando;
@@ -15,9 +18,13 @@ public class Slime : MonoBehaviour
     bool cayendo;
     bool endlag;
     bool verJugador;
+    bool rebotando;
+    bool grounded;
 
     float duracionApuntado;
     float duracioncayendo;
+    float resistencia;
+
 
     float cooldownSalto;
     void Start()
@@ -26,26 +33,36 @@ public class Slime : MonoBehaviour
         characterController = transform.GetComponent<CharacterController>();
         rotacion = Vector3.zero;
         modeloSlime = this.transform.GetChild(0).gameObject;
+
         apuntando = true;
         cayendo = true;
         saltando = true;
         saltoTerminado = false;
         verJugador = true;
+        rebotando = false;
+        grounded = false;
 
         duracionApuntado = 3;
         duracioncayendo = 0;
 
+        resistencia = 5;
         cooldownSalto = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+
 
 
         //gravedad
-        velocidad.y -= 20 * Time.deltaTime;
+
+            velocidad.y -= 20 * Time.deltaTime;
+
+            
+
+
 
 
 
@@ -55,10 +72,10 @@ public class Slime : MonoBehaviour
             velocidad.x = 0;
         } else if(velocidad.x < 0)
         {
-            velocidad.x += 5 * Time.deltaTime;
+            velocidad.x += resistencia * Time.deltaTime;
         } else if (velocidad.x > 0)
         {
-            velocidad.x -= 5 * Time.deltaTime;
+            velocidad.x -= resistencia * Time.deltaTime;
         }
 
         if (!(velocidad.z < -2f || velocidad.z > 2f))
@@ -67,22 +84,35 @@ public class Slime : MonoBehaviour
         }
         else if (velocidad.z < 0)
         {
-            velocidad.z += 5 * Time.deltaTime;
+            velocidad.z += resistencia * Time.deltaTime;
         }
         else if (velocidad.z > 0)
         {
-            velocidad.z -= 5 * Time.deltaTime;
+            velocidad.z -= resistencia * Time.deltaTime;
         }
         // :P
 
-        if (characterController.isGrounded)
+        RaycastHit hit;
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, Color.red);
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, out hit, 0.1f))
         {
-            velocidad.y = -1;
-            velocidad.x = 0;
-            velocidad.z = 0;
+            if (hit.transform.tag == "Suelo")
+            {
+                grounded = true;
+                velocidad.y = 0;
+                resistencia = 25;
+
+            }
         }
+        else
+        {
+            grounded = false;
+        }
+        Debug.Log(grounded);
 
         //Saltos
+
+
         if (apuntando)
         {
             modeloSlime.GetComponent<Animator>().SetInteger("Estado", 1);
@@ -96,6 +126,7 @@ public class Slime : MonoBehaviour
                 apuntando = false;
                 cooldownSalto = 0;
             }
+            rebotando = false;
         }
 
         if (saltando)
@@ -113,16 +144,20 @@ public class Slime : MonoBehaviour
             saltoTerminado = false;
             verJugador = false;
             velocidad.z = 10;
-            velocidad.y = 10;
+            resistencia = 5;
+            velocidad.y = jugador.transform.position.y + 7;
             endlag = true;
         }
 
 
-        if(endlag && characterController.isGrounded && velocidad.y == -1)
+        if(endlag && grounded && velocidad.y == 0)
         {
+
             apuntando = true;
             endlag = false;
             verJugador = true;
+            rebotando = false;
+
         }
 
         if(verJugador)
@@ -130,14 +165,40 @@ public class Slime : MonoBehaviour
             rotacion.y = Herramientas.ObtenerAngulo2D(new Vector2(this.transform.position.x, this.transform.position.z), new Vector2(jugador.transform.position.x, jugador.transform.position.z)) + 90;
         }
 
-        Vector3 direccionFrontal = this.transform.forward * this.velocidad.z + this.transform.right * this.velocidad.x;
-        transform.rotation =Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(rotacion), 200 * Time.deltaTime);
-        characterController.Move(new Vector3(direccionFrontal.x, velocidad.y, direccionFrontal.z) * Time.deltaTime);
+
+
+        velocidadFrontal = this.transform.forward * this.velocidad.z + this.transform.right * this.velocidad.x;
+
+        Debug.Log(velocidad.y);
+
+        characterController.Move(new Vector3(velocidadFrontal.x, velocidad.y, velocidadFrontal.z) * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(rotacion), 200 * Time.deltaTime);
+
         
     }
 
+
+    //Arreglar que no se suba a tu cabeza
+    //Arreglar que en los bordes de plataformas pueda estar grounded
     public void SaltoTerminado()
     {
         saltoTerminado = true;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.tag == "Player" && endlag && !rebotando)
+        {
+            Vector3 diferencia = (this.transform.position - jugador.transform.position).normalized * 7;
+            velocidad = new Vector3(diferencia.x, velocidad.y, diferencia.z);
+            Debug.Log(diferencia);
+
+
+            velocidad.y = 3;
+            rebotando = true;
+            saltoTerminado = false;
+            verJugador = false;
+            endlag = true;
+        };
     }
 }
