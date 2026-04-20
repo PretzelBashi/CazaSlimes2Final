@@ -9,6 +9,7 @@ public class Jugador : MonoBehaviour
     CharacterController characterController;
     Vector3 velocidad;
     Vector3 rotacion;
+    Vector3 velocidadRebotando;
     PlayerInput playerInput;
     Vector3 direccionDash;
 
@@ -20,12 +21,18 @@ public class Jugador : MonoBehaviour
     GameObject contenedorCamara;
     Camera camaraInterior;
 
+    float contadorSalto;
     float cooldownDash;
     float contadorDash;
-    bool dasheando;
+    float contadorRebotando;
+    float resistencia;
 
-    float contadorSalto;
+    bool dasheando;
     bool salto;
+    bool rebotando;
+
+
+
 
     GameObject auxiliarRotacionCamara;
     void Start()
@@ -40,7 +47,10 @@ public class Jugador : MonoBehaviour
         rotacion = Vector3.zero;
         
         salto = false;
+        rebotando = false;
         velocidadPersonaje = 5;
+        contadorRebotando = 0;
+        resistencia = 5;
         cooldownDash = 0;
     }
 
@@ -88,11 +98,7 @@ public class Jugador : MonoBehaviour
             velocidad.y = -1;
         }
 
-        if (animator.GetInteger("Estado") != estadoAnimacion)
-        {
-            animator.SetInteger("Estado", estadoAnimacion);
-            animator.SetTrigger("CambioEstado");
-        }
+
 
 
 
@@ -128,8 +134,62 @@ public class Jugador : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direccionCamaraY), 300f * Time.deltaTime);
         }
 
-        characterController.Move(new Vector3(direccionCamara.x, velocidad.y, direccionCamara.z)  * Time.deltaTime);
+        if (!rebotando)
+        {
+            characterController.Move(new Vector3(direccionCamara.x, velocidad.y, direccionCamara.z) * Time.deltaTime);
+        } else
+        {
 
+
+            velocidadRebotando.y -= 25 * Time.deltaTime;
+
+            if (!(velocidadRebotando.x < -1f || velocidadRebotando.x > 1f))
+            {
+                velocidadRebotando.x = 0;
+            }
+            else if (velocidadRebotando.x < 0)
+            {
+                velocidadRebotando.x += resistencia * Time.deltaTime;
+            }
+            else if (velocidadRebotando.x > 0)
+            {
+                velocidadRebotando.x -= resistencia * Time.deltaTime;
+            }
+
+            if (!(velocidadRebotando.z < -2f || velocidadRebotando.z > 2f))
+            {
+                velocidadRebotando.z = 0;
+            }
+            else if (velocidadRebotando.z < 0)
+            {
+                velocidadRebotando.z += resistencia * Time.deltaTime;
+            }
+            else if (velocidadRebotando.z > 0)
+            {
+                velocidadRebotando.z -= resistencia * Time.deltaTime;
+            }
+
+            characterController.Move(velocidadRebotando * Time.deltaTime);
+            Debug.Log(velocidadRebotando);
+            estadoAnimacion = 5;
+
+            if (contadorRebotando < 1)
+            {
+                contadorRebotando += Time.deltaTime;
+            } else
+            {
+                rebotando = false;
+                contadorRebotando = 0;
+                velocidadRebotando = Vector3.zero;
+                Debug.Log("Rebotando Reset");
+            }
+        }
+
+        if (animator.GetInteger("Estado") != estadoAnimacion)
+        {
+            animator.SetInteger("Estado", estadoAnimacion);
+            animator.SetTrigger("CambioEstado");
+        }
 
     }
 
@@ -153,5 +213,12 @@ public class Jugador : MonoBehaviour
             contadorDash = 0;
             direccionDash = new Vector3(velocidad.x, 0 , velocidad.z);
         }
+    }
+
+    public void ReboteConSlime(Vector3 velocidadRebote)
+    {
+        velocidadRebotando = new Vector3(velocidadRebote.x, velocidadRebote.y, velocidadRebote.z);
+        rebotando = true;
+        Debug.Log(velocidadRebotando);
     }
 }

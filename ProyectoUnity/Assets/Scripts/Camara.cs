@@ -42,13 +42,13 @@ public class Camara : MonoBehaviour
             rotacion.y += playerInput.actions["Look"].ReadValue<Vector2>().x * sensibilidad;
             rotacion.x += playerInput.actions["Look"].ReadValue<Vector2>().y * -sensibilidad;
 
-            if (rotacion.x > 30)
+            if (rotacion.x > 50)
             {
-                rotacion.x = 30;
+                rotacion.x = 50;
             }
-            if (rotacion.x < -30)
+            if (rotacion.x < -50)
             {
-                rotacion.x = -30;
+                rotacion.x = -50;
             }
 
             if (cambioDeCamara)
