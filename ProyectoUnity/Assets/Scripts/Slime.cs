@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Slime : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Probar usar una hitbox cilindrica para el jugador en vez del rigidbody
+
     GameObject jugador;
     GameObject modeloSlime;
 
@@ -12,6 +13,7 @@ public class Slime : MonoBehaviour
     Vector3 velocidadFrontal;
 
     CharacterController characterController;
+    BoxCollider detectorInferior;
     bool apuntando;
     bool saltando;
     bool saltoTerminado;
@@ -20,10 +22,12 @@ public class Slime : MonoBehaviour
     bool verJugador;
     bool rebotando;
     bool grounded;
+    bool preSaltoActivo;
 
     float duracionApuntado;
     float duracioncayendo;
     float resistencia;
+    float preSalto; //Contador para el tiempo que el collider es desactivado al saltar
 
 
     float cooldownSalto;
@@ -31,6 +35,7 @@ public class Slime : MonoBehaviour
     {
         jugador = GameObject.FindGameObjectWithTag("Player");
         characterController = transform.GetComponent<CharacterController>();
+        detectorInferior = transform.GetComponent<BoxCollider>();
         rotacion = Vector3.zero;
         modeloSlime = this.transform.GetChild(0).gameObject;
 
@@ -41,9 +46,11 @@ public class Slime : MonoBehaviour
         verJugador = true;
         rebotando = false;
         grounded = false;
+        preSaltoActivo = false;
 
         duracionApuntado = 3;
         duracioncayendo = 0;
+        preSalto = 0;
 
         resistencia = 5;
         cooldownSalto = 0;
@@ -92,23 +99,7 @@ public class Slime : MonoBehaviour
         }
         // :P
 
-        RaycastHit hit;
-        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, Color.red);
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), Vector3.down, out hit, 0.1f))
-        {
-            if (hit.transform.tag == "Suelo")
-            {
-                grounded = true;
-                velocidad.y = 0;
-                resistencia = 25;
 
-            }
-        }
-        else
-        {
-            grounded = false;
-        }
-        Debug.Log(grounded);
 
         //Saltos
 
@@ -137,6 +128,12 @@ public class Slime : MonoBehaviour
         }
         //:B
 
+        if (grounded)
+        {
+            velocidad.y = 0;
+            resistencia = 25;
+        }
+
         if (saltoTerminado)
         {
             modeloSlime.GetComponent<Animator>().SetInteger("Estado", 3);
@@ -147,10 +144,27 @@ public class Slime : MonoBehaviour
             resistencia = 5;
             velocidad.y = jugador.transform.position.y + 7;
             endlag = true;
+            preSaltoActivo = true;
         }
 
+   
 
-        if(endlag && grounded && velocidad.y == 0)
+
+        if (preSaltoActivo)
+        {
+            grounded = false;
+            detectorInferior.enabled = false;
+            preSalto += Time.deltaTime;
+
+            if (preSalto > 0.2)
+            {
+                preSalto = 0;
+                detectorInferior.enabled = true;
+                preSaltoActivo = false;
+            }
+        }
+
+        if (endlag && grounded && velocidad.y == 0)
         {
 
             apuntando = true;
@@ -169,8 +183,6 @@ public class Slime : MonoBehaviour
 
         velocidadFrontal = this.transform.forward * this.velocidad.z + this.transform.right * this.velocidad.x;
 
-        Debug.Log(velocidad.y);
-
         characterController.Move(new Vector3(velocidadFrontal.x, velocidad.y, velocidadFrontal.z) * Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(rotacion), 200 * Time.deltaTime);
 
@@ -187,6 +199,7 @@ public class Slime : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        Debug.Log(hit.gameObject.tag);
         if (hit.gameObject.tag == "Player" && endlag && !rebotando)
         {
             Vector3 diferencia = (this.transform.position - jugador.transform.position).normalized * 7;
@@ -200,5 +213,25 @@ public class Slime : MonoBehaviour
             verJugador = false;
             endlag = true;
         };
+    }
+
+    private void OnTriggerStay(Collider colision)
+    {
+        if (colision.gameObject.tag == ("Suelo"))
+        {
+            grounded = true;
+        }
+
+        if (colision.gameObject.tag == ("Player"))
+        {
+            resistencia = 0;
+        }
+
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        grounded = false;
+
     }
 }
