@@ -170,7 +170,6 @@ public class Jugador : MonoBehaviour
             }
 
             characterController.Move(velocidadRebotando * Time.deltaTime);
-            Debug.Log(velocidadRebotando);
             estadoAnimacion = 5;
 
             if (contadorRebotando < 1)

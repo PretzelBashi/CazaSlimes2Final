@@ -196,7 +196,7 @@ public class Slime : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log(hit.gameObject.tag);
+
         if (hit.gameObject.tag == "Player" && endlag && !rebotando)
         {
             jugador.GetComponent<Jugador>().ReboteConSlime(-(this.transform.position - jugador.transform.position).normalized * 8.5f);
