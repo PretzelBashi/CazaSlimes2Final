@@ -984,7 +984,7 @@ MonoBehaviour:
   escenariosACargar:
   - {fileID: 3912052369364313841, guid: df254cf874a77b14ba8dd78351b044a3, type: 3}
   intermediosACargar:
-  - {fileID: 8353788077206895080, guid: e1a4a40e9e5818541a6fccd97c27b34a, type: 3}
+  - {fileID: 8433451022638172268, guid: f9dcdebeee285384b8582cb1f1af92eb, type: 3}
 --- !u!4 &1559899737
 Transform:
   m_ObjectHideFlags: 0
