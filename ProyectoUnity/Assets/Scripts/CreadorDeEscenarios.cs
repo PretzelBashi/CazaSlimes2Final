@@ -41,7 +41,7 @@ public class Escenario
     public int id; //id -1 es un puente
     public int tipoDeCuarto;
     public int[] colisiones = new int[4]; //0 vacio, 1 pared, 2 intermedio, 3 cueva, 4 leido
-
+    public bool renderizado = false;
 
 
     public Escenario(GameObject prefab, int tipoDeCuarto, int id)
@@ -59,6 +59,7 @@ public class CreadorDeEscenarios : MonoBehaviour
     public List<GameObject> escenariosACargar;
     public List<GameObject> intermediosACargar;
 
+    //Falta generacion interna procedural de la cueva
     public List<GameObject> elementosSuelo;
     public List<GameObject> elementosEstalactitas;
     public List<GameObject> elementosPlataformas;
@@ -68,13 +69,17 @@ public class CreadorDeEscenarios : MonoBehaviour
     EscenariosDisponibles escenariosCargados;
     IntermediosDisponibles intermediosCargados;
 
+
     List<Escenario> mapa;
-    List<Vector2> coordenadas;
-    Vector2 coordenadasBuffer;
+    List<Vector3> coordenadas;
+    Vector3 coordenadasBuffer;
     Escenario cuartoBuffer;
     Escenario cuartoParaAsignar;
 
+    Vector3 posicionBuffer;
+    int direccionBuffer;
     int bufferDireccion;
+    int cuartoActual;
     void Start()
     {
         escenariosCargados = new EscenariosDisponibles(escenariosACargar);
@@ -82,13 +87,18 @@ public class CreadorDeEscenarios : MonoBehaviour
 
         mapa = new List<Escenario>();
 
-        coordenadas = new List<Vector2>();
+        coordenadas = new List<Vector3>();
+        posicionBuffer = new Vector3();
 
         coordenadasBuffer = new Vector2(0, 0);
         bufferDireccion = Random.Range(0, 4);
-        
 
-        CargarMapa(6);
+        direccionBuffer = 0;
+        cuartoActual = 0;
+        CargarMapa(10);
+        ReemplazarCoordenadas();
+        RenderizarCuartos(10);
+
     }
 
 
@@ -101,13 +111,33 @@ public class CreadorDeEscenarios : MonoBehaviour
 
 
     //
+    public void ReemplazarCoordenadas()
+    {
+        for (int i = 0;i < coordenadas.Count;i++)
+        {
+            print (coordenadas[i]);
+            Vector3 altoAncho = new Vector3();
+
+            switch (mapa[i].tipoDeCuarto)
+            {
+                case 2:
+                    switch (mapa[i].id)
+                    {
+                        case 0: altoAncho = new Vector3(41, 40, 41); break; //CuevaDefault
+                    } break;
+                case 3:
+                    switch (mapa[i].id)
+                    {
+                        case 0: altoAncho = new Vector3(41, 40, 41); break; //úenteDefault
+                    } break;
+            }
+            coordenadas[i] = new Vector3(coordenadas[i].x * altoAncho.x, coordenadas[i].y * altoAncho.y, coordenadas[i].z * altoAncho.z);
+        }
+    }
     public void CargarMapa(int cantidadDeCuartos)
     {
         cuartoParaAsignar = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
         cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
-        
-        
-        
         //Continuar la simplificacion de esta funcion. Despues hacer la generacion de los elementos de la cueva
 
         cuartoBuffer.tipoDeCuarto = 3;
@@ -125,189 +155,45 @@ public class CreadorDeEscenarios : MonoBehaviour
         {
             if (i != 0)
             {
+                CargarCuarto(i, mapa[i - 1].tipoDeCuarto);
                 
-
-                switch (mapa[i - 1].tipoDeCuarto)
-                {
-                    case 0: break;
-                    case 1: break;
-                    case 2:
-                        CargarCuarto(i);
-                        int direccionTemp2 = 0;
-                        bool coordinadasValidar2 = true;
-                        switch (bufferDireccion) { case 0: direccionTemp2 = 2; break; case 1: direccionTemp2 = 3; break; case 2: direccionTemp2 = 0; break; case 3: direccionTemp2 = 1; break; }
-
-
-                        do {
-                            coordinadasValidar2 = true;
-                            //Corregir coordenadasBuffer para que sea Vector2
-                            bufferDireccion = Random.Range(0, 4);
-                            switch (bufferDireccion)
-                            {
-                                case 0:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x - 1, coordenadas[i - 1].y);
-                                    break;
-                                case 1:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y + 1);
-                                    break;
-                                case 2:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x + 1, coordenadas[i - 1].y);
-                                    break;
-                                case 3:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y - 1);
-                                    break;
-                            }
-                            for (int j = 0; j < coordenadas.Count; j++)
-                            {
-                                if (coordenadas[j].x == coordenadasBuffer.x &&
-                                    coordenadas[j].y == coordenadasBuffer.y)
-                                {
-                                    coordinadasValidar2 = false;
-                                    break;
-                                }
-                            }
-
-                        } while (bufferDireccion == direccionTemp2 || !coordinadasValidar2);
-
-                        coordenadas.Add(new Vector2(coordenadasBuffer.x, coordenadasBuffer.y));
-
-                        cuartoParaAsignar1 = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
-                        cuartoBuffer = new Escenario(cuartoParaAsignar1.prefabEscenario, cuartoParaAsignar1.tipoDeCuarto, cuartoParaAsignar1.id);
-
-
-                        //checar bufferDireccion y direccionTemp2
-                        cuartoBuffer.tipoDeCuarto = 3;
-                        cuartoBuffer.colisiones[direccionTemp2] = mapa[i - 1].tipoDeCuarto;
-                        cuartoBuffer.colisiones[bufferDireccion] = 2;
-                        for (int j = 0; j < 4; j++) { if ((j != bufferDireccion) && (j != direccionTemp2)) { cuartoBuffer.colisiones[j] = 1; } }
-                        mapa.Add(cuartoBuffer);
-                        break;
-                    case 3:
-                        int direccionTemp3 = 0;
-                        bool coordinadasValidar3 = true;
-                        switch (bufferDireccion) { case 0: direccionTemp3 = 2; break; case 1: direccionTemp3 = 3; break; case 2: direccionTemp3 = 0; break; case 3: direccionTemp3 = 1; break; }
-
-
-                        do
-                        {
-                            coordinadasValidar3 = true;
-                            bufferDireccion = Random.Range(0, 4);
-                            switch (bufferDireccion)
-                            {
-                                case 0:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x - 1, coordenadas[i - 1].y);
-                                    break;
-                                case 1:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y + 1);
-                                    break;
-                                case 2:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x + 1, coordenadas[i - 1].y);
-                                    break;
-                                case 3:
-                                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y - 1);
-                                    break;
-                            }
-                            for (int j = 0; j < coordenadas.Count; j++)
-                            {
-                                if (coordenadas[j].x == coordenadasBuffer.x &&
-                                    coordenadas[j].y == coordenadasBuffer.y)
-                                {
-                                    coordinadasValidar3 = false;
-                                    break;
-                                }
-                            }
-
-                        } while (bufferDireccion == direccionTemp3 || !coordinadasValidar3);
-
-                        coordenadas.Add(new Vector2(coordenadasBuffer.x, coordenadasBuffer.y));
-
-
-                        cuartoParaAsignar1 = intermediosCargados.intermediosDisponibles[Random.Range(0, intermediosCargados.intermediosDisponibles.Count)];
-                        cuartoBuffer = new Escenario(cuartoParaAsignar1.prefabEscenario, cuartoParaAsignar1.tipoDeCuarto, cuartoParaAsignar1.id);
-
-
-                        cuartoBuffer.tipoDeCuarto = 2;
-                        cuartoBuffer.colisiones[direccionTemp3] = mapa[i - 1].tipoDeCuarto;
-                        cuartoBuffer.colisiones[bufferDireccion] = 3;
-                        for (int j = 0; j < 4; j++) { if ((j != bufferDireccion) && (j != direccionTemp3)) { cuartoBuffer.colisiones[j] = 1; } }
-                        mapa.Add(cuartoBuffer);
-                        break;
-                }
-
-
-                
-
             }
-            Debug.Log(bufferDireccion);
-            Debug.Log("Coordenadas" + coordenadasBuffer.x + " " + coordenadasBuffer.y);
+            //Debug.Log(bufferDireccion);
+            //Debug.Log("Coordenadas" + coordenadasBuffer.x + " " + coordenadasBuffer.y);
             //Debug.Log($"{cuartoBuffer.colisiones[0]}, {cuartoBuffer.colisiones[1]}, {cuartoBuffer.colisiones[2]}, {cuartoBuffer.colisiones[3]}");
         }
         //---------- :3 
         //Cuevas de 2.5 x 2.5
         //puente 2 x 2
-        Vector3 posicionBuffer = new Vector3();
-        int direccionBuffer = 0;
+        
+    }
+    public void DesrrenderizarMapa(int posis)
+    {
 
-
+    }
+    public void RenderizarCuartos(int cantidadDeCuartosACargar)
+    {
         Debug.Log("colisionesPOSTPROCESADO");
         //for (int i = 0; i < mapa.Count; i++) { Debug.Log($"{mapa[i].colisiones[0]}, {mapa[i].colisiones[1]}, {mapa[i].colisiones[2]}, {mapa[i].colisiones[3]}"); }
-
-        for (int i = 0; i < mapa.Count; i++)
+        //Debug.Log(cuartoActual);
+        //Debug.Log(cantidadDeCuartosACargar);
+        int cuartoActualBuffer = cuartoActual;
+        for (; cuartoActual < (cuartoActualBuffer + cantidadDeCuartosACargar); cuartoActual++)
         {
             
-            if (i == 0)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (mapa[i].colisiones[j] == 3 || mapa[i].colisiones[j] == 2)
-                    {
-                        direccionBuffer = j;
-                        break;
-                    }
-                }
-            } else
-            {
-                if (mapa[i].tipoDeCuarto == 3)
-                {
-                    switch (direccionBuffer)
-                    {
-                        case 0: posicionBuffer.x -= 41; posicionBuffer.z -= 0; direccionBuffer = 2; break;
-                        case 1: posicionBuffer.z += 41; posicionBuffer.x -= 0; direccionBuffer = 3; break;
-                        case 2: posicionBuffer.x += 41; posicionBuffer.z -= 0; direccionBuffer = 0; break;
-                        case 3: posicionBuffer.z -= 41; posicionBuffer.x += 0; direccionBuffer = 1; break;
-                    }
-                } else
-                {
-                    switch (direccionBuffer)
-                    {
-                        case 0: posicionBuffer.x -= 41; direccionBuffer = 2; break;
-                        case 1: posicionBuffer.z += 40; direccionBuffer = 3; break;
-                        case 2: posicionBuffer.x += 41; direccionBuffer = 0; break;
-                        case 3: posicionBuffer.z -= 41; direccionBuffer = 1; break;
-                    }
-                }
-
-                mapa[i].colisiones[direccionBuffer] = 4;
-
-                for (int j = 0; j < 4; j++)
-                {
-                    if (mapa[i].colisiones[j] == 3 || mapa[i].colisiones[j] == 2)
-                    {
-                        direccionBuffer = j;
-                        break;
-                    }
-                }
-            }
-            Debug.Log(direccionBuffer);
-            posicionBuffer = new Vector3(posicionBuffer.x, posicionBuffer.y, posicionBuffer.z); // Agregar que la posicion aumente dependiendo en la direccion en la que estamos creando esto
-            Instantiate(mapa[i].prefabEscenario, posicionBuffer, Quaternion.identity);
+            
+            //Debug.Log(direccionBuffer);
+            posicionBuffer = new Vector3(coordenadas[cuartoActual].x, posicionBuffer.y, coordenadas[cuartoActual].y); // Agregar que la posicion aumente dependiendo en la direccion en la que estamos creando esto
+            mapa[cuartoActual].renderizado = true;
+            Instantiate(mapa[cuartoActual].prefabEscenario, coordenadas[cuartoActual], Quaternion.identity);
         }
-    }
 
-    public void CargarCuarto(int i)
+    }
+    public void CargarCuarto(int i, int cuartoActual)
     {
         int direccionTemp2 = 0;
         bool coordinadasValidar2 = true;
+        float altura = 0;
         switch (bufferDireccion) { case 0: direccionTemp2 = 2; break; case 1: direccionTemp2 = 3; break; case 2: direccionTemp2 = 0; break; case 3: direccionTemp2 = 1; break; }
 
 
@@ -319,22 +205,23 @@ public class CreadorDeEscenarios : MonoBehaviour
             switch (bufferDireccion)
             {
                 case 0:
-                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x - 1, coordenadas[i - 1].y);
+                    coordenadasBuffer = new Vector3(coordenadas[i - 1].x - 1, altura, coordenadas[i - 1].z);
                     break;
                 case 1:
-                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y + 1);
+                    coordenadasBuffer = new Vector3(coordenadas[i - 1].x, altura, coordenadas[i - 1].z + 1);
                     break;
                 case 2:
-                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x + 1, coordenadas[i - 1].y);
+                    coordenadasBuffer = new Vector3(coordenadas[i - 1].x + 1, altura, coordenadas[i - 1].z);
                     break;
                 case 3:
-                    coordenadasBuffer = new Vector2(coordenadas[i - 1].x, coordenadas[i - 1].y - 1);
+                    coordenadasBuffer = new Vector3(coordenadas[i - 1].x, altura, coordenadas[i - 1].z - 1);
                     break;
             }
             for (int j = 0; j < coordenadas.Count; j++)
             {
-                if (coordenadas[j].x == coordenadasBuffer.x &&
-                    coordenadas[j].y == coordenadasBuffer.y)
+                if (coordenadas[j].x == coordenadasBuffer.x && 
+                    coordenadas[j].y == coordenadasBuffer.y &&
+                    coordenadas[j].z == coordenadasBuffer.z)
                 {
                     coordinadasValidar2 = false;
                     break;
@@ -343,18 +230,29 @@ public class CreadorDeEscenarios : MonoBehaviour
 
         } while (bufferDireccion == direccionTemp2 || !coordinadasValidar2);
 
-        coordenadas.Add(new Vector2(coordenadasBuffer.x, coordenadasBuffer.y));
-
-        cuartoParaAsignar1 = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
-        cuartoBuffer = new Escenario(cuartoParaAsignar1.prefabEscenario, cuartoParaAsignar1.tipoDeCuarto, cuartoParaAsignar1.id);
-
-
+        coordenadas.Add(new Vector3(coordenadasBuffer.x, coordenadasBuffer.y, coordenadasBuffer.z));
         //checar bufferDireccion y direccionTemp2
-        cuartoBuffer.tipoDeCuarto = 3;
+        
+        switch (cuartoActual)
+        {
+            case 2:
+                cuartoParaAsignar = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
+                cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
+
+                cuartoBuffer.tipoDeCuarto = 3;
+                cuartoBuffer.colisiones[bufferDireccion] = 2;
+                break;
+            case 3:
+                cuartoParaAsignar = intermediosCargados.intermediosDisponibles[Random.Range(0, intermediosCargados.intermediosDisponibles.Count)];
+                cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
+
+                cuartoBuffer.tipoDeCuarto = 2;
+                cuartoBuffer.colisiones[bufferDireccion] = 3;
+                break;
+        }
         cuartoBuffer.colisiones[direccionTemp2] = mapa[i - 1].tipoDeCuarto;
-        cuartoBuffer.colisiones[bufferDireccion] = 2;
+        //Debug.Log(cuartoBuffer.tipoDeCuarto);
         for (int j = 0; j < 4; j++) { if ((j != bufferDireccion) && (j != direccionTemp2)) { cuartoBuffer.colisiones[j] = 1; } }
         mapa.Add(cuartoBuffer);
-        break;
     }
 }
