@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //public class CreadorDeEscenarios : MonoBehaviour
+
+
+//Falta una forma de cargar y descargar cuartos
 public class EscenariosDisponibles
 {
     public List<Escenario> escenariosDisponibles;
@@ -95,9 +98,7 @@ public class CreadorDeEscenarios : MonoBehaviour
 
         direccionBuffer = 0;
         cuartoActual = 0;
-        CargarMapa(10);
-        ReemplazarCoordenadas();
-        RenderizarCuartos(10);
+
 
     }
 
@@ -108,8 +109,14 @@ public class CreadorDeEscenarios : MonoBehaviour
     {
 
     }
+    public List<Vector3> ConseguirCoordenadas()
+    {
+        return coordenadas;
+    }
+    public void EjecutarCuarto(int cuarto)
+    {
 
-
+    }
     //
     public void ReemplazarCoordenadas()
     {
@@ -136,7 +143,7 @@ public class CreadorDeEscenarios : MonoBehaviour
     }
     public void CargarMapa(int cantidadDeCuartos)
     {
-        cuartoParaAsignar = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
+        cuartoParaAsignar = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)]; //Error en esta linea
         cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
         //Continuar la simplificacion de esta funcion. Despues hacer la generacion de los elementos de la cueva
 
@@ -171,13 +178,15 @@ public class CreadorDeEscenarios : MonoBehaviour
     {
 
     }
-    public void RenderizarCuartos(int cantidadDeCuartosACargar)
+    public List<Vector3> RenderizarCuartos(int cantidadDeCuartosACargar)
     {
         Debug.Log("colisionesPOSTPROCESADO");
         //for (int i = 0; i < mapa.Count; i++) { Debug.Log($"{mapa[i].colisiones[0]}, {mapa[i].colisiones[1]}, {mapa[i].colisiones[2]}, {mapa[i].colisiones[3]}"); }
         //Debug.Log(cuartoActual);
         //Debug.Log(cantidadDeCuartosACargar);
         int cuartoActualBuffer = cuartoActual;
+        List<Vector3> coordenadasCargadas = new List<Vector3>();
+
         for (; cuartoActual < (cuartoActualBuffer + cantidadDeCuartosACargar); cuartoActual++)
         {
             
@@ -185,8 +194,11 @@ public class CreadorDeEscenarios : MonoBehaviour
             //Debug.Log(direccionBuffer);
             posicionBuffer = new Vector3(coordenadas[cuartoActual].x, posicionBuffer.y, coordenadas[cuartoActual].y); // Agregar que la posicion aumente dependiendo en la direccion en la que estamos creando esto
             mapa[cuartoActual].renderizado = true;
-            Instantiate(mapa[cuartoActual].prefabEscenario, coordenadas[cuartoActual], Quaternion.identity);
+            GameObject objetoN = Instantiate(mapa[cuartoActual].prefabEscenario, coordenadas[cuartoActual], Quaternion.identity);
+            objetoN.GetComponent<cuevaInfo>().actualizarCoordenadas(coordenadas[cuartoActual]);
+            coordenadasCargadas.Add(new Vector3(coordenadas[cuartoActual].x, coordenadas[cuartoActual].y, coordenadas[cuartoActual].z));
         }
+        return coordenadasCargadas;
 
     }
     public void CargarCuarto(int i, int cuartoActual)

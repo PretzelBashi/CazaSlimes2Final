@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Slime
   - Suelo
+  - infoPartidaActual
+  - CreadorDeCuevas
+  - SlimeSpawn
+  - Cueva
+  - ImpresoraDeSlimes
   layers:
   - Default
   - TransparentFX
