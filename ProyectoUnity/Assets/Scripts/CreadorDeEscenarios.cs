@@ -42,7 +42,7 @@ public class Escenario
 {
     public GameObject prefabEscenario;
     public int id; //id -1 es un puente
-    public int tipoDeCuarto;
+    public int tipoDeCuarto;
     public int[] colisiones = new int[4]; //0 vacio, 1 pared, 2 intermedio, 3 cueva, 4 leido
     public bool renderizado = false;
 
@@ -159,7 +159,7 @@ public class CreadorDeEscenarios : MonoBehaviour
         //Debug.Log(bufferDireccion);
 
         for (int i = 0; i < cantidadDeCuartos+1; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
-        {
+        {
             if (i != 0)
             {
                 CargarCuarto(i, mapa[i - 1].tipoDeCuarto);

@@ -11,6 +11,7 @@ TagManager:
   - SlimeSpawn
   - Cueva
   - ImpresoraDeSlimes
+  - Hueso.ManoR
   layers:
   - Default
   - TransparentFX

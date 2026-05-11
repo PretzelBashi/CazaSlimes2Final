@@ -12,11 +12,11 @@ public class infoPartidaActual : MonoBehaviour
         float mpMax = 100;
         float mpActual = 100;
 
-        float dañoFisicoMax = 5;
-        float dañoFisicoActual = 5;
+        float danoFisicoMax = 5;
+        float danoFisicoActual = 5;
 
-        float dañoMagicoMax = 5;
-        float dañoMagicoActual = 5;
+        float danoMagicoMax = 5;
+        float danoMagicoActual = 5;
 
         float defensaFisicaMax = 5;
         float defensaFisicaActual = 5;
@@ -27,15 +27,15 @@ public class infoPartidaActual : MonoBehaviour
         float critico = 5;
 
         //Falta aplicar daño critico y todo eso
-        public void ActualizarHP(float dañoARecibir, int tipoDeDaño)
+        public void ActualizarHP(float danoARecibir, int tipoDeDano)
         {
             float vidaFinal = 0;
 
-            switch (tipoDeDaño) //0 es fisico, 1 es magico y 2 es curacion
+            switch (tipoDeDano) //0 es fisico, 1 es magico y 2 es curacion
             {
-                case 0: vidaFinal = hpActual - (dañoARecibir - defensaFisicaActual); break;
-                case 1: vidaFinal = hpActual - (dañoARecibir - defensaFisicaActual); break;
-                case 2: vidaFinal = hpActual + dañoARecibir; break;
+                case 0: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
+                case 1: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
+                case 2: vidaFinal = hpActual + danoARecibir; break;
             }
 
             if(vidaFinal > hpMax)
@@ -71,22 +71,22 @@ public class infoPartidaActual : MonoBehaviour
             }
         }
 
-        public void ActualizarStatsMaximas(float hpMax, float mpMax, float dañoFisicoMax, float dañoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
+        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
         {
             if (SumarOAbsoluto) //Sumas
             {
                 this.hpMax += hpMax;
                 this.mpMax += mpMax;
-                this.dañoFisicoMax += dañoFisicoMax;
-                this.dañoMagicoMax += dañoMagicoMax;
+                this.danoFisicoMax += danoFisicoMax;
+                this.danoMagicoMax += danoMagicoMax;
                 this.defensaFisicaMax += defensaFisicaMax;
                 this.defensaMagicaMax += defensaMagicaMax;
             } else //Valores absolutos (Por si acaso)
             {
                 if (hpMax > 0) { this.hpMax = hpMax; }
                 if (mpMax > 0) { this.mpMax = mpMax; }
-                if (dañoFisicoMax > 0) { this.dañoFisicoMax = dañoFisicoMax; }
-                if (dañoMagicoMax > 0) { this.dañoMagicoMax = dañoMagicoMax; }
+                if (danoFisicoMax > 0) { this.danoFisicoMax = danoFisicoMax; }
+                if (danoMagicoMax > 0) { this.danoMagicoMax = danoMagicoMax; }
                 if (defensaFisicaMax > 0) { this.defensaFisicaMax = defensaFisicaMax; }
                 if (defensaMagicaMax > 0) { this.defensaMagicaMax = defensaMagicaMax; }
             }
@@ -96,8 +96,8 @@ public class infoPartidaActual : MonoBehaviour
         {
             switch (statACambiar)
             {
-                case "dañoFisico": dañoFisicoActual = nuevoValor; break;
-                case "dañoMagico": dañoMagicoActual = nuevoValor; break;
+                case "dañoFisico": danoFisicoActual = nuevoValor; break;
+                case "dañoMagico": danoMagicoActual = nuevoValor; break;
                 case "defensaFisica": defensaFisicaActual = nuevoValor; break;
                 case "defensaMagica": defensaMagicaActual = nuevoValor; break;
             }
@@ -109,8 +109,8 @@ public class infoPartidaActual : MonoBehaviour
             {
                 case "hp": hpActual = hpMax; break;
                 case "mp": mpActual = mpMax; break;
-                case "dañoFisico": dañoFisicoActual = dañoFisicoMax; break;
-                case "dañoMagico": dañoMagicoActual = dañoMagicoMax; break;
+                case "dañoFisico": danoFisicoActual = danoFisicoMax; break;
+                case "dañoMagico": danoMagicoActual = danoMagicoMax; break;
                 case "defensaFisica": defensaFisicaActual = defensaFisicaMax; break;
                 case "defensaMagica": defensaMagicaActual = defensaMagicaMax; break;
             }

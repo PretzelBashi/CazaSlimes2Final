@@ -1,0 +1,708 @@
+fileFormatVersion: 2
+guid: a30010ba5e07f6c4c935a3667e5eb149
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: boca
+    second: {fileID: 2100000, guid: 46b20e00a38f1e24d994dacedffa0d13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ojos
+    second: {fileID: 2100000, guid: 2d9e4f95665ba354393c31e6ed0772e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pelo
+    second: {fileID: 2100000, guid: 68a386cef262e5e4794f2c923a75af87, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_caminata_frente (1)
+      takeName: ManoDerechaYArma|saki_caminata_frente
+      internalID: -3401560404639476161
+      firstFrame: 0
+      lastFrame: 26
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|baculo_iddle
+      takeName: ManoDerechaYArma|baculo_iddle
+      internalID: 4001938776586901385
+      firstFrame: 0
+      lastFrame: 42
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|baculo_iddle_fp
+      takeName: ManoDerechaYArma|baculo_iddle_fp
+      internalID: 7630528396131574262
+      firstFrame: 0
+      lastFrame: 32
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_caminata_atras
+      takeName: ManoDerechaYArma|saki_caminata_atras
+      internalID: -6333468206803992615
+      firstFrame: 0
+      lastFrame: 26
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_caminata_derecha
+      takeName: ManoDerechaYArma|saki_caminata_derecha
+      internalID: -3392661967218057825
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_caminata_frente
+      takeName: ManoDerechaYArma|saki_caminata_frente
+      internalID: 8945851665264966112
+      firstFrame: 0
+      lastFrame: 26
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_caminata_izquierda
+      takeName: ManoDerechaYArma|saki_caminata_izquierda
+      internalID: 558905600109911227
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_cayendo
+      takeName: ManoDerechaYArma|saki_cayendo
+      internalID: -5538817968725023604
+      firstFrame: 0
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_dash_atras
+      takeName: ManoDerechaYArma|saki_dash_atras
+      internalID: -8977183791128591185
+      firstFrame: 0
+      lastFrame: 9
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_dash_derecha
+      takeName: ManoDerechaYArma|saki_dash_derecha
+      internalID: -7952975031030436617
+      firstFrame: 0
+      lastFrame: 9
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_dash_frente
+      takeName: ManoDerechaYArma|saki_dash_frente
+      internalID: -1791583995034104036
+      firstFrame: 0
+      lastFrame: 9
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ManoDerechaYArma|saki_salto
+      takeName: ManoDerechaYArma|saki_salto
+      internalID: 1212519787577319748
+      firstFrame: 0
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: Saki CS2 AnimFixDef(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Circle
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: -0, y: 6.533147, z: 0.023264095}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 78.29144, y: 74.727455, z: 100}
+    - name: Gema
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 1.723004, y: 9.812366, z: -0.0000000026845737}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 26.364765, y: 26.364765, z: 26.364765}
+    - name: Mango
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 2.1133597, y: 5.0804663, z: 0.08841348}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 19.823717, y: 19.823717, z: 19.823717}
+    - name: ManoDerechaYArma
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: -0, y: 4.233525, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 100, y: 100, z: 100}
+    - name: mano.R
+      parentName: ManoDerechaYArma
+      position: {x: 0.023927314, y: -0.007195658, z: 0.012982104}
+      rotation: {x: -0.42779246, y: 0.67012906, z: -0.33406958, w: -0.5062789}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+    - name: Baculo.Mango
+      parentName: mano.R
+      position: {x: -0.00660861, y: 0.000053926837, z: 0.0004076973}
+      rotation: {x: -0.28278795, y: 0.65914875, z: 0.62889653, w: 0.30007204}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Baculo.Extra
+      parentName: Baculo.Mango
+      position: {x: 0.005559217, y: 0.0134378765, z: -0.00023949787}
+      rotation: {x: -0.4224454, y: 0.0071040425, z: -0.5292284, w: 0.7358035}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+    - name: Baculo.Extra.001
+      parentName: Baculo.Extra
+      position: {x: -5.9604643e-10, y: 0.0133529175, z: -5.9604643e-10}
+      rotation: {x: -0.009911996, y: 0.0017354795, z: -0.08637281, w: 0.99621207}
+      scale: {x: 0.9999999, y: 1, z: 0.99999994}
+    - name: Baculo.Extra.001_end
+      parentName: Baculo.Extra.001
+      position: {x: -0, y: 0.015661081, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: cadera
+      parentName: ManoDerechaYArma
+      position: {x: -7.105427e-17, y: 2.9099395e-10, z: 0.008769352}
+      rotation: {x: 1, y: 1.5858252e-15, z: -0.00000019470718, w: 0.0000005326322}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pecho
+      parentName: cadera
+      position: {x: -0.0002665901, y: -0.0031423634, z: 0.0014234964}
+      rotation: {x: -0.52087706, y: 0.0063850624, z: 0.013423103, w: 0.8535023}
+      scale: {x: 1, y: 1, z: 1}
+    - name: cabezaq
+      parentName: pecho
+      position: {x: -2.7939677e-11, y: 0.019146549, z: -4.1967724e-10}
+      rotation: {x: 0.036760796, y: -0.018423855, z: -0.010816097, w: 0.9990957}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: pelo.atras
+      parentName: cabezaq
+      position: {x: -1.4901161e-10, y: 0.00711155, z: -0.014630923}
+      rotation: {x: 0.70710695, y: 4.3297793e-17, z: -0.70710665, w: 4.3297813e-17}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: pelo.atras_end
+      parentName: pelo.atras
+      position: {x: -0, y: 0.012955389, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pelo.frente
+      parentName: cabezaq
+      position: {x: -1.4901161e-10, y: 0.017000007, z: 0.013439195}
+      rotation: {x: 0.70710707, y: 4.3297786e-17, z: -0.7071065, w: 4.329782e-17}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: pelo.frente_end
+      parentName: pelo.frente
+      position: {x: -0, y: 0.010083763, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pelito
+      parentName: cabezaq
+      position: {x: -7.4505804e-11, y: 0.026430227, z: -0.008843247}
+      rotation: {x: -0.13655843, y: 0.000000119120045, z: -0.000000015962492, w: 0.99063206}
+      scale: {x: 1, y: 0.518972, z: 0.98416835}
+    - name: pelito_end
+      parentName: pelito
+      position: {x: -0, y: 0.0068027964, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: muslo.L
+      parentName: cadera
+      position: {x: -0.0063502807, y: -0.000000020493353, z: 0.017666988}
+      rotation: {x: 0.5917293, y: -0.658356, z: 0.22416653, w: 0.40764353}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pierna.L
+      parentName: muslo.L
+      position: {x: -4.4703483e-10, y: 0.015567086, z: -1.3328652e-10}
+      rotation: {x: 0.12128215, y: -0.15662882, z: 0.07841896, w: 0.97704077}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+    - name: pie.L
+      parentName: pierna.L
+      position: {x: -2.9802322e-10, y: 0.014999856, z: -6.705522e-10}
+      rotation: {x: 0.00000006857135, y: -0.0000001073514, z: 0.4220224, w: 0.9065854}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: dedos.L
+      parentName: pie.L
+      position: {x: 0.0000000014342367, y: 0.004547895, z: -2.9802322e-10}
+      rotation: {x: 0.0000000029740013, y: 0.00000026468516, z: 0.34263775, w: 0.9394676}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: dedos.L_end
+      parentName: dedos.L
+      position: {x: -0, y: 0.004827265, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: talon.L
+      parentName: pie.L
+      position: {x: 0.004571456, y: -0.0008856296, z: -7.45058e-10}
+      rotation: {x: 0.0057725683, y: 0.0021055157, z: -0.497015, w: 0.8677202}
+      scale: {x: 1, y: 0.9999999, z: 0.99999994}
+    - name: talon.L_end
+      parentName: talon.L
+      position: {x: -0, y: 0.0042325403, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: muslo.R
+      parentName: cadera
+      position: {x: 0.0063502938, y: -0.000000018147306, z: 0.01548255}
+      rotation: {x: 0.22678488, y: 0.7387166, z: 0.11803469, w: 0.6236459}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: pierna.R
+      parentName: muslo.R
+      position: {x: -4.4703483e-10, y: 0.015567083, z: 0.0000000010430813}
+      rotation: {x: 0.44606593, y: 0.25727668, z: 0.33849764, w: 0.78756166}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1}
+    - name: pie.R
+      parentName: pierna.R
+      position: {x: 8.9406965e-10, y: 0.014999862, z: -5.2154064e-10}
+      rotation: {x: 0.035081208, y: 0.14072138, z: -0.732944, w: 0.6646502}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: dedos.R
+      parentName: pie.R
+      position: {x: -0.0000000032782554, y: 0.004547901, z: -7.45058e-10}
+      rotation: {x: 0.000000034200887, y: -0.00000025229352, z: -0.34263787, w: 0.93946755}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: dedos.R_end
+      parentName: dedos.R
+      position: {x: -0, y: 0.004827265, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: talon.R
+      parentName: pie.R
+      position: {x: -0.004571459, y: -0.0008856238, z: -8.1956386e-10}
+      rotation: {x: 0.02016893, y: -0.007356614, z: 0.75824857, w: 0.65161204}
+      scale: {x: 1.0000001, y: 1.0000001, z: 0.99999994}
+    - name: talon.R_end
+      parentName: talon.R
+      position: {x: -0, y: 0.0042325403, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: accesorio.extra
+      parentName: cadera
+      position: {x: 0.014956901, y: -0.0020485085, z: 0.02495026}
+      rotation: {x: 0.002885385, y: 0.70710087, z: 0.002885385, w: 0.7071009}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: accesorio.extra_end
+      parentName: accesorio.extra
+      position: {x: -0, y: 0.0050467337, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mano.L
+      parentName: ManoDerechaYArma
+      position: {x: -0.019383784, y: -1.1670223e-10, z: -0.0038331498}
+      rotation: {x: -0.70710087, y: -0.0028856676, z: 0.7071009, w: 0.0028844434}
+      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+    - name: mano.L_end
+      parentName: mano.L
+      position: {x: -0, y: 0.0050467337, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mono
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 2.1133597, y: 5.0804663, z: 0.08841348}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 19.823717, y: 19.823717, z: 19.823717}
+    - name: boca
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 3.4069955e-17, y: 7.813183, z: 0.04669501}
+      rotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 207.20844, y: 207.20844, z: 207.20844}
+    - name: cara
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 3.4069955e-17, y: 7.813183, z: 0.030687487}
+      rotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 207.20844, y: 207.20844, z: 207.20844}
+    - name: cintoMono.001
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 0.15797889, y: 0.3538575, z: 0.2974785}
+      rotation: {x: 0.3120397, y: 0.72342956, z: 0.6112785, w: -0.0749638}
+      scale: {x: 5.8683143, y: 13.394963, z: 12.77697}
+    - name: gorro
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 3.4069955e-17, y: 7.8810167, z: 0.030687487}
+      rotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 207.20844, y: 207.20844, z: 207.20844}
+    - name: manoDerecha
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 1.9824164, y: 3.857495, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 50.95033, y: 50.95033, z: 50.95033}
+    - name: manoIzquierda
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 1.9824164, y: 3.857495, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 50.95033, y: 50.95033, z: 50.95033}
+    - name: mono
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 1.1453266, y: 4.6277456, z: 0}
+      rotation: {x: -0.7045071, y: -0.060579564, z: 0.060579546, w: 0.704507}
+      scale: {x: 23.359095, y: 53.319256, z: 50.859306}
+    - name: ojos
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 3.4069955e-17, y: 7.813183, z: 0.047899965}
+      rotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 207.20844, y: 207.20844, z: 207.20844}
+    - name: pelo
+      parentName: Saki CS2 AnimFixDef(Clone)
+      position: {x: 3.4069955e-17, y: 7.8810167, z: 0.030687487}
+      rotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 207.20844, y: 207.20844, z: 207.20844}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

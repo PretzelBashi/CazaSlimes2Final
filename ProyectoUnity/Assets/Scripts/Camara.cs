@@ -9,6 +9,7 @@ public class Camara : MonoBehaviour
     GameObject camara;
     GameObject camaraInterior;
     Renderer modeloJugador;
+    GameObject huesoBaculo;
 
     PlayerInput playerInput;
 
@@ -27,15 +28,16 @@ public class Camara : MonoBehaviour
 
         rotacion = Vector3.zero;
 
-        Herramientas.perspectiva = true;
+        Herramientas.perspectiva = false;
         cambioDeCamara = true;
         sensibilidad = 0.3f;
 
-
+        Renderer[] renders = jugador.GetComponentsInChildren<Renderer>(true);
+        huesoBaculo = GameObject.FindGameObjectWithTag("Hueso.ManoR");
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (Herramientas.perspectiva)
         {
@@ -77,6 +79,7 @@ public class Camara : MonoBehaviour
                 rotacion.x = -50;
             }
 
+            
             if (cambioDeCamara)
             {
                 camaraInterior.GetComponent<Camera>().fieldOfView = 60;
@@ -87,12 +90,15 @@ public class Camara : MonoBehaviour
 
                 foreach (Renderer rend in renders)
                 {
-                    rend.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
-                    rend.receiveShadows = false; 
+                    if (rend.transform.name != "Mango" && rend.transform.name != "Gema" && rend.transform.name != "Mono")
+                    {
+                        rend.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
+                        rend.receiveShadows = false;
+                    }
                 }
             }
-
-            transform.rotation = Quaternion.Euler(rotacion);
+            huesoBaculo.transform.rotation = Quaternion.Euler(new Vector3(rotacion.y, huesoBaculo.transform.rotation.y, -rotacion.x)); //Hacer que el baculo siga la camara
+            transform.rotation = Quaternion.Euler(rotacion);a
             transform.position = new Vector3(jugador.transform.position.x, jugador.transform.position.y + 1.7f, jugador.transform.position.z);
             
 

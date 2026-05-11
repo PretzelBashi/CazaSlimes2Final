@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SakiCuerpo
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: boca
+    m_Weight: 1
+  - m_Path: cara
+    m_Weight: 1
+  - m_Path: cintoMono.001
+    m_Weight: 1
+  - m_Path: Circle
+    m_Weight: 1
+  - m_Path: Gema
+    m_Weight: 1
+  - m_Path: gorro
+    m_Weight: 1
+  - m_Path: Mango
+    m_Weight: 0
+  - m_Path: manoDerecha
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/cadera
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/accesorio.extra
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/accesorio.extra/accesorio.extra_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L/pie.L
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L/pie.L/dedos.L
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L/pie.L/dedos.L/dedos.L_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L/pie.L/talon.L
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.L/pierna.L/pie.L/talon.L/talon.L_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R/pie.R
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R/pie.R/dedos.R
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R/pie.R/dedos.R/dedos.R_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R/pie.R/talon.R
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/muslo.R/pierna.R/pie.R/talon.R/talon.R_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelito
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelito/pelito_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelo.atras
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelo.atras/pelo.atras_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelo.frente
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/cadera/pecho/cabezaq/pelo.frente/pelo.frente_end
+    m_Weight: 1
+  - m_Path: ManoDerechaYArma/mano.L
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.L/mano.L_end
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.R
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.R/Baculo.Mango
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.R/Baculo.Mango/Baculo.Extra
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.R/Baculo.Mango/Baculo.Extra/Baculo.Extra.001
+    m_Weight: 0
+  - m_Path: ManoDerechaYArma/mano.R/Baculo.Mango/Baculo.Extra/Baculo.Extra.001/Baculo.Extra.001_end
+    m_Weight: 0
+  - m_Path: manoIzquierda
+    m_Weight: 0
+  - m_Path: Mono
+    m_Weight: 1
+  - m_Path: mono
+    m_Weight: 1
+  - m_Path: ojos
+    m_Weight: 1
+  - m_Path: pelo
+    m_Weight: 1
