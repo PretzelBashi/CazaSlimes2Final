@@ -97,8 +97,11 @@ public class Camara : MonoBehaviour
                     }
                 }
             }
-            huesoBaculo.transform.rotation = Quaternion.Euler(new Vector3(rotacion.y, huesoBaculo.transform.rotation.y, -rotacion.x)); //Hacer que el baculo siga la camara
-            transform.rotation = Quaternion.Euler(rotacion);a
+            Quaternion rotX = Quaternion.AngleAxis(-rotacion.x, Vector3.forward);
+            Quaternion rotY = Quaternion.AngleAxis(rotacion.y -90, Vector3.up);
+
+            huesoBaculo.transform.rotation = rotY * rotX; //Hacer que el baculo siga la camara
+            transform.rotation = Quaternion.Euler(rotacion);
             transform.position = new Vector3(jugador.transform.position.x, jugador.transform.position.y + 1.7f, jugador.transform.position.z);
             
 

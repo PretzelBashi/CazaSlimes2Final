@@ -136,6 +136,7 @@ public class infoPartidaActual : MonoBehaviour
     List<Vector3> ordenDeCoordenadas;
     ImpresoraDeSlimes impresoraDeSlimes;
     CreadorDeEscenarios creadorDeEscenarios;
+
     void Start()
     {
         jugador = new Stats();
@@ -143,20 +144,31 @@ public class infoPartidaActual : MonoBehaviour
         creadorDeEscenarios = GameObject.FindGameObjectWithTag("CreadorDeCuevas").GetComponent<CreadorDeEscenarios>();
         impresoraDeSlimes = GameObject.FindGameObjectWithTag("ImpresoraDeSlimes").GetComponent<ImpresoraDeSlimes>();
         spawnersDeSlimes = new List<GameObject>();
-
-        creadorDeEscenarios.CargarMapa(3);
+        ordenDeCoordenadas = new List<Vector3>();
         partida.cueva = 0;
 
-        creadorDeEscenarios.CargarMapa(3);
-        creadorDeEscenarios.ReemplazarCoordenadas();
+        
+        
         //Falta ejecutar el renderizado
     }
-    public void RenderizarCuartosOrdenados()
+    async public void CrearNivel()
+    {
+        await creadorDeEscenarios.CargarMapa(3);
+        await creadorDeEscenarios.ReemplazarCoordenadas();
+        RenderizarCuartosOrdenados();
+
+        await creadorDeEscenarios.CargarMapa(3);
+        await creadorDeEscenarios.ReemplazarCoordenadas();
+        RenderizarCuartosOrdenados();
+    }
+    async public void RenderizarCuartosOrdenados()
     {
 
-        List<Vector3> coordenadasBuffer = creadorDeEscenarios.RenderizarCuartos(6);
-        for (int i = 0; i < coordenadasBuffer.Count; i++)
+        Vector3[] coordenadasBuffer = await creadorDeEscenarios.RenderizarCuartos(3,0);
+        
+        for (int i = 0; i < coordenadasBuffer.Length; i++)
         {
+
             ordenDeCoordenadas.Add(coordenadasBuffer[i]);
         }
     }
