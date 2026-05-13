@@ -105,7 +105,7 @@ public class CreadorDeEscenarios : MonoBehaviour
         cuartoActual = 0;
 
         infoPartidaActual = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
-        infoPartidaActual.CrearNivel();
+        infoPartidaActual.PartidaNormal();
     }
 
     // Update is called once per frame
@@ -138,7 +138,7 @@ public class CreadorDeEscenarios : MonoBehaviour
                 case 3:
                     switch (mapa[coordenadaActual].id)
                     {
-                        case 0: altoAncho = new Vector3(41, 40, 41); break; //úenteDefault
+                        case 0: altoAncho = new Vector3(41, 40, 41); break; //PuenteDefault
                     } break;
             }
             coordenadas[coordenadaActual] = new Vector3(coordenadas[coordenadaActual].x * altoAncho.x, coordenadas[coordenadaActual].y * altoAncho.y, coordenadas[coordenadaActual].z * altoAncho.z);
@@ -162,19 +162,18 @@ public class CreadorDeEscenarios : MonoBehaviour
             coordenadas.Add(new Vector2(0, 0));
             for (int i = 0; i < 4; i++) { if (i != bufferDireccion) { cuartoBuffer.colisiones[i] = 1; } }
             mapa.Add(cuartoBuffer);
-            cuartoActual++;
 
             for (int i = 1; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
             {
-                CargarCuarto(i, mapa[cuartoActual - 1].tipoDeCuarto); //Arreglar eso, problema de indices y el primer ciclo
+                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto); //Arreglar eso, problema de indices y el primer ciclo
             }
         } else
         {
-            cantidadDeCuartos++;
 
-            for (int i = 0; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
+            cantidadDeCuartos++;
+            for (int i = 1; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
             {
-                CargarCuarto(i, mapa[cuartoActual - 1].tipoDeCuarto);
+                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto);
 
                 //Debug.Log(bufferDireccion);
                 //Debug.Log("Coordenadas" + coordenadasBuffer.x + " " + coordenadasBuffer.y);
@@ -214,7 +213,7 @@ public class CreadorDeEscenarios : MonoBehaviour
             GameObject objetoN = Instantiate(mapa[cuartoActual].prefabEscenario, coordenadas[cuartoActual], Quaternion.identity);
             objetoN.GetComponent<cuevaInfo>().actualizarCoordenadas(coordenadas[cuartoActual]);
             coordenadasCargadas.Add(new Vector3(coordenadas[cuartoActual].x, coordenadas[cuartoActual].y, coordenadas[cuartoActual].z));
-            Debug.Log(new Vector3(coordenadasPre[cuartoActual].x, coordenadasPre[cuartoActual].y, coordenadasPre[cuartoActual].z));
+            //Debug.Log(new Vector3(coordenadasPre[cuartoActual].x, coordenadasPre[cuartoActual].y, coordenadasPre[cuartoActual].z));
         }
         return  coordenadasCargadas.ToArray();
 

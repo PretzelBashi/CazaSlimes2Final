@@ -8,13 +8,6 @@ public class AnimacionTemrinada : MonoBehaviour
     {
         Slime = transform.GetComponentInParent<Slime>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SaltoTerminado()
     {
         Slime.SaltoTerminado();

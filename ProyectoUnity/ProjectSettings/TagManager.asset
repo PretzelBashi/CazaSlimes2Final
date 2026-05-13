@@ -12,6 +12,8 @@ TagManager:
   - Cueva
   - ImpresoraDeSlimes
   - Hueso.ManoR
+  - SpawnPosible
+  - posicionDisparoBaculo
   layers:
   - Default
   - TransparentFX

@@ -1,121 +1,11 @@
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class infoPartidaActual : MonoBehaviour
 {
-    public class Stats
-    {
-        float hpMax = 100;
-        float hpActual = 100;
+    
 
-        float mpMax = 100;
-        float mpActual = 100;
-
-        float danoFisicoMax = 5;
-        float danoFisicoActual = 5;
-
-        float danoMagicoMax = 5;
-        float danoMagicoActual = 5;
-
-        float defensaFisicaMax = 5;
-        float defensaFisicaActual = 5;
-
-        float defensaMagicaMax = 5;
-        float defensaMagicaActual = 5;
-
-        float critico = 5;
-
-        //Falta aplicar daño critico y todo eso
-        public void ActualizarHP(float danoARecibir, int tipoDeDano)
-        {
-            float vidaFinal = 0;
-
-            switch (tipoDeDano) //0 es fisico, 1 es magico y 2 es curacion
-            {
-                case 0: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
-                case 1: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
-                case 2: vidaFinal = hpActual + danoARecibir; break;
-            }
-
-            if(vidaFinal > hpMax)
-            {
-                hpActual = hpMax;
-            } 
-            else if (vidaFinal > 0)
-            {
-                hpActual = vidaFinal;
-            }
-            else
-            {
-                Debug.Log("Muerte");
-            }
-        }
-
-        public void ActualizarMP(float mpRecibido) //Pueden ser negativos
-        {
-            float mpFinal = 0;
-            mpFinal = mpActual + mpRecibido;
-
-            if (mpFinal > mpMax)
-            {
-                mpActual = mpActual;
-            }
-            else if (mpFinal > 0)
-            {
-                mpActual = mpFinal;
-            }
-            else
-            {
-                mpActual = 0;
-            }
-        }
-
-        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
-        {
-            if (SumarOAbsoluto) //Sumas
-            {
-                this.hpMax += hpMax;
-                this.mpMax += mpMax;
-                this.danoFisicoMax += danoFisicoMax;
-                this.danoMagicoMax += danoMagicoMax;
-                this.defensaFisicaMax += defensaFisicaMax;
-                this.defensaMagicaMax += defensaMagicaMax;
-            } else //Valores absolutos (Por si acaso)
-            {
-                if (hpMax > 0) { this.hpMax = hpMax; }
-                if (mpMax > 0) { this.mpMax = mpMax; }
-                if (danoFisicoMax > 0) { this.danoFisicoMax = danoFisicoMax; }
-                if (danoMagicoMax > 0) { this.danoMagicoMax = danoMagicoMax; }
-                if (defensaFisicaMax > 0) { this.defensaFisicaMax = defensaFisicaMax; }
-                if (defensaMagicaMax > 0) { this.defensaMagicaMax = defensaMagicaMax; }
-            }
-        }
-
-        public void ActualizarStatsActuales(string statACambiar, float nuevoValor)
-        {
-            switch (statACambiar)
-            {
-                case "dañoFisico": danoFisicoActual = nuevoValor; break;
-                case "dañoMagico": danoMagicoActual = nuevoValor; break;
-                case "defensaFisica": defensaFisicaActual = nuevoValor; break;
-                case "defensaMagica": defensaMagicaActual = nuevoValor; break;
-            }
-        }
-
-        public void ReiniciarStatActual(string statAReiniciar)
-        {
-            switch(statAReiniciar)
-            {
-                case "hp": hpActual = hpMax; break;
-                case "mp": mpActual = mpMax; break;
-                case "dañoFisico": danoFisicoActual = danoFisicoMax; break;
-                case "dañoMagico": danoMagicoActual = danoMagicoMax; break;
-                case "defensaFisica": defensaFisicaActual = defensaFisicaMax; break;
-                case "defensaMagica": defensaMagicaActual = defensaMagicaMax; break;
-            }
-        }
-    }
 
     public class Partida
     {
@@ -129,42 +19,78 @@ public class infoPartidaActual : MonoBehaviour
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    Stats jugador;
     Partida partida;
 
     List<GameObject> spawnersDeSlimes;
+    List<GameObject> slimesSpawneados;
     List<Vector3> ordenDeCoordenadas;
-    ImpresoraDeSlimes impresoraDeSlimes;
+
     CreadorDeEscenarios creadorDeEscenarios;
+
+    public List<GameObject> slimesExistentes;
+
+
+    int cuartosPorProfundidad;
 
     void Start()
     {
-        jugador = new Stats();
         partida = new Partida();
         creadorDeEscenarios = GameObject.FindGameObjectWithTag("CreadorDeCuevas").GetComponent<CreadorDeEscenarios>();
-        impresoraDeSlimes = GameObject.FindGameObjectWithTag("ImpresoraDeSlimes").GetComponent<ImpresoraDeSlimes>();
+
         spawnersDeSlimes = new List<GameObject>();
+        slimesSpawneados = new List<GameObject>();
         ordenDeCoordenadas = new List<Vector3>();
         partida.cueva = 0;
-
-        
+        cuartosPorProfundidad = 3; //La cantidad se multiplica por 2 para tomar en cuenta puentes.
         
         //Falta ejecutar el renderizado
     }
-    async public void CrearNivel()
-    {
-        await creadorDeEscenarios.CargarMapa(3);
-        await creadorDeEscenarios.ReemplazarCoordenadas();
-        RenderizarCuartosOrdenados();
 
-        await creadorDeEscenarios.CargarMapa(3);
-        await creadorDeEscenarios.ReemplazarCoordenadas();
-        RenderizarCuartosOrdenados();
+    async public void PartidaNormal()
+    {
+        await CrearNivel(true);
+        await CargarSiguienteNivel();
+        AparecerSlimes(20);
+        /* do {
+            AparecerSlimes(5 * ((partida.cueva + 1) / 2));
+        } while (true);
+        */
+    }
+
+    async public void AparecerSlimes(float cantidadSlimes)
+    {
+        
+        int slimesAparecidos = 0;
+        cantidadSlimes = Mathf.FloorToInt(cantidadSlimes);
+        if (cantidadSlimes == 0) { cantidadSlimes = 1; }
+
+        do
+        {
+            slimesSpawneados.Add(Instantiate(slimesExistentes[Random.Range(0, slimesExistentes.Count)], spawnersDeSlimes[Random.Range(0, spawnersDeSlimes.Count)].transform.position, Quaternion.identity));
+            slimesAparecidos++;
+            do { await Task.Delay(Random.Range(1000, 3000)); }
+            while (slimesSpawneados.Count <= 10 + partida.cueva);
+
+        } while (slimesAparecidos < cantidadSlimes);
+    }
+    async public Task CrearNivel(bool inicial)
+    {
+        if (inicial)
+        {
+            await creadorDeEscenarios.CargarMapa(cuartosPorProfundidad * 2 - 1); //La primera generacion usa 1 cuarto menos
+            await creadorDeEscenarios.ReemplazarCoordenadas();
+            RenderizarCuartosOrdenados();
+        } else
+        {
+            await creadorDeEscenarios.CargarMapa(cuartosPorProfundidad * 2);
+            await creadorDeEscenarios.ReemplazarCoordenadas();
+            RenderizarCuartosOrdenados();
+        }
     }
     async public void RenderizarCuartosOrdenados()
     {
 
-        Vector3[] coordenadasBuffer = await creadorDeEscenarios.RenderizarCuartos(3,0);
+        Vector3[] coordenadasBuffer = await creadorDeEscenarios.RenderizarCuartos(cuartosPorProfundidad, 0);
         
         for (int i = 0; i < coordenadasBuffer.Length; i++)
         {
@@ -172,7 +98,7 @@ public class infoPartidaActual : MonoBehaviour
             ordenDeCoordenadas.Add(coordenadasBuffer[i]);
         }
     }
-    public void cargarSiguienteNivel()
+    async public Task CargarSiguienteNivel()
     {
         GameObject[] cuevas = GameObject.FindGameObjectsWithTag("Cueva");
 
@@ -186,17 +112,17 @@ public class infoPartidaActual : MonoBehaviour
                 for (int j = 0; j < cuevas[i].transform.childCount; j++)
                 {
                     GameObject estalagtitaHija;
-                    if(cuevas[i].transform.GetChild(i).tag == "SlimeSpawn")
+                    if(cuevas[i].transform.GetChild(j).tag == "SpawnPosible")
                     {
-                        estalagtitaHija = cuevas[i].transform.GetChild(i).gameObject;
-                        GameObject slimeSpawn = Instantiate(
-                            new GameObject(), 
-                            new Vector3(estalagtitaHija.transform.position.x, estalagtitaHija.transform.position.y, estalagtitaHija.transform.position.z), 
-                            Quaternion.identity);
+                        estalagtitaHija = cuevas[i].transform.GetChild(j).gameObject;
+                        GameObject slimeSpawn = new GameObject($"Spawner{j}");
+                        slimeSpawn.transform.position = estalagtitaHija.transform.position;
+                        slimeSpawn.transform.SetParent(estalagtitaHija.transform);
+
                         spawnersDeSlimes.Add(slimeSpawn); //Comprobar que los spawns si aparecen
                     }
-                    
-                } 
+                }
+                return;
             }
         }
     }

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 
@@ -19,6 +20,128 @@ public class Herramientas : MonoBehaviour
      *  tan^-1
      *  
      */
+    public class Stats
+    {
+        public float hpMax = 100;
+        public float hpActual = 100;
+
+        public float mpMax = 100;
+        public float mpActual = 100;
+
+        public float danoFisicoMax = 5;
+        public float danoFisicoActual = 5;
+
+        public float danoMagicoMax = 5;
+        public float danoMagicoActual = 5;
+
+        public float defensaFisicaMax = 5;
+        public float defensaFisicaActual = 5;
+
+        public float defensaMagicaMax = 5;
+        public float defensaMagicaActual = 5;
+
+        public float velocidadDeAtaqueMax = 5;
+        public float velocidadDeAtaqueActual = 5;
+
+        public float critico = 5;
+
+        //Falta aplicar daño critico y todo eso
+        public void ActualizarHP(float danoARecibir, int tipoDeDano)
+        {
+            float vidaFinal = 0;
+
+            switch (tipoDeDano) //0 es fisico, 1 es magico y 2 es curacion
+            {
+                case 0: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
+                case 1: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
+                case 2: vidaFinal = hpActual + danoARecibir; break;
+            }
+
+            if (vidaFinal > hpMax)
+            {
+                hpActual = hpMax;
+            }
+            else if (vidaFinal > 0)
+            {
+                hpActual = vidaFinal;
+            }
+            else
+            {
+                Debug.Log("Muerte");
+            }
+        }
+
+        public void ActualizarMP(float mpRecibido) //Pueden ser negativos
+        {
+            float mpFinal = 0;
+            mpFinal = mpActual + mpRecibido;
+
+            if (mpFinal > mpMax)
+            {
+                mpActual = mpActual;
+            }
+            else if (mpFinal > 0)
+            {
+                mpActual = mpFinal;
+            }
+            else
+            {
+                mpActual = 0;
+            }
+        }
+
+        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
+        {
+            if (SumarOAbsoluto) //Sumas
+            {
+                this.hpMax += hpMax;
+                this.mpMax += mpMax;
+                this.danoFisicoMax += danoFisicoMax;
+                this.danoMagicoMax += danoMagicoMax;
+                this.defensaFisicaMax += defensaFisicaMax;
+                this.defensaMagicaMax += defensaMagicaMax;
+            }
+            else //Valores absolutos (Por si acaso)
+            {
+                if (hpMax > 0) { this.hpMax = hpMax; }
+                if (mpMax > 0) { this.mpMax = mpMax; }
+                if (danoFisicoMax > 0) { this.danoFisicoMax = danoFisicoMax; }
+                if (danoMagicoMax > 0) { this.danoMagicoMax = danoMagicoMax; }
+                if (defensaFisicaMax > 0) { this.defensaFisicaMax = defensaFisicaMax; }
+                if (defensaMagicaMax > 0) { this.defensaMagicaMax = defensaMagicaMax; }
+            }
+        }
+
+        public void ActualizarStatsActuales(string statACambiar, float nuevoValor)
+        {
+            switch (statACambiar)
+            {
+                case "dañoFisico": danoFisicoActual = nuevoValor; break;
+                case "dañoMagico": danoMagicoActual = nuevoValor; break;
+                case "defensaFisica": defensaFisicaActual = nuevoValor; break;
+                case "defensaMagica": defensaMagicaActual = nuevoValor; break;
+            }
+        }
+
+        public void ReiniciarStatActual(string statAReiniciar)
+        {
+            switch (statAReiniciar)
+            {
+                case "hp": hpActual = hpMax; break;
+                case "mp": mpActual = mpMax; break;
+                case "dañoFisico": danoFisicoActual = danoFisicoMax; break;
+                case "dañoMagico": danoMagicoActual = danoMagicoMax; break;
+                case "defensaFisica": defensaFisicaActual = defensaFisicaMax; break;
+                case "defensaMagica": defensaMagicaActual = defensaMagicaMax; break;
+            }
+        }
+    }
+
+    public class JugadorStats : Stats
+    {
+
+    }
+
     public static bool perspectiva;
     static public float ObtenerAngulo2D(Vector2 punto1, Vector2 punto2)
     {

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2677628286500912891}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 1.2713652, y: 11.089008, z: -1.5494375}
+  m_LocalPosition: {x: 0, y: 8.12, z: -0}
   m_LocalScale: {x: 17.918688, y: 17.918688, z: 17.918688}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 5272380617861976047}
   m_Layer: 0
   m_Name: estalagtita3
-  m_TagString: SlimeSpawn
+  m_TagString: SpawnPosible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 7872864788262957593}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.04533, y: 0, z: -2.52183}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
