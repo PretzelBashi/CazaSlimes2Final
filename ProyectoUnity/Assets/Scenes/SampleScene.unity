@@ -227,7 +227,19 @@ MonoBehaviour:
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211347187}
+        m_TargetAssemblyTypeName: Jugador, Assembly-CSharp
+        m_MethodName: Disparo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
@@ -891,6 +903,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a30010ba5e07f6c4c935a3667e5eb149, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2091581533}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a30010ba5e07f6c4c935a3667e5eb149, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2091581534}
   m_SourcePrefab: {fileID: 100100000, guid: a30010ba5e07f6c4c935a3667e5eb149, type: 3}
 --- !u!1 &793433714
 GameObject:
@@ -1306,7 +1321,7 @@ Transform:
   m_GameObject: {fileID: 1880507671}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.019, y: -0.006, z: 1.311}
+  m_LocalPosition: {x: 1.311, y: 0, z: 0}
   m_LocalScale: {x: 0.054245, y: 0.054245, z: 0.054245}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1467,6 +1482,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2091581534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091581531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b587cbc15f0535c4398934d73fa72e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationTermiandaJugador
 --- !u!1001 &5511604373501649087
 PrefabInstance:
   m_ObjectHideFlags: 0

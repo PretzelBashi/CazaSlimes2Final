@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Baculo_Default_Mango
+    second: {fileID: 2100000, guid: 95727d46d52c7df42b9614c20e3fd4a4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Baculo_Default_Piedra
+    second: {fileID: 2100000, guid: 66222fb066e383f46a14afbb6aa680ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: boca
     second: {fileID: 2100000, guid: 46b20e00a38f1e24d994dacedffa0d13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gema
+    second: {fileID: 2100000, guid: 71761e0b87b14cc4b930671bc7d98bbe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

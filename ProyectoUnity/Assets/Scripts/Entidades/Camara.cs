@@ -87,7 +87,7 @@ public class Camara : MonoBehaviour
                 camaraInterior.GetComponent<Camera>().fieldOfView = 60;
                 camaraInterior.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 cambioDeCamara = false;
-
+                
                 Renderer[] renders = jugador.GetComponentsInChildren<Renderer>(true);
 
                 foreach (Renderer rend in renders)
@@ -98,16 +98,22 @@ public class Camara : MonoBehaviour
                         rend.receiveShadows = false;
                     }
                 }
+                
             }
-            Quaternion rotX = Quaternion.AngleAxis(-rotacion.x, Vector3.up);
-            Debug.Log(rotX.eulerAngles);
-            Quaternion rotY = Quaternion.AngleAxis(rotacion.y -90, Vector3.up);
 
-            Vector3 rotacionNueva = (rotX).eulerAngles + huesoBaculo.transform.rotation.eulerAngles; //Arreglar que gire bien (ni idea porque no funciona)
+            Quaternion animRotation = huesoBaculo.transform.localRotation;
 
-            huesoBaculo.transform.rotation = Quaternion.Euler(new Vector3(huesoBaculo.transform.rotation.x, huesoBaculo.transform.rotation.y + rotX.eulerAngles.y, huesoBaculo.transform.rotation.z)); //Hacer que el baculo siga la camara
+            Quaternion pitch =
+                Quaternion.AngleAxis(-rotacion.x+10, Vector3.up);
 
-            posicionDeDisparo.transform.rotation = Quaternion.AngleAxis(rotacion.y, Vector3.up) * Quaternion.AngleAxis(-rotacion.x, Vector3.left);
+            // inclinacion fija hacia la derecha
+            Quaternion offset =
+                Quaternion.AngleAxis(-20f, Vector3.forward);
+
+            huesoBaculo.transform.localRotation =
+                animRotation * pitch * offset;
+
+            posicionDeDisparo.transform.rotation = huesoBaculo.transform.rotation; //ajustar rotacion del puto origen de disparo
             posicionDeDisparo.transform.position = huesoBaculo.transform.position;
             transform.rotation = Quaternion.Euler(rotacion);
             transform.position = new Vector3(jugador.transform.position.x, jugador.transform.position.y + 1.7f, jugador.transform.position.z);

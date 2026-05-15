@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -9,7 +10,7 @@ using static Herramientas;
 
 public class Jugador : MonoBehaviour
 {
-    JugadorStats jugadorStats;
+    public MagoStats jugadorStats;
 
     CharacterController characterController;
     PlayerInput playerInput;
@@ -18,19 +19,26 @@ public class Jugador : MonoBehaviour
     Vector3 direccionDash;
 
     float velocidadPersonaje;
-    Animator animator;
+
 
     int estadoAnimacionCuerpo;
     int estadoAnimacionManos;
 
     GameObject contenedorCamara;
     Camera camaraInterior;
-    
+    Animator animator;
+    EfectosDeSonido audio;
+    UIManager uiManager;
+
+    Renderer baculoGema;
+    Renderer baculoMango;
+
     float contadorSalto;
     float cooldownDash;
     float contadorDash;
     float contadorRebotando;
     float resistencia;
+
 
     bool dasheando;
     bool salto;
@@ -38,18 +46,23 @@ public class Jugador : MonoBehaviour
 
     bool casteando;
     bool casteoTerminado;
-    bool habilidadTerminada;
+    bool[] habilidadesCargadas;
 
     public GameObject proyectilDisparo;
-    
+    public GameObject proyectilMelee;
+
     void Start()
     {
-        jugadorStats = new JugadorStats();
+        jugadorStats = new MagoStats();
         animator = this.transform.GetChild(0).GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         contenedorCamara = GameObject.FindGameObjectWithTag("MainCamera");
         camaraInterior = contenedorCamara.transform.GetChild(0).gameObject.GetComponent<Camera>();
+        audio = GameObject.FindGameObjectWithTag("SonidosJugador").GetComponent<EfectosDeSonido>();
         playerInput = GetComponent<PlayerInput>();
+
+        baculoGema = GameObject.FindGameObjectWithTag("BaculoGema").GetComponent<Renderer>();
+        baculoMango = GameObject.FindGameObjectWithTag("BaculoMango").GetComponent<Renderer>();
 
         velocidad = Vector3.zero;
         
@@ -58,10 +71,15 @@ public class Jugador : MonoBehaviour
         casteando = false;
         casteoTerminado = false;
 
+        habilidadesCargadas = new[] { true, true, true, true };
+
         velocidadPersonaje = 5;
         contadorRebotando = 0;
         resistencia = 5;
         cooldownDash = 0;
+
+        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+        uiManager.IniciarUI(jugadorStats);
     }
 
 
@@ -190,7 +208,7 @@ public class Jugador : MonoBehaviour
                 rebotando = false;
                 contadorRebotando = 0;
                 velocidadRebotando = Vector3.zero;
-                Debug.Log("Rebotando Reset");
+
             }
         }
 
@@ -200,6 +218,45 @@ public class Jugador : MonoBehaviour
             animator.SetTrigger("CambioEstado");
         }
 
+
+        if(jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax)
+        {
+            jugadorStats.habilidades[0].cooldownActual += Time.deltaTime;
+        } else if (!habilidadesCargadas[0])
+        {
+            uiManager.activarHabilidad(0);
+            habilidadesCargadas[0] = true;
+        }
+
+        if (jugadorStats.habilidades[1].cooldownActual < jugadorStats.habilidades[1].cooldownMax)
+        {
+            jugadorStats.habilidades[1].cooldownActual += Time.deltaTime;
+        }
+        else if (!habilidadesCargadas[1])
+        {
+            uiManager.activarHabilidad(1);
+            habilidadesCargadas[1] = true;
+        }
+
+        if (jugadorStats.habilidades[2].cooldownActual < jugadorStats.habilidades[2].cooldownMax)
+        {
+            jugadorStats.habilidades[2].cooldownActual += Time.deltaTime;
+        }
+        else if (!habilidadesCargadas[2])
+        {
+            uiManager.activarHabilidad(2);
+            habilidadesCargadas[2] = true;
+        }
+
+        if (jugadorStats.habilidades[3].cooldownActual < jugadorStats.habilidades[3].cooldownMax)
+        {
+            jugadorStats.habilidades[3].cooldownActual += Time.deltaTime;
+        }
+        else if (!habilidadesCargadas[3])
+        {
+            uiManager.activarHabilidad(3);
+            habilidadesCargadas[3] = true;
+        }
     }
 
     public void Saltar(InputAction.CallbackContext callbackContext)
@@ -228,29 +285,169 @@ public class Jugador : MonoBehaviour
     {
         velocidadRebotando = new Vector3(velocidadRebote.x, velocidadRebote.y, velocidadRebote.z);
         rebotando = true;
-        Debug.Log(velocidadRebotando);
+        audio.ReproducirNegativos(audio.JugadorDano);
+        jugadorStats.ActualizarHP(30, 0);
     }
 
+    //Habilidades
+  
     async public void Disparo()
     {
-        if (!casteando)
+        if (casteando) return;
+
+        baculoGema.material.EnableKeyword("_EMISSION");
+        baculoGema.material.SetColor("_EmissionColor", Color.magenta * 5f);
+
+        uiManager.toggleConjurando(true);
+        casteando = true;
+        casteoTerminado = false;
+
+        animator.SetInteger("EstadoBaculo", 3);
+        animator.SetTrigger("CambioBaculo");
+
+        // tiempo de casteo
+        await Task.Delay(
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1000f ));
+
+        uiManager.toggleConjurando(false);
+        animator.SetInteger("EstadoBaculo", 5);
+        animator.SetTrigger("CambioBaculo");
+
+        //aqui sespera la animacion
+        while (!casteoTerminado)
         {
-
-
-            casteando = true;
-            animator.SetInteger("EstadoBaculo", 3);
-            animator.SetTrigger("CambioBaculo");
-            await Task.Delay(Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1000f));
-            animator.SetInteger("EstadoBaculo", 4);
-            animator.SetTrigger("CambioBaculo");
-            do
-            {
-                if (casteoTerminado)
-                {
-
-                    habilidadTerminada = true;
-                }
-            } while (!habilidadTerminada);
+            await Task.Yield();
         }
+
+        baculoGema.material.SetColor("_EmissionColor", Color.black);
+        baculoGema.material.DisableKeyword("_EMISSION");
+
+        // AQUI ESTA LA HABILIDAD
+        RaycastHit hit;
+
+        Vector3 origen = new Vector3(
+            transform.position.x,
+            transform.position.y + 1.7f,
+            transform.position.z
+        );
+
+        Vector3 direccion = camaraInterior.transform.forward;
+
+        Vector3 puntoFinal;
+
+        Debug.DrawRay(
+            origen,
+            direccion * 20f,
+            Color.red,
+            10f
+        );
+
+
+        if (Physics.Raycast(origen, direccion, out hit, 20f))
+        {
+            puntoFinal = hit.point;
+        }
+        else
+        {
+            puntoFinal = origen + direccion * 20f;
+        }
+
+        Vector3 direccionProyectil = puntoFinal - origen;
+
+        Instantiate(proyectilDisparo, GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).transform.position, Quaternion.LookRotation(direccionProyectil));
+        //AQUI TERMINA LA HABILIDAD
+
+        await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
+
+        animator.SetInteger("EstadoBaculo", 2);
+        animator.SetTrigger("CambioBaculo");
+
+        casteando = false;
+        casteoTerminado = false;
+    }
+
+    async public void Habilidad1() //Golpe melee
+    {
+        if (casteando || (jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax) || jugadorStats.mpActual < 100) return;
+        jugadorStats.mpActual -= 100;
+        uiManager.ActualizarStats();
+        uiManager.desactivarHabilidad(0);
+        habilidadesCargadas[0] = false;
+        jugadorStats.habilidades[0].cooldownActual = 0;
+
+        baculoMango.material.EnableKeyword("_EMISSION");
+        baculoMango.material.SetColor("_EmissionColor", Color.red * 5f);
+
+        uiManager.toggleConjurando(true);
+        casteando = true;
+        casteoTerminado = false;
+
+        animator.SetInteger("EstadoBaculo", 3);
+        animator.SetTrigger("CambioBaculo");
+
+        // tiempo de casteo
+        await Task.Delay(
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 500f));
+
+        uiManager.toggleConjurando(false);
+        animator.SetInteger("EstadoBaculo", 4);
+        animator.SetTrigger("CambioBaculo");
+
+        //aqui sespera la animacion
+        while (!casteoTerminado)
+        {
+            await Task.Yield();
+        }
+
+        baculoMango.material.SetColor("_EmissionColor", Color.black);
+        baculoMango.material.DisableKeyword("_EMISSION");
+
+        // AQUI ESTA LA HABILIDAD
+        RaycastHit hit;
+
+        Vector3 origen = new Vector3(
+            transform.position.x,
+            transform.position.y + 1.7f,
+            transform.position.z
+        );
+
+        Vector3 direccion = camaraInterior.transform.forward;
+
+        Vector3 puntoFinal;
+
+        Debug.DrawRay(
+            origen,
+            direccion * 20f,
+            Color.red,
+            10f
+        );
+
+
+        if (Physics.Raycast(origen, direccion, out hit, 20f))
+        {
+            puntoFinal = hit.point;
+        }
+        else
+        {
+            puntoFinal = origen + direccion * 20f;
+        }
+
+        Vector3 direccionProyectil = puntoFinal - origen;
+
+        Instantiate(proyectilMelee, GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).transform.position, Quaternion.LookRotation(direccionProyectil));
+        //AQUI TERMINA LA HABILIDAD
+
+        await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 500f));
+
+        animator.SetInteger("EstadoBaculo", 2);
+        animator.SetTrigger("CambioBaculo");
+
+        casteando = false;
+        casteoTerminado = false;
+    }
+
+    public void AnimacionDisparoTerminada()
+    {
+        casteoTerminado = true;
     }
 }

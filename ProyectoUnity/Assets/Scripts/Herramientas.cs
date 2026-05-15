@@ -20,6 +20,19 @@ public class Herramientas : MonoBehaviour
      *  tan^-1
      *  
      */
+    public class Habilidad
+    {
+        public float cooldownMax;
+        public float cooldownActual;
+        public float costoMana;
+
+        public Habilidad(float cooldown, float costoMana)
+        {
+            this.cooldownMax = cooldown;
+            this.cooldownActual = cooldown;
+            this.costoMana = costoMana;
+        }
+    }
     public class Stats
     {
         public float hpMax = 100;
@@ -40,12 +53,13 @@ public class Herramientas : MonoBehaviour
         public float defensaMagicaMax = 5;
         public float defensaMagicaActual = 5;
 
-        public float velocidadDeAtaqueMax = 5;
-        public float velocidadDeAtaqueActual = 5;
+        public float velocidadDeAtaqueMax = 1f;
+        public float velocidadDeAtaqueActual = 1F;
 
         public float critico = 5;
 
         //Falta aplicar daño critico y todo eso
+
         public void ActualizarHP(float danoARecibir, int tipoDeDano)
         {
             float vidaFinal = 0;
@@ -67,8 +81,11 @@ public class Herramientas : MonoBehaviour
             }
             else
             {
+                hpActual = 0;
                 Debug.Log("Muerte");
             }
+
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
         public void ActualizarMP(float mpRecibido) //Pueden ser negativos
@@ -88,6 +105,8 @@ public class Herramientas : MonoBehaviour
             {
                 mpActual = 0;
             }
+
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
         public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
@@ -110,17 +129,21 @@ public class Herramientas : MonoBehaviour
                 if (defensaFisicaMax > 0) { this.defensaFisicaMax = defensaFisicaMax; }
                 if (defensaMagicaMax > 0) { this.defensaMagicaMax = defensaMagicaMax; }
             }
+
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
         public void ActualizarStatsActuales(string statACambiar, float nuevoValor)
         {
             switch (statACambiar)
             {
-                case "dañoFisico": danoFisicoActual = nuevoValor; break;
-                case "dañoMagico": danoMagicoActual = nuevoValor; break;
+                case "danoFisico": danoFisicoActual = nuevoValor; break;
+                case "danoMagico": danoMagicoActual = nuevoValor; break;
                 case "defensaFisica": defensaFisicaActual = nuevoValor; break;
                 case "defensaMagica": defensaMagicaActual = nuevoValor; break;
             }
+
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
         public void ReiniciarStatActual(string statAReiniciar)
@@ -129,16 +152,32 @@ public class Herramientas : MonoBehaviour
             {
                 case "hp": hpActual = hpMax; break;
                 case "mp": mpActual = mpMax; break;
-                case "dañoFisico": danoFisicoActual = danoFisicoMax; break;
-                case "dañoMagico": danoMagicoActual = danoMagicoMax; break;
+                case "danoFisico": danoFisicoActual = danoFisicoMax; break;
+                case "danoMagico": danoMagicoActual = danoMagicoMax; break;
                 case "defensaFisica": defensaFisicaActual = defensaFisicaMax; break;
                 case "defensaMagica": defensaMagicaActual = defensaMagicaMax; break;
             }
+
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
+
     }
 
-    public class JugadorStats : Stats
+    public class MagoStats : Stats
     {
+        public Habilidad[] habilidades = new Habilidad[4];
+        public MagoStats()
+        {
+            float cd1;
+            if ((8 - this.velocidadDeAtaqueActual) < 0) { cd1 = 0.1f; } else { cd1 = 8 - this.velocidadDeAtaqueActual; }
+
+            habilidades = new Habilidad[]{
+                new Habilidad(cd1, 20),
+                new Habilidad(8, 70),
+                new Habilidad(10, 50),
+                new Habilidad(120, 250)
+            };
+        }
 
     }
 

@@ -68,8 +68,8 @@ public class infoPartidaActual : MonoBehaviour
         {
             slimesSpawneados.Add(Instantiate(slimesExistentes[Random.Range(0, slimesExistentes.Count)], spawnersDeSlimes[Random.Range(0, spawnersDeSlimes.Count)].transform.position, Quaternion.identity));
             slimesAparecidos++;
-            do { await Task.Delay(Random.Range(1000, 3000)); }
-            while (slimesSpawneados.Count <= 10 + partida.cueva);
+            do { await Task.Delay(Random.Range(1500, 3000)); }
+            while (slimesSpawneados.Count >= 10 + partida.cueva);
 
         } while (slimesAparecidos < cantidadSlimes);
     }
