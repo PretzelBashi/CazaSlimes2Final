@@ -4,7 +4,7 @@ using static Herramientas;
 public class dropFisico : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    infoPartidaActual info = new infoPartidaActual();
+    infoPartidaActual info;
     Objeto objeto;
     void Start()
     {
