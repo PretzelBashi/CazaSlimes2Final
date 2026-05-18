@@ -1,5 +1,10 @@
-using System.Runtime.InteropServices;
+
+using System.Collections.Generic;
+
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
+using static Herramientas;
 
 
 public class Herramientas : MonoBehaviour
@@ -33,16 +38,69 @@ public class Herramientas : MonoBehaviour
             this.costoMana = costoMana;
         }
     }
+
+    public class Objeto
+    {
+        public string nombre;
+        public int id;
+        public int rareza;
+
+        public float hpMax;
+
+        public float mpMax;
+
+        public float danoFisicoMax;
+
+        public float danoMagicoMax;
+
+        public float defensaFisicaMax;
+
+        public float defensaMagicaMax;
+
+        public float velocidadDeAtaqueMax;
+
+        public float critico;
+
+        public Objeto(
+            string nombre,
+            int id,
+            int rareza,
+            float hpMax,
+            float mpMax,
+            float danoFisicoMax,
+            float danoMagicoMax,
+            float defensaFisicaMax,
+            float defensaMagicaMax,
+            float velocidadDeAtaqueMax,
+            float critico
+        )
+        {
+            this.nombre = nombre;
+            this.id = id;
+            this.rareza = rareza;
+            this.hpMax = hpMax;
+            this.mpMax = mpMax;
+            this.danoFisicoMax = danoFisicoMax;
+            this.danoMagicoMax = danoMagicoMax;
+            this.defensaFisicaMax = defensaFisicaMax;
+            this.defensaMagicaMax = defensaMagicaMax;
+            this.velocidadDeAtaqueMax = velocidadDeAtaqueMax;
+            this.critico = critico;
+        }
+    }
     public class Stats
     {
+        public GameObject padre;
+        EfectosDeSonido audioJugador = GameObject.FindGameObjectWithTag("SonidosJugador").GetComponent<EfectosDeSonido>();
+
         public float hpMax = 100;
         public float hpActual = 100;
 
-        public float mpMax = 100;
-        public float mpActual = 100;
+        public float mpMax = 9000;
+        public float mpActual = 9000;
 
-        public float danoFisicoMax = 5;
-        public float danoFisicoActual = 5;
+        public float danoFisicoMax = 7;
+        public float danoFisicoActual = 7;
 
         public float danoMagicoMax = 5;
         public float danoMagicoActual = 5;
@@ -53,22 +111,41 @@ public class Herramientas : MonoBehaviour
         public float defensaMagicaMax = 5;
         public float defensaMagicaActual = 5;
 
-        public float velocidadDeAtaqueMax = 1f;
-        public float velocidadDeAtaqueActual = 1F;
+        public float velocidadDeAtaqueMax = 3f;
+        public float velocidadDeAtaqueActual = 3F;
 
         public float critico = 5;
+        public float IFrames = 0.2f;
+        public bool Invencible = false;
 
         //Falta aplicar daño critico y todo eso
-
-        public void ActualizarHP(float danoARecibir, int tipoDeDano)
+        public void ActualizarUIs()
         {
+            if (padre.tag == "Slime")
+            {
+                padre.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().fillAmount = (hpActual+0.1f)/hpMax;
+                if(hpActual <= 0)
+                {
+                    padre.GetComponent<Slime>().DestruirSlime();
+                }
+            }
+            else { 
+                GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
+                audioJugador.ReproducirNegativos(audioJugador.JugadorDano);
+            }
+        }
+        async public void ActualizarHP(float danoARecibir, int tipoDeDano, GameObject prefabNumero)
+        {
+            if (Invencible) return;
+            Invencible = true;
             float vidaFinal = 0;
-
+            float danoRecibidoTotal = danoARecibir;
+            
             switch (tipoDeDano) //0 es fisico, 1 es magico y 2 es curacion
             {
-                case 0: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
-                case 1: vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); break;
-                case 2: vidaFinal = hpActual + danoARecibir; break;
+                case 0: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); danoRecibidoTotal = danoARecibir - defensaFisicaActual;  break;
+                case 1: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual - (danoARecibir - defensaMagicaActual); danoRecibidoTotal = danoARecibir - defensaMagicaActual; break;
+                case 2: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual + danoARecibir; break;
             }
 
             if (vidaFinal > hpMax)
@@ -82,11 +159,15 @@ public class Herramientas : MonoBehaviour
             else
             {
                 hpActual = 0;
-                Debug.Log("Muerte");
             }
-
-            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
+            ActualizarUIs();
+            GameObject numero = Instantiate(prefabNumero, padre.transform.position, Quaternion.identity);
+            numero.transform.SetParent(padre.transform);
+            numero.GetComponentInChildren<numeroDamage>().CambiarNumero(danoRecibidoTotal,tipoDeDano);
+            await Task.Delay(Mathf.FloorToInt(IFrames * 1000));
+            Invencible = false;
         }
+
 
         public void ActualizarMP(float mpRecibido) //Pueden ser negativos
         {
@@ -109,17 +190,34 @@ public class Herramientas : MonoBehaviour
             GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
-        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, bool SumarOAbsoluto)
+        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, float velocidadDeAtaqueMax, float critico, bool SumarOAbsoluto)
         {
             if (SumarOAbsoluto) //Sumas
             {
+                if (this.hpMax == hpActual) { hpActual += hpMax; }
                 this.hpMax += hpMax;
+
+                if (this.mpMax == mpActual) { mpActual += mpMax; }
                 this.mpMax += mpMax;
+
+                if (this.danoFisicoMax == danoFisicoActual) { danoFisicoActual += danoFisicoMax; }
                 this.danoFisicoMax += danoFisicoMax;
+
+                if (this.danoMagicoMax == danoMagicoActual) { danoMagicoActual += danoMagicoMax; }
                 this.danoMagicoMax += danoMagicoMax;
+
+                if (this.defensaFisicaMax == defensaFisicaActual) { defensaFisicaActual += defensaFisicaMax; }
                 this.defensaFisicaMax += defensaFisicaMax;
+
+                if (this.defensaMagicaMax == defensaMagicaActual) { defensaMagicaActual += defensaMagicaMax; }
                 this.defensaMagicaMax += defensaMagicaMax;
+
+                if (this.velocidadDeAtaqueMax == velocidadDeAtaqueActual) { velocidadDeAtaqueActual += velocidadDeAtaqueMax; }
+                this.velocidadDeAtaqueMax += velocidadDeAtaqueMax;
+
+                this.critico += critico;
             }
+
             else //Valores absolutos (Por si acaso)
             {
                 if (hpMax > 0) { this.hpMax = hpMax; }
@@ -161,24 +259,64 @@ public class Herramientas : MonoBehaviour
             GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
+        public void ImprimirStats()
+        {
+            Debug.Log(
+                "hpMax: " + hpMax +
+                "\nhpActual: " + hpActual +
+
+                "\nmpMax: " + mpMax +
+                "\nmpActual: " + mpActual +
+
+                "\ndanoFisicoMax: " + danoFisicoMax +
+                "\ndanoFisicoActual: " + danoFisicoActual +
+
+                "\ndanoMagicoMax: " + danoMagicoMax +
+                "\ndanoMagicoActual: " + danoMagicoActual +
+
+                "\ndefensaFisicaMax: " + defensaFisicaMax +
+                "\ndefensaFisicaActual: " + defensaFisicaActual +
+
+                "\ndefensaMagicaMax: " + defensaMagicaMax +
+                "\ndefensaMagicaActual: " + defensaMagicaActual +
+
+                "\nvelocidadDeAtaqueMax: " + velocidadDeAtaqueMax +
+                "\nvelocidadDeAtaqueActual: " + velocidadDeAtaqueActual +
+
+                "\ncritico: " + critico
+
+            );
+        }
     }
 
     public class MagoStats : Stats
     {
         public Habilidad[] habilidades = new Habilidad[4];
+        public List<Objeto> objetos = new List<Objeto>();
         public MagoStats()
         {
             float cd1;
             if ((8 - this.velocidadDeAtaqueActual) < 0) { cd1 = 0.1f; } else { cd1 = 8 - this.velocidadDeAtaqueActual; }
 
             habilidades = new Habilidad[]{
-                new Habilidad(cd1, 20),
+                new Habilidad(cd1, 100),
                 new Habilidad(8, 70),
                 new Habilidad(10, 50),
                 new Habilidad(120, 250)
             };
         }
+        public void AgregarObjeto(Objeto objeto)
+        {
+            ActualizarStatsMaximas(objeto.hpMax,objeto.mpMax,objeto.danoFisicoMax,objeto.danoMagicoMax,objeto.defensaFisicaMax,objeto.defensaMagicaMax, objeto.velocidadDeAtaqueMax,objeto.critico,true);
+            objetos.Add(objeto);
+        }
 
+        public void QuitarObjeto(int indice)
+        {
+            Objeto objeto = objetos[indice];
+            ActualizarStatsMaximas(-objeto.hpMax, -objeto.mpMax, -objeto.danoFisicoMax, -objeto.danoMagicoMax, -objeto.defensaFisicaMax, -objeto.defensaMagicaMax, -objeto.velocidadDeAtaqueMax, -objeto.critico, true);
+            objetos.RemoveAt(indice);
+        }
     }
 
     public static bool perspectiva;

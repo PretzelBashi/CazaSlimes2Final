@@ -1,0 +1,15 @@
+-Hacer todos los slimes funcionales (Demo funcional 0.5)X
+-(Hacer sistema de niveles, reparar profundidad), incluye actualizar interfazX
+-Hacer sistema de drops (Inventario e interfaz para verlos)X
+-Hacer diseno de intermedio (Poner que de un objeto al final)
+-Terminar habilidades
+
+-Pantallas de inicio y muerte
+-Hacer 2 tipos mas de zonas (cuevas)
+-De intermedios agregar una tienda
+-Agregar el npc de la tienda
+-Agregar Segundo personaje?
+-Agregar objetos unicos para baculos
+-Agregar objetos unicos para accesorios
+-Agregar armaduras
+-Agregar mas intermedios

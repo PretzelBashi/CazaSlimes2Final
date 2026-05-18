@@ -18,6 +18,13 @@ TagManager:
   - UIManager
   - BaculoMango
   - BaculoGema
+  - puertaSalida
+  - comun
+  - raro
+  - legendario
+  - unico
+  - menuObjetos
+  - menuStats
   layers:
   - Default
   - TransparentFX
@@ -26,7 +33,7 @@ TagManager:
   - Water
   - UI
   - Habiliades
-  - 
+  - Slime
   - 
   - 
   - 

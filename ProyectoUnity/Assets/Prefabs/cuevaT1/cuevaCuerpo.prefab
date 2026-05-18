@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 193969825305945488}
   m_Layer: 0
   m_Name: CuevaCuerpo
-  m_TagString: Untagged
+  m_TagString: Suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 8562398396559334105}
   m_Layer: 0
   m_Name: cuevaCuerpo
-  m_TagString: Untagged
+  m_TagString: Suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

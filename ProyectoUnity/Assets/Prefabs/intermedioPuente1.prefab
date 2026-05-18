@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: -4392062316240869997}
   m_Layer: 0
   m_Name: intermedioPuente1
-  m_TagString: Untagged
+  m_TagString: Cueva
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1832563794843408902}
   - component: {fileID: 359552777306631286}
   - component: {fileID: 3035336465612709149}
-  - component: {fileID: 4910640546816392843}
   m_Layer: 6
   m_Name: puntaMelee
   m_TagString: Untagged
@@ -68,35 +67,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8859828, y: 0.39659548, z: 0.46473676}
-  m_Center: {x: -0.057008594, y: 0, z: 0}
---- !u!54 &4910640546816392843
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2856598141779396680}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  m_Size: {x: 0.37010154, y: 0.26884884, z: 0.7146852}
+  m_Center: {x: -0.057008594, y: 0.013556719, z: 0}
 --- !u!1 &6617440931703295414
 GameObject:
   m_ObjectHideFlags: 0

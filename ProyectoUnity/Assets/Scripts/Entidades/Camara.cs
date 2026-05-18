@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -17,7 +18,9 @@ public class Camara : MonoBehaviour
     Vector3 rotacion;
 
     bool cambioDeCamara;
-    float sensibilidad;
+    float sensibilidadMouse;
+    float sensibilidadControl;
+    public bool controlador; //false es mouse, true es control
     void Start()
     {
         jugador = GameObject.FindGameObjectWithTag("Player");
@@ -29,10 +32,12 @@ public class Camara : MonoBehaviour
         playerInput = jugador.GetComponent<PlayerInput>();
 
         rotacion = Vector3.zero;
+        controlador = true;
 
         Herramientas.perspectiva = false;
         cambioDeCamara = true;
-        sensibilidad = 0.3f;
+        sensibilidadMouse = 0.3f;
+        sensibilidadControl = 1.5f;
 
         Renderer[] renders = jugador.GetComponentsInChildren<Renderer>(true);
         huesoBaculo = GameObject.FindGameObjectWithTag("Hueso.ManoR");
@@ -41,10 +46,19 @@ public class Camara : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (controlador)
+        {
+            rotacion.y += playerInput.actions["Look"].ReadValue<Vector2>().x * sensibilidadMouse;
+            rotacion.x += playerInput.actions["Look"].ReadValue<Vector2>().y * -sensibilidadMouse;
+        }
+        else
+        {
+            rotacion.y += playerInput.actions["Look"].ReadValue<Vector2>().x * sensibilidadControl;
+            rotacion.x += playerInput.actions["Look"].ReadValue<Vector2>().y * -sensibilidadControl;
+        }
+
         if (Herramientas.perspectiva)
         {
-            rotacion.y += playerInput.actions["Look"].ReadValue<Vector2>().x * sensibilidad;
-            rotacion.x += playerInput.actions["Look"].ReadValue<Vector2>().y * -sensibilidad;
 
             if (rotacion.x > 50)
             {
@@ -69,22 +83,21 @@ public class Camara : MonoBehaviour
 
         } else
         {
-            rotacion.y += playerInput.actions["Look"].ReadValue<Vector2>().x * sensibilidad;
-            rotacion.x += playerInput.actions["Look"].ReadValue<Vector2>().y * -sensibilidad;
 
-            if (rotacion.x > 50)
+
+            if (rotacion.x > 55)
             {
-                rotacion.x = 50;
+                rotacion.x = 55;
             }
-            else if (rotacion.x < -50)
+            else if (rotacion.x < -90)
             {
-                rotacion.x = -50;
+                rotacion.x = -90;
             }
 
             
             if (cambioDeCamara)
             {
-                camaraInterior.GetComponent<Camera>().fieldOfView = 60;
+                camaraInterior.GetComponent<Camera>().fieldOfView = 90;
                 camaraInterior.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 cambioDeCamara = false;
                 

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class explosionGenerica : MonoBehaviour
@@ -10,6 +12,8 @@ public class explosionGenerica : MonoBehaviour
     float tiempoDesvaneciendo;
     float escalaPorSegundo;
     float rapidezEscalado;
+    float danoFisico;
+    float danoMagico;
     Light luz;
     Renderer[] rendersHijos;
     void Start()
@@ -38,11 +42,9 @@ public class explosionGenerica : MonoBehaviour
             
             tiempoDesvaneciendo += Time.deltaTime;
 
-            if(tiempoDesvaneciendo >= 1f) { desvanecer = false; Destroy(gameObject); Debug.Log("Destruir"); }
-            Debug.Log("tiempoDesvaneciendo");
+            if(tiempoDesvaneciendo >= 1f) { desvanecer = false; Destroy(gameObject);}
             foreach (Renderer r in rendersHijos)
             {
-                Debug.Log("Desvaneciendo");
                 foreach (Material mat in r.materials)
                 {
                     Color emission = mat.GetColor("_EmissionColor");
@@ -65,11 +67,37 @@ public class explosionGenerica : MonoBehaviour
         }
     }
 
-    public void Explotar(float rango, float rapidezEscalado)
+    public void Explotar(float rango, float rapidezEscalado, float danoFisico, float danoMagico)
     {
+        this.danoFisico = danoFisico;
+        this.danoMagico = danoMagico;
         this.rango = rango;
         this.rapidezEscalado = rapidezEscalado;
         explotar = true;
         escalaPorSegundo = (rango - transform.localScale.x)/rapidezEscalado;
     }
+
+    async private void OnTriggerEnter(Collider collision)
+    {
+        try
+        {
+            if (collision.gameObject.tag == "Slime")
+            {
+                if (danoFisico > 0)
+                {
+                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoFisico, 0, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                }
+                await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Slime>().slimeStats.IFrames * 1000));
+                if (danoMagico > 0)
+                {
+                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoMagico, 1, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                }
+
+            }
+        }
+        catch { }
+
+    }
 }
+
+

@@ -27,7 +27,7 @@ public class Jugador : MonoBehaviour
     GameObject contenedorCamara;
     Camera camaraInterior;
     Animator animator;
-    EfectosDeSonido audio;
+    
     UIManager uiManager;
 
     Renderer baculoGema;
@@ -38,6 +38,7 @@ public class Jugador : MonoBehaviour
     float contadorDash;
     float contadorRebotando;
     float resistencia;
+    float contadorIFrame;
 
 
     bool dasheando;
@@ -50,7 +51,7 @@ public class Jugador : MonoBehaviour
 
     public GameObject proyectilDisparo;
     public GameObject proyectilMelee;
-
+    public GameObject prefabNumeroDano;
     void Start()
     {
         jugadorStats = new MagoStats();
@@ -58,7 +59,7 @@ public class Jugador : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         contenedorCamara = GameObject.FindGameObjectWithTag("MainCamera");
         camaraInterior = contenedorCamara.transform.GetChild(0).gameObject.GetComponent<Camera>();
-        audio = GameObject.FindGameObjectWithTag("SonidosJugador").GetComponent<EfectosDeSonido>();
+        
         playerInput = GetComponent<PlayerInput>();
 
         baculoGema = GameObject.FindGameObjectWithTag("BaculoGema").GetComponent<Renderer>();
@@ -77,7 +78,7 @@ public class Jugador : MonoBehaviour
         contadorRebotando = 0;
         resistencia = 5;
         cooldownDash = 0;
-
+        jugadorStats.padre = this.gameObject;
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         uiManager.IniciarUI(jugadorStats);
     }
@@ -285,8 +286,7 @@ public class Jugador : MonoBehaviour
     {
         velocidadRebotando = new Vector3(velocidadRebote.x, velocidadRebote.y, velocidadRebote.z);
         rebotando = true;
-        audio.ReproducirNegativos(audio.JugadorDano);
-        jugadorStats.ActualizarHP(30, 0);
+        
     }
 
     //Habilidades

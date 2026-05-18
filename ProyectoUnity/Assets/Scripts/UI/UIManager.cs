@@ -1,9 +1,14 @@
+
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Herramientas;
 public class UIManager : MonoBehaviour
 {
+    public List<Sprite> objetos;
+    public List<GameObject> objetosEnMenu;
+    public GameObject objetoPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     Image barraHP;
@@ -23,6 +28,12 @@ public class UIManager : MonoBehaviour
     HabilidadUI habilidad3;
     HabilidadUI habilidad4;
 
+    GameObject menuObjetos;
+    GameObject menuStats;
+
+    bool menuTABCargado;
+
+
     public class HabilidadUI
     {
         public Image marco;
@@ -31,7 +42,7 @@ public class UIManager : MonoBehaviour
         public TextMeshProUGUI costoMana;
         public HabilidadUI(GameObject[] hijos)
         {
-            for (int i = 0; i < hijos.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
                 switch (i)
                 {
@@ -43,6 +54,74 @@ public class UIManager : MonoBehaviour
                 
             }
         }
+    }
+    private void Start()
+    {
+        menuTABCargado = false;
+        menuObjetos = GameObject.FindGameObjectWithTag("menuObjetos");
+        menuStats = GameObject.FindGameObjectWithTag("menuStats");
+    }
+    
+    public void ActualizarMenuStats()
+    {
+
+        TextMeshProUGUI[] textos = menuStats.transform.GetChild(2).GetComponentsInChildren<TextMeshProUGUI>();
+        for(int i = 0; i < textos.Length; i++)
+        {
+            switch (i)
+            {
+                case 0: textos[i].text = jugador.hpMax.ToString(); break;
+                case 1: textos[i].text = jugador.mpMax.ToString(); break;
+                case 2: textos[i].text = jugador.danoFisicoMax.ToString(); break;
+                case 3: textos[i].text = jugador.danoMagicoMax.ToString(); break;
+                case 4: textos[i].text = jugador.defensaFisicaMax.ToString(); break;
+                case 5: textos[i].text = jugador.defensaMagicaMax.ToString(); break;
+                case 6: textos[i].text = jugador.velocidadDeAtaqueMax.ToString(); break;
+                case 7: textos[i].text = jugador.critico.ToString(); break;
+            }
+        }
+    }
+    public void CargarMenuTAB()
+    {
+        if (!menuTABCargado)
+        {
+            Debug.Log("Cargado");
+            menuObjetos.GetComponent<CanvasGroup>().alpha = 1;
+            menuStats.GetComponent<CanvasGroup>().alpha = 1;
+
+            int contadorx = 0;
+
+            foreach (Objeto objeto in jugador.objetos)
+            {
+                Transform content = menuObjetos.transform.GetChild(1).GetChild(0).GetChild(0);
+
+                GameObject objetoUI = Instantiate(objetoPrefab, content);
+
+                Image logo = objetoUI.transform.GetChild(1).GetComponent<Image>();
+
+                objetosEnMenu.Add(logo.transform.parent.gameObject);
+                logo.sprite = objetos[objeto.id];
+            }
+
+
+            ActualizarMenuStats();
+
+            menuTABCargado = true;
+        } else
+        {
+            Debug.Log("Escondido");
+            
+            menuObjetos.GetComponent<CanvasGroup>().alpha = 0;
+            menuStats.GetComponent<CanvasGroup>().alpha = 0;
+
+            foreach (GameObject objeto in objetosEnMenu)
+            {
+                Destroy(objeto);
+            }
+            objetosEnMenu.Clear();
+            menuTABCargado = false;
+        }
+
     }
 
     public void IniciarUI(MagoStats jugador)
@@ -56,7 +135,7 @@ public class UIManager : MonoBehaviour
             switch (hijo.name)
             {
                 case "habilidad1":
-                    for(int i = 0; i < hijo.childCount; i++)
+                    for(int i = 0; i < 4; i++)
                     {
                         habilidadesHijos[i] = hijo.GetChild(i).gameObject;
                     }
@@ -64,7 +143,7 @@ public class UIManager : MonoBehaviour
                     break;
 
                 case "habilidad2":
-                    for (int i = 0; i < hijo.childCount; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         habilidadesHijos[i] = hijo.GetChild(i).gameObject;
                     }
@@ -72,7 +151,7 @@ public class UIManager : MonoBehaviour
                     break;
 
                 case "habilidad3":
-                    for (int i = 0; i < hijo.childCount; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         habilidadesHijos[i] = hijo.GetChild(i).gameObject;
                     }
@@ -80,7 +159,7 @@ public class UIManager : MonoBehaviour
                     break;
 
                 case "habilidad4":
-                    for (int i = 0; i < hijo.childCount; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         habilidadesHijos[i] = hijo.GetChild(i).gameObject;
                     }
@@ -126,7 +205,6 @@ public class UIManager : MonoBehaviour
     }
     public void ActualizarStats()
     {
-        Debug.Log(jugador.hpActual);
         barraHP.fillAmount = jugador.hpActual/jugador.hpMax;
         barraMP.fillAmount = jugador.mpActual/jugador.mpMax;
         textoHP.text = $"HP: {jugador.hpActual} / {jugador.hpMax}";

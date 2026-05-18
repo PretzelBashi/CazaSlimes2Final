@@ -14,7 +14,6 @@ public class EscenariosDisponibles
         escenariosDisponibles = new List<Escenario>();
         for (int i = 0; i < escenarios.Count; i++)
         {
-            Debug.Log(escenarios[0]);
             escenariosDisponibles.Add(new Escenario(escenarios[i], 0, i));
             //0 Cueva inicial 41x41
         }
@@ -74,7 +73,7 @@ public class CreadorDeEscenarios : MonoBehaviour
     IntermediosDisponibles intermediosCargados;
 
 
-    List<Escenario> mapa;
+    public List<Escenario> mapa;
     List<Vector3> coordenadasPre;
     List<Vector3> coordenadas;
     Vector3 coordenadasBuffer;
@@ -86,6 +85,7 @@ public class CreadorDeEscenarios : MonoBehaviour
     int bufferDireccion;
     int cuartoActual;
     int coordenadaActual;
+    int bufferDireccionAnterior;
     infoPartidaActual infoPartidaActual;
     void Start()
     {
@@ -103,6 +103,7 @@ public class CreadorDeEscenarios : MonoBehaviour
 
         direccionBuffer = 0;
         cuartoActual = 0;
+        coordenadaActual = 0;
 
         infoPartidaActual = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
         infoPartidaActual.PartidaNormal();
@@ -160,12 +161,16 @@ public class CreadorDeEscenarios : MonoBehaviour
 
             coordenadasPre.Add(new Vector2(0, 0));
             coordenadas.Add(new Vector2(0, 0));
-            for (int i = 0; i < 4; i++) { if (i != bufferDireccion) { cuartoBuffer.colisiones[i] = 1; } }
+            for (int i = 0; i < 4; i++) { if (i != bufferDireccion) { cuartoBuffer.colisiones[i] = 1; }  }
+            for (int i = 0; i < 4; i++) {  }
+            
+
             mapa.Add(cuartoBuffer);
 
             for (int i = 1; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
             {
                 CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto); //Arreglar eso, problema de indices y el primer ciclo
+                
             }
         } else
         {
@@ -176,7 +181,7 @@ public class CreadorDeEscenarios : MonoBehaviour
                 CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto);
 
                 //Debug.Log(bufferDireccion);
-                //Debug.Log("Coordenadas" + coordenadasBuffer.x + " " + coordenadasBuffer.y);
+                
                 //Debug.Log($"{cuartoBuffer.colisiones[0]}, {cuartoBuffer.colisiones[1]}, {cuartoBuffer.colisiones[2]}, {cuartoBuffer.colisiones[3]}");
             }
         }
@@ -196,7 +201,7 @@ public class CreadorDeEscenarios : MonoBehaviour
     }
     async public Task<Vector3[]> RenderizarCuartos(int cantidadDeCuartosACargar, int posicionReferencia)
     {
-        Debug.Log("colisionesPOSTPROCESADO");
+
         //for (int i = 0; i < mapa.Count; i++) { Debug.Log($"{mapa[i].colisiones[0]}, {mapa[i].colisiones[1]}, {mapa[i].colisiones[2]}, {mapa[i].colisiones[3]}"); }
         //Debug.Log(cuartoActual);
         //Debug.Log(cantidadDeCuartosACargar);
@@ -211,7 +216,68 @@ public class CreadorDeEscenarios : MonoBehaviour
             posicionBuffer = new Vector3(coordenadas[cuartoActual].x, posicionBuffer.y, coordenadas[cuartoActual].y); // Agregar que la posicion aumente dependiendo en la direccion en la que estamos creando esto
             mapa[cuartoActual].renderizado = true;
             GameObject objetoN = Instantiate(mapa[cuartoActual].prefabEscenario, coordenadas[cuartoActual], Quaternion.identity);
-            objetoN.GetComponent<cuevaInfo>().actualizarCoordenadas(coordenadas[cuartoActual]);
+            Vector3 posicionCuarto = objetoN.transform.position;
+            if ((cuartoActual == infoPartidaActual.partida.cuartosPorProfundidad * infoPartidaActual.partida.profundidad))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+
+                    switch (i)
+                    {
+                        case 0:
+                            if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(-18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 90, 0)).transform.SetParent(objetoN.transform); }
+                            else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(-18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 90, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                            break;
+                        case 1:
+                            if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, 18.5f), Quaternion.Euler(0, 180, 0)).transform.SetParent(objetoN.transform); }
+                            else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, 18.5f), Quaternion.Euler(0, 180, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                            break;
+                        case 2:
+                            if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 270, 0)).transform.SetParent(objetoN.transform); }
+                            else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 270, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                            break;
+                        case 3:
+                            if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, -18.5f), Quaternion.Euler(0, 360, 0)).transform.SetParent(objetoN.transform); }
+                            else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, -18.5f), Quaternion.Euler(0, 360, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                            break;
+                    }
+                }
+            } else
+            {
+                int puertaAnterior = 0;
+                switch (bufferDireccionAnterior) { case 0: puertaAnterior = 2; break; case 1: puertaAnterior = 3; break; case 2: puertaAnterior = 0; break; case 3: puertaAnterior = 1; break; }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if(i != puertaAnterior)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(-18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 90, 0)).transform.SetParent(objetoN.transform); }
+                                else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(-18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 90, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                                break;
+                            case 1:
+                                if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, 18.5f), Quaternion.Euler(0, 180, 0)).transform.SetParent(objetoN.transform); }
+                                else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, 18.5f), Quaternion.Euler(0, 180, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                                break;
+                            case 2:
+                                if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 270, 0)).transform.SetParent(objetoN.transform); }
+                                else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(18.5f, objetoN.transform.position.y, 0), Quaternion.Euler(0, 270, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                                break;
+                            case 3:
+                                if (mapa[cuartoActual].colisiones[i] != 2 && mapa[cuartoActual].colisiones[i] != 3) { Instantiate(elementosPuertasBloqueadas[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, -18.5f), Quaternion.Euler(0, 360, 0)).transform.SetParent(objetoN.transform); }
+                                else { Instantiate(elementosPuertasAccesibles[0], posicionCuarto + new Vector3(0, objetoN.transform.position.y, -18.5f), Quaternion.Euler(0, 360, 0)).transform.SetParent(objetoN.transform); bufferDireccionAnterior = i; }
+                                break;
+                        }
+                    }
+                }
+            }
+            
+ 
+
+            objetoN.GetComponent<cuevaInfo>().actualizarCoordenadas(new Vector3(coordenadas[cuartoActual].x, coordenadas[cuartoActual].y, coordenadas[cuartoActual].z));
+            //Debug.Log($"{coordenadas[cuartoActual].x},{coordenadas[cuartoActual].y},{coordenadas[cuartoActual].z}");
             coordenadasCargadas.Add(new Vector3(coordenadas[cuartoActual].x, coordenadas[cuartoActual].y, coordenadas[cuartoActual].z));
             //Debug.Log(new Vector3(coordenadasPre[cuartoActual].x, coordenadasPre[cuartoActual].y, coordenadasPre[cuartoActual].z));
         }
@@ -225,32 +291,53 @@ public class CreadorDeEscenarios : MonoBehaviour
         float altura = 0;
         switch (bufferDireccion) { case 0: direccionTemp2 = 2; break; case 1: direccionTemp2 = 3; break; case 2: direccionTemp2 = 0; break; case 3: direccionTemp2 = 1; break; }
 
+        switch (bufferDireccion)
+        {
+            case 0:
+                coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x - 1, altura, coordenadasPre[i - 1].z);
+                break;
+            case 1:
+                coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x, altura, coordenadasPre[i - 1].z + 1);
+                break;
+            case 2:
+                coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x + 1, altura, coordenadasPre[i - 1].z);
+                break;
+            case 3:
+                coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x, altura, coordenadasPre[i - 1].z - 1);
+                break;
+        }
+
+        coordenadas.Add(new Vector3(coordenadasBuffer.x, coordenadasBuffer.y, coordenadasBuffer.z));
+        coordenadasPre.Add(new Vector3(coordenadasBuffer.x, coordenadasBuffer.y, coordenadasBuffer.z));
+        //checar bufferDireccion y direccionTemp2
 
         do
         {
             coordinadasValidar2 = true;
             //Corregir coordenadasBuffer para que sea Vector2
             bufferDireccion = Random.Range(0, 4);
+
             switch (bufferDireccion)
             {
                 case 0:
-                    coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x - 1, altura, coordenadasPre[i - 1].z);
+                    coordenadasBuffer = new Vector3(coordenadasPre[i].x - 1, altura, coordenadasPre[i ].z);
                     break;
                 case 1:
-                    coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x, altura, coordenadasPre[i - 1].z + 1);
+                    coordenadasBuffer = new Vector3(coordenadasPre[i ].x, altura, coordenadasPre[i ].z + 1);
                     break;
                 case 2:
-                    coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x + 1, altura, coordenadasPre[i - 1].z);
+                    coordenadasBuffer = new Vector3(coordenadasPre[i ].x + 1, altura, coordenadasPre[i ].z);
                     break;
                 case 3:
-                    coordenadasBuffer = new Vector3(coordenadasPre[i - 1].x, altura, coordenadasPre[i - 1].z - 1);
+                    coordenadasBuffer = new Vector3(coordenadasPre[i ].x, altura, coordenadasPre[i ].z - 1);
                     break;
             }
+
             for (int j = 0; j < coordenadasPre.Count; j++)
             {
                 if (coordenadasPre[j].x == coordenadasBuffer.x &&
-                    coordenadasPre[j].y == coordenadasBuffer.y &&
-                    coordenadasPre[j].z == coordenadasBuffer.z)
+                  coordenadasPre[j].y == coordenadasBuffer.y &&
+                  coordenadasPre[j].z == coordenadasBuffer.z)
                 {
                     coordinadasValidar2 = false;
                     break;
@@ -259,9 +346,7 @@ public class CreadorDeEscenarios : MonoBehaviour
 
         } while (bufferDireccion == direccionTemp2 || !coordinadasValidar2);
 
-        coordenadas.Add(new Vector3(coordenadasBuffer.x, coordenadasBuffer.y, coordenadasBuffer.z));
-        coordenadasPre.Add(new Vector3(coordenadasBuffer.x, coordenadasBuffer.y, coordenadasBuffer.z));
-        //checar bufferDireccion y direccionTemp2
+
 
         switch (cuartoActual)
         {
@@ -284,5 +369,7 @@ public class CreadorDeEscenarios : MonoBehaviour
         //Debug.Log(cuartoBuffer.tipoDeCuarto);
         for (int j = 0; j < 4; j++) { if ((j != bufferDireccion) && (j != direccionTemp2)) { cuartoBuffer.colisiones[j] = 1; } }
         mapa.Add(cuartoBuffer);
+
+
     }
 }

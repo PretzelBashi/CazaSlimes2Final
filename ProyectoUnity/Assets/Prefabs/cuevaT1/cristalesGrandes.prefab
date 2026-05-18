@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5491045091321347879}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.18, y: 0.421, z: -18.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -0.0021251095, y: -0.0014358851, z: 0.003107254}
+  m_LocalScale: {x: 0.005743539, y: 0.00574354, z: 0.00574354}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7397888673742280527}
+  m_Father: {fileID: 7513879600158177991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &634116254151190054
 Light:
@@ -136,9 +136,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7397888673742280527}
+  - component: {fileID: 5136398301785963847}
   m_Layer: 0
   m_Name: cristalesGrandes
-  m_TagString: Untagged
+  m_TagString: puertaSalida
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,10 +157,30 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5843486314950251255}
   - {fileID: 7513879600158177991}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5136398301785963847
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6131053442032154105}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.190671, y: 7.4948244, z: 3.4302742}
+  m_Center: {x: -0.8410449, y: 3.7320724, z: 0.568771}
 --- !u!1 &7827339721066565777
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,6 +192,8 @@ GameObject:
   - component: {fileID: 7513879600158177991}
   - component: {fileID: 5392473471519544606}
   - component: {fileID: 2302754706002799439}
+  - component: {fileID: 6648235974724209397}
+  - component: {fileID: 7170640769596674845}
   m_Layer: 0
   m_Name: cirstalesGrandes
   m_TagString: Untagged
@@ -187,10 +210,11 @@ Transform:
   m_GameObject: {fileID: 7827339721066565777}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.19, y: -0.12, z: -18.37}
+  m_LocalPosition: {x: 0.35, y: 0, z: 0}
   m_LocalScale: {x: 174.10869, y: 174.10869, z: 174.10869}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5843486314950251255}
   m_Father: {fileID: 7397888673742280527}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5392473471519544606
@@ -254,3 +278,36 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6648235974724209397
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827339721066565777}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.19173415, y: 0.032142907, z: 0.12767325}
+  m_Center: {x: -0.004455502, y: 0.022700164, z: 0.04150045}
+--- !u!114 &7170640769596674845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827339721066565777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfbe943c45d1a04a8ba51ce65550ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::puertaCargarNivel
