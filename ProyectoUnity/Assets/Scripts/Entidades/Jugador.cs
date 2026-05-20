@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using static Herramientas;
 
 public class Jugador : MonoBehaviour
@@ -27,7 +28,7 @@ public class Jugador : MonoBehaviour
     GameObject contenedorCamara;
     Camera camaraInterior;
     Animator animator;
-    
+
     UIManager uiManager;
 
     Renderer baculoGema;
@@ -39,7 +40,7 @@ public class Jugador : MonoBehaviour
     float contadorRebotando;
     float resistencia;
     float contadorIFrame;
-
+    GameObject vendedora;
 
     bool dasheando;
     bool salto;
@@ -48,6 +49,7 @@ public class Jugador : MonoBehaviour
     bool casteando;
     bool casteoTerminado;
     bool[] habilidadesCargadas;
+    bool enRangoTienda;
 
     public GameObject proyectilDisparo;
     public GameObject proyectilMelee;
@@ -59,18 +61,19 @@ public class Jugador : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         contenedorCamara = GameObject.FindGameObjectWithTag("MainCamera");
         camaraInterior = contenedorCamara.transform.GetChild(0).gameObject.GetComponent<Camera>();
-        
+
         playerInput = GetComponent<PlayerInput>();
 
         baculoGema = GameObject.FindGameObjectWithTag("BaculoGema").GetComponent<Renderer>();
         baculoMango = GameObject.FindGameObjectWithTag("BaculoMango").GetComponent<Renderer>();
 
         velocidad = Vector3.zero;
-        
+
         salto = false;
         rebotando = false;
         casteando = false;
         casteoTerminado = false;
+        enRangoTienda = false;
 
         habilidadesCargadas = new[] { true, true, true, true };
 
@@ -220,7 +223,7 @@ public class Jugador : MonoBehaviour
         }
 
 
-        if(jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax)
+        if (jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax)
         {
             jugadorStats.habilidades[0].cooldownActual += Time.deltaTime;
         } else if (!habilidadesCargadas[0])
@@ -278,7 +281,7 @@ public class Jugador : MonoBehaviour
         {
             dasheando = true;
             contadorDash = 0;
-            direccionDash = new Vector3(velocidad.x, 0 , velocidad.z);
+            direccionDash = new Vector3(velocidad.x, 0, velocidad.z);
         }
     }
 
@@ -286,11 +289,11 @@ public class Jugador : MonoBehaviour
     {
         velocidadRebotando = new Vector3(velocidadRebote.x, velocidadRebote.y, velocidadRebote.z);
         rebotando = true;
-        
+
     }
 
     //Habilidades
-  
+
     async public void Disparo()
     {
         if (casteando) return;
@@ -307,7 +310,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1000f ));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1000f));
 
         uiManager.toggleConjurando(false);
         animator.SetInteger("EstadoBaculo", 5);
@@ -449,5 +452,31 @@ public class Jugador : MonoBehaviour
     public void AnimacionDisparoTerminada()
     {
         casteoTerminado = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "vendedora")
+        {
+            enRangoTienda = true;
+            vendedora = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "vendedora" && enRangoTienda)
+        {
+            enRangoTienda = false;
+            uiManager.DescargarTienda(); 
+        }
+    }
+
+    public void InteractuarVendedora()
+    {
+        if (enRangoTienda)
+        {
+            uiManager.CargarTienda();
+        }
     }
 }

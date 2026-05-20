@@ -42,16 +42,18 @@ public class infoPartidaActual : MonoBehaviour
     bool entroAlCuarto;
     int slimesAMatar;
     int slimesPorCuarto;
+    public Vector3 ultimoSpawnPoint;
 
 
     void Awake()
     {
-        slimesPorCuarto = 10;
+        slimesPorCuarto = 2;
         creadorDeEscenarios = GameObject.FindGameObjectWithTag("CreadorDeCuevas").GetComponent<CreadorDeEscenarios>();
         ObjetosPosibles = new List<Objeto>();
         IniciarObjetos();
         partida = new Partida();
-        
+
+        ultimoSpawnPoint = new Vector3(0,0.3f,0);
         entroAlCuarto = false;
         spawnersDeSlimes = new List<GameObject>();
         slimesSpawneados = new List<GameObject>();

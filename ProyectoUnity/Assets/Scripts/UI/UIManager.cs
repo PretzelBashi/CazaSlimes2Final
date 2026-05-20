@@ -92,15 +92,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DescargarTienda()
+    {
+        enRangoTienda = false;
+        Transform tienda = GameObject.FindGameObjectWithTag("tiendaUI").transform;
+        tienda.GetComponent<CanvasGroup>().alpha = 1.0f;
+        tienda.GetComponent<CanvasGroup>().interactable = true;
+        tienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
     public void CargarTienda()
     {
-
+        Transform tienda = GameObject.FindGameObjectWithTag("tiendaUI").transform;
+        tienda.GetComponent<CanvasGroup>().alpha = 1.0f;
+        tienda.GetComponent<CanvasGroup>().interactable = true;
+        tienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     public void CargarMenuTAB()
     {
         if (!menuTABCargado)
         {
+            GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 1;
             Debug.Log("Cargado");
             menuObjetos.GetComponent<CanvasGroup>().alpha = 1;
             menuStats.GetComponent<CanvasGroup>().alpha = 1;
@@ -128,7 +140,7 @@ public class UIManager : MonoBehaviour
         } else
         {
             Debug.Log("Escondido");
-            
+            GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().alpha = 0;
             menuStats.GetComponent<CanvasGroup>().alpha = 0;
 

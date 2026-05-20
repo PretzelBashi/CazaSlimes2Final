@@ -27,6 +27,8 @@ TagManager:
   - menuStats
   - tiendaUI
   - statsObjetosOverlay
+  - oscurecerUI
+  - vendedora
   layers:
   - Default
   - TransparentFX

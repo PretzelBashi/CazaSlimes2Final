@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5672678308828036737}
   - component: {fileID: 2751565519265327631}
   - component: {fileID: 641384065973432344}
-  - component: {fileID: 2256224283799590637}
+  - component: {fileID: 8630235486469799567}
   m_Layer: 0
   m_Name: lava
   m_TagString: Untagged
@@ -107,13 +107,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000002, y: 2, z: 1.0000004}
-  m_Center: {x: 0.00000005960465, y: 0, z: -0.00000008940698}
---- !u!114 &2256224283799590637
+  m_Size: {x: 1.0000002, y: 2.373587, z: 1.0000004}
+  m_Center: {x: 0.000000052463232, y: 0.18679617, z: -0.000000104926464}
+--- !u!114 &8630235486469799567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
