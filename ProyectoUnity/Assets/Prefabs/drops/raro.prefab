@@ -4945,14 +4945,14 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.03865393, y: 0.04089036, z: 0.041203704}
-  m_Center: {x: 0, y: -0, z: 0}
+  m_Size: {x: 0.056850366, y: 0.04089036, z: 0.060087953}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7868626760709825872
 MonoBehaviour:
   m_ObjectHideFlags: 0

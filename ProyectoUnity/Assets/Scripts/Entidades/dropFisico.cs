@@ -26,8 +26,9 @@ public class dropFisico : MonoBehaviour
             other.GetComponent<Jugador>().jugadorStats.ImprimirStats();
             other.GetComponent<Jugador>().jugadorStats.AgregarObjeto(objeto);
             other.GetComponent<Jugador>().jugadorStats.ImprimirStats();
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        
     }
 
 

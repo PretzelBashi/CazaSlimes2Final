@@ -291,6 +291,7 @@ public class Herramientas : MonoBehaviour
 
     public class MagoStats : Stats
     {
+        public int slimeRecolectado = 0;
         public Habilidad[] habilidades = new Habilidad[4];
         public List<Objeto> objetos = new List<Objeto>();
         public MagoStats()

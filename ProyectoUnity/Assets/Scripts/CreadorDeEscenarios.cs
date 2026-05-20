@@ -134,12 +134,12 @@ public class CreadorDeEscenarios : MonoBehaviour
                 case 2:
                     switch (mapa[coordenadaActual].id)
                     {
-                        case 0: altoAncho = new Vector3(41, 40, 41); break; //CuevaDefault
+                        case 0: altoAncho = new Vector3(39, 40, 39); break; //CuevaDefault
                     } break;
                 case 3:
                     switch (mapa[coordenadaActual].id)
                     {
-                        case 0: altoAncho = new Vector3(41, 40, 41); break; //PuenteDefault
+                        case 0: altoAncho = new Vector3(39, 40, 39); break; //PuenteDefault
                     } break;
             }
             coordenadas[coordenadaActual] = new Vector3(coordenadas[coordenadaActual].x * altoAncho.x, coordenadas[coordenadaActual].y * altoAncho.y, coordenadas[coordenadaActual].z * altoAncho.z);

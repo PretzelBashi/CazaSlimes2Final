@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,8 +8,13 @@ using static Herramientas;
 public class UIManager : MonoBehaviour
 {
     public List<Sprite> objetos;
+    public List<Sprite> marcosRarezas;
+    public List<Sprite> marcosRarezasTienda;
+
     public List<GameObject> objetosEnMenu;
+    
     public GameObject objetoPrefab;
+    public GameObject objetoTiendaPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     Image barraHP;
@@ -20,6 +26,7 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI textoNivel;
     TextMeshProUGUI textoProfundidad;
     TextMeshProUGUI textoConjurando;
+    TextMeshProUGUI textoInteractuar;
 
     MagoStats jugador;
 
@@ -30,6 +37,7 @@ public class UIManager : MonoBehaviour
 
     GameObject menuObjetos;
     GameObject menuStats;
+    GameObject menuTienda;
 
     bool menuTABCargado;
 
@@ -60,6 +68,7 @@ public class UIManager : MonoBehaviour
         menuTABCargado = false;
         menuObjetos = GameObject.FindGameObjectWithTag("menuObjetos");
         menuStats = GameObject.FindGameObjectWithTag("menuStats");
+        menuTienda = GameObject.FindGameObjectWithTag("tiendaUI");
     }
     
     public void ActualizarMenuStats()
@@ -70,17 +79,24 @@ public class UIManager : MonoBehaviour
         {
             switch (i)
             {
-                case 0: textos[i].text = jugador.hpMax.ToString(); break;
-                case 1: textos[i].text = jugador.mpMax.ToString(); break;
-                case 2: textos[i].text = jugador.danoFisicoMax.ToString(); break;
-                case 3: textos[i].text = jugador.danoMagicoMax.ToString(); break;
-                case 4: textos[i].text = jugador.defensaFisicaMax.ToString(); break;
-                case 5: textos[i].text = jugador.defensaMagicaMax.ToString(); break;
-                case 6: textos[i].text = jugador.velocidadDeAtaqueMax.ToString(); break;
-                case 7: textos[i].text = jugador.critico.ToString(); break;
+               
+                case 0: textos[i].text = Mathf.FloorToInt(jugador.hpMax).ToString(); ; break;
+                case 1: textos[i].text = Mathf.FloorToInt(jugador.mpMax).ToString(); break;
+                case 2: textos[i].text = Mathf.FloorToInt(jugador.danoFisicoMax).ToString(); break;
+                case 3: textos[i].text = Mathf.FloorToInt(jugador.danoMagicoMax).ToString(); break;
+                case 4: textos[i].text = Mathf.FloorToInt(jugador.defensaFisicaMax).ToString(); break;
+                case 5: textos[i].text = Mathf.FloorToInt(jugador.defensaMagicaMax).ToString(); break;
+                case 6: textos[i].text = Mathf.FloorToInt(jugador.velocidadDeAtaqueMax).ToString(); break;
+                case 7: textos[i].text = Mathf.FloorToInt(jugador.critico).ToString(); break;
             }
         }
     }
+
+    public void CargarTienda()
+    {
+
+    }
+
     public void CargarMenuTAB()
     {
         if (!menuTABCargado)
@@ -101,6 +117,8 @@ public class UIManager : MonoBehaviour
 
                 objetosEnMenu.Add(logo.transform.parent.gameObject);
                 logo.sprite = objetos[objeto.id];
+                objetoUI.transform.GetChild(0).GetComponent<Image>().sprite = marcosRarezas[objeto.rareza];
+                objetoUI.GetComponent<infoItem>().RecibirObjeto(objeto);
             }
 
 
@@ -118,6 +136,12 @@ public class UIManager : MonoBehaviour
             {
                 Destroy(objeto);
             }
+
+            for (int i = 0; i < GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.childCount; i++)
+            {
+                Destroy(GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.GetChild(i).gameObject);
+            }
+
             objetosEnMenu.Clear();
             menuTABCargado = false;
         }
@@ -183,12 +207,16 @@ public class UIManager : MonoBehaviour
                     case "nivelActual": textoNivel = hijoDeHijo.GetComponent<TextMeshProUGUI>(); break;
                     case "profundidadActual": textoProfundidad = hijoDeHijo.GetComponent<TextMeshProUGUI>(); break;
                     case "textoConjurando": textoConjurando = hijoDeHijo.GetComponent<TextMeshProUGUI>(); break;
+                    case "textoInteractuar": textoInteractuar = hijoDeHijo.GetComponent<TextMeshProUGUI>(); break;
                 }
             }
         }
         textoConjurando.transform.parent.gameObject.SetActive(false);
+        textoInteractuar.transform.parent.gameObject.SetActive(false);
+
         ActualizarStats();
         ActualizarMP();
+        ActualizarSlime();
         ActualizarCooldowns(0);
         ActualizarCooldowns(1);
         ActualizarCooldowns(2);
@@ -267,12 +295,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ActualizarSlime()
+    {
+        slimeRecolectado.text = $"Slime: {jugador.slimeRecolectado}";
+    }
+
     public void ActualizarNivel(int nivel, int profundidad)
     {
         textoNivel.text = $"Nivel: {nivel}";
         textoProfundidad.text = $"Profundidad: {profundidad}";
     }
 
+    public void toggleInteractuar(bool activo)
+    {
+        textoConjurando.transform.parent.gameObject.SetActive(activo);
+    }
     public void toggleConjurando(bool activo)
     {
         textoConjurando.transform.parent.gameObject.SetActive(activo);

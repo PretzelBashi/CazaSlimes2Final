@@ -27,7 +27,9 @@ public class infoPartidaActual : MonoBehaviour
 
     List<GameObject> spawnersDeSlimes;
     List<GameObject> slimesSpawneados;
+
     List<Vector3> ordenDeCoordenadas;
+    public GameObject[] prefabsDrops;
     public List<Objeto> ObjetosPosibles;
 
     CreadorDeEscenarios creadorDeEscenarios;
@@ -35,6 +37,7 @@ public class infoPartidaActual : MonoBehaviour
     public List<GameObject> slimesExistentes;
     GameObject puertaBufferEntrada;
     GameObject puertaBufferSalida;
+    UIManager uiManager;
 
     bool entroAlCuarto;
     int slimesAMatar;
@@ -58,7 +61,7 @@ public class infoPartidaActual : MonoBehaviour
         partida.profundidad = 0;
         slimesAMatar = 0;
         partida.cuartosPorProfundidad = 3; //La cantidad se multiplica por 2 para tomar en cuenta puentes.
-        
+        uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         //Falta ejecutar el renderizado
     }
 
@@ -72,6 +75,7 @@ public class infoPartidaActual : MonoBehaviour
             do { await Task.Yield(); } while (entroAlCuarto == false);
             partida.cueva++;
             entroAlCuarto = false;
+            uiManager.ActualizarNivel(partida.cueva + 1, 1);
             if (creadorDeEscenarios.mapa[partida.cueva].tipoDeCuarto == 3)
             {
                 await DestruirSpawners();
@@ -87,9 +91,9 @@ public class infoPartidaActual : MonoBehaviour
 
                 await CargarSiguienteNivel(false);
                 AbrirPuertas();
-                continue;
-            }
 
+            }
+           
 
         } while (true);
         
@@ -135,10 +139,12 @@ public class infoPartidaActual : MonoBehaviour
                     else if (drop < 85 ) { drop = 1; }
                     else if (drop < 95) { drop = 2; }
                     else { drop = 3; }
-                    Instantiate(slime.GetComponent<Slime>().prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
+                    Debug.Log($"Rareza: {drop}");
+                    Instantiate(prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
                 }
                 slimesAMatar--;
-
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.slimeRecolectado += Random.Range(0,21);
+                uiManager.ActualizarSlime();
                 break;
             }
         }
@@ -424,10 +430,10 @@ public class infoPartidaActual : MonoBehaviour
             "Gema de la entropia", //Nombre
             10, //id
             3, //Rareza
-            100f, //hpMax
-            100f, //mpMax
-            -40f, //DanoFisico
-            50f, //DanoMagico
+            50f, //hpMax
+            50f, //mpMax
+            -20f, //DanoFisico
+            30f, //DanoMagico
             0f, //DefFisica
             0f, //DefMagica
             0f, //VelocidadDeAtaque

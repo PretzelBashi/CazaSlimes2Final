@@ -25,6 +25,8 @@ TagManager:
   - unico
   - menuObjetos
   - menuStats
+  - tiendaUI
+  - statsObjetosOverlay
   layers:
   - Default
   - TransparentFX

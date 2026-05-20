@@ -72,7 +72,7 @@ public class Slime : MonoBehaviour
     public SlimeStats slimeStats;
     public GameObject prefabNumeroDano;
     public GameObject prefabProyectil;
-    public GameObject[] prefabsDrops;
+    
     public void IniciarSlime(int id)
     {
         jugador = GameObject.FindGameObjectWithTag("Player");
