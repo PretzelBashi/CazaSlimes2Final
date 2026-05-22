@@ -135,11 +135,13 @@ public class CreadorDeEscenarios : MonoBehaviour
                     switch (mapa[coordenadaActual].id)
                     {
                         case 0: altoAncho = new Vector3(39.5f, 40, 39.5f); break; //CuevaDefault
+                        case 1: altoAncho = new Vector3(39.5f, 40, 39.5f); break; //CuevaT2
                     } break;
                 case 3:
                     switch (mapa[coordenadaActual].id)
                     {
                         case 0: altoAncho = new Vector3(39.5f, 40, 39.5f); break; //PuenteDefault
+                        case 1: altoAncho = new Vector3(39.5f, 40, 39.5f); break; //Tienda
                     } break;
             }
             coordenadas[coordenadaActual] = new Vector3(coordenadas[coordenadaActual].x * altoAncho.x, coordenadas[coordenadaActual].y * altoAncho.y, coordenadas[coordenadaActual].z * altoAncho.z);
@@ -347,9 +349,10 @@ public class CreadorDeEscenarios : MonoBehaviour
         } while (bufferDireccion == direccionTemp2 || !coordinadasValidar2);
 
 
-
+        int id = 0;
         switch (cuartoActual)
         {
+
             case 2:
                 cuartoParaAsignar = escenariosCargados.escenariosDisponibles[Random.Range(0, escenariosCargados.escenariosDisponibles.Count)];
                 cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
@@ -358,7 +361,11 @@ public class CreadorDeEscenarios : MonoBehaviour
                 cuartoBuffer.colisiones[bufferDireccion] = 2;
                 break;
             case 3:
-                cuartoParaAsignar = intermediosCargados.intermediosDisponibles[Random.Range(0, intermediosCargados.intermediosDisponibles.Count)];
+                if(Random.Range(1,21) > 4)
+                {
+                    id = 0;
+                } else { id = 1; }
+                cuartoParaAsignar = intermediosCargados.intermediosDisponibles[id];
                 cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);
 
                 cuartoBuffer.tipoDeCuarto = 2;

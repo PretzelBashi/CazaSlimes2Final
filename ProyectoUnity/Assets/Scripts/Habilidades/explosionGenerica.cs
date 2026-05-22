@@ -14,6 +14,7 @@ public class explosionGenerica : MonoBehaviour
     float rapidezEscalado;
     float danoFisico;
     float danoMagico;
+    float crit;
     Light luz;
     Renderer[] rendersHijos;
     void Start()
@@ -22,6 +23,7 @@ public class explosionGenerica : MonoBehaviour
         tiempoEscalando = 0;
         rendersHijos = transform.GetComponentsInChildren<Renderer>();
         luz = transform.GetChild(0).GetComponent<Light>();
+
     }
 
     // Update is called once per frame
@@ -67,11 +69,12 @@ public class explosionGenerica : MonoBehaviour
         }
     }
 
-    public void Explotar(float rango, float rapidezEscalado, float danoFisico, float danoMagico)
+    public void Explotar(float rango, float rapidezEscalado, float danoFisico, float danoMagico, float crit)
     {
         this.danoFisico = danoFisico;
         this.danoMagico = danoMagico;
         this.rango = rango;
+        this.crit = crit;
         this.rapidezEscalado = rapidezEscalado;
         explotar = true;
         escalaPorSegundo = (rango - transform.localScale.x)/rapidezEscalado;
@@ -81,16 +84,18 @@ public class explosionGenerica : MonoBehaviour
     {
         try
         {
+            Debug.Log(crit);
             if (collision.gameObject.tag == "Slime")
             {
                 if (danoFisico > 0)
                 {
-                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoFisico, 0, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                    
+                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoFisico, 0,crit, collision.transform.GetComponent<Slime>().prefabNumeroDano);
                 }
                 await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Slime>().slimeStats.IFrames * 1000));
                 if (danoMagico > 0)
                 {
-                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoMagico, 1, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                    collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoMagico, 1, crit, collision.transform.GetComponent<Slime>().prefabNumeroDano);
                 }
 
             }

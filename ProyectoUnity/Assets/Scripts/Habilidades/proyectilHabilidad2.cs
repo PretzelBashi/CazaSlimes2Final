@@ -1,0 +1,26 @@
+using UnityEngine;
+using static Herramientas;
+
+public class proyectilHabilidad2 : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject prefabExplosion;
+    MagoStats jugadorStats;
+    void Start()
+    {
+        jugadorStats = GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        transform.position += transform.forward * (jugadorStats.velocidadDeAtaqueActual + 13f) * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionGenerica>().Explotar(20, 0.3f, 0, jugadorStats.danoMagicoActual*0.7f, jugadorStats.criticoActual);
+
+        Destroy(gameObject);
+    }
+}

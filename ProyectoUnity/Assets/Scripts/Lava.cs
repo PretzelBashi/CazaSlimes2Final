@@ -20,7 +20,7 @@ public class Lava : MonoBehaviour
 
 
             float dano = (20 * jugador.jugadorStats.hpMax)/100;
-            jugador.jugadorStats.ActualizarHP(dano,1,jugador.prefabNumeroDano);
+            jugador.jugadorStats.ActualizarHP(dano,1,0,jugador.prefabNumeroDano);
         }
     }
 }

@@ -13,6 +13,7 @@ public class explosionSlimeGenerica : MonoBehaviour
     float rapidezEscalado;
     float danoFisico;
     float danoMagico;
+    float crit;
     Light luz;
     Renderer[] rendersHijos;
     void Start()
@@ -21,6 +22,7 @@ public class explosionSlimeGenerica : MonoBehaviour
         tiempoEscalando = 0;
         rendersHijos = transform.GetComponentsInChildren<Renderer>();
         luz = transform.GetChild(0).GetComponent<Light>();
+        crit = 0;
     }
 
     // Update is called once per frame
@@ -66,10 +68,11 @@ public class explosionSlimeGenerica : MonoBehaviour
         }
     }
 
-    public void Explotar(float rango, float rapidezEscalado, float danoFisico, float danoMagico)
+    public void Explotar(float rango, float rapidezEscalado, float danoFisico, float danoMagico, float crit)
     {
         this.danoFisico = danoFisico;
         this.danoMagico = danoMagico;
+        this.crit = crit;
         this.rango = rango;
         this.rapidezEscalado = rapidezEscalado;
         explotar = true;
@@ -81,12 +84,12 @@ public class explosionSlimeGenerica : MonoBehaviour
         {
             if (danoFisico > 0)
             {
-                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoFisico, 0, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
+                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoFisico, 0,crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
             }
             await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Jugador>().jugadorStats.IFrames * 1000));
             if (danoMagico > 0)
             {
-                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoMagico, 1, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
+                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoMagico, 1,crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
             }
 
         }

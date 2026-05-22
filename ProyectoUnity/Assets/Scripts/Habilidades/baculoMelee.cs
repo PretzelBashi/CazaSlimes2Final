@@ -66,12 +66,12 @@ public class baculoMelee : MonoBehaviour
             if (danoFisico > 0)
             {
                 
-                collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoFisico, 0, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoFisico, 0,jugadorStats.criticoActual, collision.transform.GetComponent<Slime>().prefabNumeroDano);
             }
-            await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Slime>().slimeStats.IFrames * 1000));
+            await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Slime>().slimeStats.IFrames * 1001));
             if (danoMagico > 0)
             {
-                collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoMagico, 1, collision.transform.GetComponent<Slime>().prefabNumeroDano);
+                collision.transform.GetComponent<Slime>().slimeStats.ActualizarHP(danoMagico, 1, jugadorStats.criticoActual, collision.transform.GetComponent<Slime>().prefabNumeroDano);
             }
 
         }

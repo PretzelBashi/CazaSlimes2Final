@@ -4,13 +4,14 @@ public class proyectilSlimeSimple : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject prefabExplosion;
-    public float danoMagico; 
+    public float danoMagico;
+    float crit;
 
 
-
-    public void CambiarDano(float dano)
+    public void CambiarDano(float dano, float crit)
     {
         danoMagico = dano;
+        this.crit = crit;
     }
     // Update is called once per frame
     void Update()
@@ -22,7 +23,7 @@ public class proyectilSlimeSimple : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionSlimeGenerica>().Explotar(10, 0.2f, 0, danoMagico);
+        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionSlimeGenerica>().Explotar(10, 0.2f,crit, 0, danoMagico);
         
         Destroy(gameObject);
     }

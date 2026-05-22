@@ -40,7 +40,7 @@ public class Jugador : MonoBehaviour
     float contadorRebotando;
     float resistencia;
     float contadorIFrame;
-    GameObject vendedora;
+    public Transform vendedora;
 
     bool dasheando;
     bool salto;
@@ -53,6 +53,9 @@ public class Jugador : MonoBehaviour
 
     public GameObject proyectilDisparo;
     public GameObject proyectilMelee;
+    public GameObject proyectilHabilidad2;
+    public GameObject circuloInvocacion;
+    public GameObject rayoHabilidad4;
     public GameObject prefabNumeroDano;
     void Start()
     {
@@ -249,6 +252,7 @@ public class Jugador : MonoBehaviour
         else if (!habilidadesCargadas[2])
         {
             uiManager.activarHabilidad(2);
+            jugadorStats.ReiniciarStatActual("criticoActual");
             habilidadesCargadas[2] = true;
         }
 
@@ -297,7 +301,7 @@ public class Jugador : MonoBehaviour
     async public void Disparo()
     {
         if (casteando) return;
-
+        
         baculoGema.material.EnableKeyword("_EMISSION");
         baculoGema.material.SetColor("_EmissionColor", Color.magenta * 5f);
 
@@ -358,6 +362,7 @@ public class Jugador : MonoBehaviour
         Vector3 direccionProyectil = puntoFinal - origen;
 
         Instantiate(proyectilDisparo, GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).transform.position, Quaternion.LookRotation(direccionProyectil));
+        jugadorStats.ActualizarMP((8 * jugadorStats.mpMax) / 100);
         //AQUI TERMINA LA HABILIDAD
 
         await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
@@ -371,8 +376,8 @@ public class Jugador : MonoBehaviour
 
     async public void Habilidad1() //Golpe melee
     {
-        if (casteando || (jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax) || jugadorStats.mpActual < 100) return;
-        jugadorStats.mpActual -= 100;
+        if (casteando || (jugadorStats.habilidades[0].cooldownActual < jugadorStats.habilidades[0].cooldownMax) || jugadorStats.mpActual < jugadorStats.habilidades[0].costoMana) return;
+        jugadorStats.mpActual -= jugadorStats.habilidades[0].costoMana;
         uiManager.ActualizarStats();
         uiManager.desactivarHabilidad(0);
         habilidadesCargadas[0] = false;
@@ -390,7 +395,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 500f));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 2000f));
 
         uiManager.toggleConjurando(false);
         animator.SetInteger("EstadoBaculo", 4);
@@ -449,6 +454,203 @@ public class Jugador : MonoBehaviour
         casteoTerminado = false;
     }
 
+    async public void Habilidad2()
+    {
+        if (casteando || (jugadorStats.habilidades[1].cooldownActual < jugadorStats.habilidades[1].cooldownMax) || jugadorStats.mpActual < jugadorStats.habilidades[1].costoMana) return;
+        jugadorStats.mpActual -= jugadorStats.habilidades[1].costoMana;
+        uiManager.ActualizarStats();
+        uiManager.desactivarHabilidad(1);
+        habilidadesCargadas[1] = false;
+        jugadorStats.habilidades[1].cooldownActual = 0;
+
+        baculoGema.material.EnableKeyword("_EMISSION");
+        baculoGema.material.SetColor("_EmissionColor", Color.magenta * 5f);
+
+        uiManager.toggleConjurando(true);
+        casteando = true;
+        casteoTerminado = false;
+
+        animator.SetInteger("EstadoBaculo", 3);
+        animator.SetTrigger("CambioBaculo");
+
+        // tiempo de casteo
+        await Task.Delay(
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 3000f));
+
+        uiManager.toggleConjurando(false);
+        animator.SetInteger("EstadoBaculo", 5);
+        animator.SetTrigger("CambioBaculo");
+
+        //aqui sespera la animacion
+        while (!casteoTerminado)
+        {
+            await Task.Yield();
+        }
+
+        baculoGema.material.SetColor("_EmissionColor", Color.black);
+        baculoGema.material.DisableKeyword("_EMISSION");
+
+        // AQUI ESTA LA HABILIDAD
+        RaycastHit hit;
+
+        Vector3 origen = new Vector3(
+            transform.position.x,
+            transform.position.y + 1.7f,
+            transform.position.z
+        );
+
+        Vector3 direccion = camaraInterior.transform.forward;
+
+        Vector3 puntoFinal;
+
+        Debug.DrawRay(
+            origen,
+            direccion * 20f,
+            Color.red,
+            10f
+        );
+
+
+        if (Physics.Raycast(origen, direccion, out hit, 20f))
+        {
+            puntoFinal = hit.point;
+        }
+        else
+        {
+            puntoFinal = origen + direccion * 20f;
+        }
+
+        Vector3 direccionProyectil = puntoFinal - origen;
+
+        Vector3 posicion =
+        GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).position;
+
+        // Centro
+        Instantiate(proyectilHabilidad2,posicion,Quaternion.LookRotation(direccionProyectil));
+
+        // Izquierda
+        Instantiate(proyectilHabilidad2, posicion,Quaternion.LookRotation(Quaternion.Euler(0, -30, 0) * direccionProyectil
+            )
+        );
+        // Derecha
+        Instantiate(proyectilHabilidad2, posicion,Quaternion.LookRotation(Quaternion.Euler(0, 30, 0) * direccionProyectil
+            )
+        );
+        //AQUI TERMINA LA HABILIDAD
+
+        await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
+
+        animator.SetInteger("EstadoBaculo", 2);
+        animator.SetTrigger("CambioBaculo");
+
+        casteando = false;
+        casteoTerminado = false;
+    }
+
+    async public void Habilidad3()
+    {
+        if (casteando || (jugadorStats.habilidades[2].cooldownActual < jugadorStats.habilidades[2].cooldownMax) || jugadorStats.mpActual < jugadorStats.habilidades[2].costoMana) return;
+        jugadorStats.mpActual -= jugadorStats.habilidades[2].costoMana;
+        uiManager.ActualizarStats();
+        uiManager.desactivarHabilidad(2);
+        habilidadesCargadas[2] = false;
+        jugadorStats.habilidades[2].cooldownActual = 0;
+
+        baculoGema.material.EnableKeyword("_EMISSION");
+        baculoGema.material.SetColor("_EmissionColor", Color.magenta * 5f);
+
+        uiManager.toggleConjurando(true);
+        casteando = true;
+        casteoTerminado = false;
+
+        animator.SetInteger("EstadoBaculo", 3);
+        animator.SetTrigger("CambioBaculo");
+
+        // tiempo de casteo
+        await Task.Delay(
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 5000f));
+
+        uiManager.toggleConjurando(false);
+
+        animator.SetInteger("EstadoBaculo", 4);
+        animator.SetTrigger("CambioBaculo");
+
+        //aqui sespera la animacion
+        while (!casteoTerminado)
+        {
+            await Task.Yield();
+        }
+
+        baculoGema.material.SetColor("_EmissionColor", Color.black);
+        baculoGema.material.DisableKeyword("_EMISSION");
+
+        // AQUI ESTA LA HABILIDAD
+        
+
+        Instantiate(circuloInvocacion, GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).transform.position, Quaternion.identity);
+        jugadorStats.ActualizarStatsActuales("criticoActual", jugadorStats.criticoActual + 50);
+        //AQUI TERMINA LA HABILIDAD
+
+        await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
+
+        animator.SetInteger("EstadoBaculo", 2);
+        animator.SetTrigger("CambioBaculo");
+
+        casteando = false;
+        casteoTerminado = false;
+    }
+
+    async public void Habilidad4()
+    {
+        if (casteando || (jugadorStats.habilidades[3].cooldownActual < jugadorStats.habilidades[3].cooldownMax) || jugadorStats.mpActual < jugadorStats.habilidades[3].costoMana) return;
+        jugadorStats.mpActual -= jugadorStats.habilidades[3].costoMana;
+        uiManager.ActualizarStats();
+        uiManager.desactivarHabilidad(3);
+        habilidadesCargadas[3] = false;
+        jugadorStats.habilidades[3].cooldownActual = 0;
+
+        baculoGema.material.EnableKeyword("_EMISSION");
+        baculoGema.material.SetColor("_EmissionColor", Color.magenta * 5f);
+
+        uiManager.toggleConjurando(true);
+        casteando = true;
+        casteoTerminado = false;
+
+        animator.SetInteger("EstadoBaculo", 3);
+        animator.SetTrigger("CambioBaculo");
+
+        // tiempo de casteo
+        await Task.Delay(
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 500f));
+
+        uiManager.toggleConjurando(false);
+        animator.SetInteger("EstadoBaculo", 5);
+        animator.SetTrigger("CambioBaculo");
+
+        //aqui sespera la animacion
+        while (!casteoTerminado)
+        {
+            await Task.Yield();
+        }
+
+        baculoGema.material.SetColor("_EmissionColor", Color.black);
+        baculoGema.material.DisableKeyword("_EMISSION");
+
+        // AQUI ESTA LA HABILIDAD
+
+        Vector3 posicion =
+        GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).position;
+
+        await Instantiate(rayoHabilidad4, posicion, Quaternion.identity).GetComponent<rayoHabilidad4Posicio>().IniciarRayo();
+
+        await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
+
+        animator.SetInteger("EstadoBaculo", 2);
+        animator.SetTrigger("CambioBaculo");
+
+        casteando = false;
+        casteoTerminado = false;
+    }
     public void AnimacionDisparoTerminada()
     {
         casteoTerminado = true;
@@ -459,7 +661,8 @@ public class Jugador : MonoBehaviour
         if (other.tag == "vendedora")
         {
             enRangoTienda = true;
-            vendedora = other.gameObject;
+            vendedora = other.transform;
+            uiManager.toggleInteractuar(true);
         }
     }
 
@@ -468,7 +671,8 @@ public class Jugador : MonoBehaviour
         if (other.tag == "vendedora" && enRangoTienda)
         {
             enRangoTienda = false;
-            uiManager.DescargarTienda(); 
+            uiManager.toggleInteractuar(false);
+            uiManager.DescargarTienda();
         }
     }
 
@@ -476,7 +680,7 @@ public class Jugador : MonoBehaviour
     {
         if (enRangoTienda)
         {
-            uiManager.CargarTienda();
+            uiManager.CargarTienda(vendedora.GetComponent<Tienda>().id);
         }
     }
 }

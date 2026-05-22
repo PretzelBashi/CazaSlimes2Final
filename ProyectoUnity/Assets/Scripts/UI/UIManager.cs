@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour
     public List<Sprite> marcosRarezasTienda;
 
     public List<GameObject> objetosEnMenu;
-    
+    public List<GameObject> objetosEnTienda;
+
     public GameObject objetoPrefab;
     public GameObject objetoTiendaPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,9 +38,11 @@ public class UIManager : MonoBehaviour
 
     GameObject menuObjetos;
     GameObject menuStats;
-    GameObject menuTienda;
+    Transform menuTienda;
+    infoPartidaActual infoPartida;
 
     bool menuTABCargado;
+    bool menuTiendaCargado;
 
 
     public class HabilidadUI
@@ -68,7 +71,8 @@ public class UIManager : MonoBehaviour
         menuTABCargado = false;
         menuObjetos = GameObject.FindGameObjectWithTag("menuObjetos");
         menuStats = GameObject.FindGameObjectWithTag("menuStats");
-        menuTienda = GameObject.FindGameObjectWithTag("tiendaUI");
+        menuTienda = GameObject.FindGameObjectWithTag("tiendaUI").transform ;
+        infoPartida = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
     }
     
     public void ActualizarMenuStats()
@@ -80,32 +84,98 @@ public class UIManager : MonoBehaviour
             switch (i)
             {
                
-                case 0: textos[i].text = Mathf.FloorToInt(jugador.hpMax).ToString(); ; break;
-                case 1: textos[i].text = Mathf.FloorToInt(jugador.mpMax).ToString(); break;
-                case 2: textos[i].text = Mathf.FloorToInt(jugador.danoFisicoMax).ToString(); break;
-                case 3: textos[i].text = Mathf.FloorToInt(jugador.danoMagicoMax).ToString(); break;
-                case 4: textos[i].text = Mathf.FloorToInt(jugador.defensaFisicaMax).ToString(); break;
-                case 5: textos[i].text = Mathf.FloorToInt(jugador.defensaMagicaMax).ToString(); break;
-                case 6: textos[i].text = Mathf.FloorToInt(jugador.velocidadDeAtaqueMax).ToString(); break;
-                case 7: textos[i].text = Mathf.FloorToInt(jugador.critico).ToString(); break;
+                case 0: textos[i].text = Mathf.FloorToInt(jugador.hpActual).ToString(); ; break;
+                case 1: textos[i].text = Mathf.FloorToInt(jugador.mpActual).ToString(); break;
+                case 2: textos[i].text = Mathf.FloorToInt(jugador.danoFisicoActual).ToString(); break;
+                case 3: textos[i].text = Mathf.FloorToInt(jugador.danoMagicoActual).ToString(); break;
+                case 4: textos[i].text = Mathf.FloorToInt(jugador.defensaFisicaActual).ToString(); break;
+                case 5: textos[i].text = Mathf.FloorToInt(jugador.defensaMagicaActual).ToString(); break;
+                case 6: textos[i].text = Mathf.FloorToInt(jugador.velocidadDeAtaqueActual).ToString(); break;
+                case 7: textos[i].text = Mathf.FloorToInt(jugador.criticoActual).ToString(); break;
             }
         }
     }
-
     public void DescargarTienda()
     {
-        enRangoTienda = false;
-        Transform tienda = GameObject.FindGameObjectWithTag("tiendaUI").transform;
-        tienda.GetComponent<CanvasGroup>().alpha = 1.0f;
-        tienda.GetComponent<CanvasGroup>().interactable = true;
-        tienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        if (menuTiendaCargado)
+        {
+            Debug.Log("Escondido");
+            GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
+            menuTienda.GetComponent<CanvasGroup>().alpha = 0f;
+            menuTienda.GetComponent<CanvasGroup>().interactable = false;
+            menuTienda.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            foreach (GameObject objeto in objetosEnTienda)
+            {
+                Destroy(objeto);
+            }
+
+            for (int i = 0; i < GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.childCount; i++)
+            {
+                Destroy(GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.GetChild(i).gameObject);
+            }
+
+            objetosEnTienda.Clear();
+            menuTiendaCargado = false;
+        }
     }
-    public void CargarTienda()
+
+    public void CargarTienda(int idTienda)
     {
-        Transform tienda = GameObject.FindGameObjectWithTag("tiendaUI").transform;
-        tienda.GetComponent<CanvasGroup>().alpha = 1.0f;
-        tienda.GetComponent<CanvasGroup>().interactable = true;
-        tienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        if (!menuTiendaCargado)
+        {
+            menuTienda.GetComponent<CanvasGroup>().alpha = 1.0f;
+            menuTienda.GetComponent<CanvasGroup>().interactable = true;
+            menuTienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+            GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 1;
+
+            for(int i =0; i< infoPartida.tiendasSpawneadas[idTienda].GetComponent<Tienda>().objetosTienda.Count; i++)
+            {
+                Objeto objeto = infoPartida.tiendasSpawneadas[idTienda].GetComponent<Tienda>().objetosTienda[i];
+                Transform content = menuTienda.transform.GetChild(1).GetChild(0).GetChild(0);
+
+                GameObject objetoUI = Instantiate(objetoTiendaPrefab, content);
+
+                Image logo = objetoUI.transform.GetChild(1).GetComponent<Image>();
+
+
+
+                objetosEnTienda.Add(logo.transform.parent.gameObject);
+                logo.sprite = objetos[objeto.id];
+                objetoUI.transform.GetChild(0).GetComponent<Image>().sprite = marcosRarezasTienda[objeto.rareza];
+                objetoUI.transform.GetComponent<infoItemTienda>().RecibirObjeto(objeto);
+            }
+
+            foreach (Objeto objeto in infoPartida.tiendasSpawneadas[idTienda].GetComponent<Tienda>().objetosTienda)
+            {
+
+            }
+
+            menuTiendaCargado = true;
+        }
+        else
+        {
+
+            GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
+            menuTienda.GetComponent<CanvasGroup>().alpha = 0f;
+            menuTienda.GetComponent<CanvasGroup>().interactable = false;
+            menuTienda.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            foreach (GameObject objeto in objetosEnTienda)
+            {
+                Destroy(objeto);
+            }
+
+            for (int i = 0; i < GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.childCount; i++)
+            {
+                Destroy(GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform.GetChild(i).gameObject);
+            }
+
+            objetosEnTienda.Clear();
+            menuTiendaCargado = false;
+        }
+
     }
 
     public void CargarMenuTAB()
@@ -115,9 +185,13 @@ public class UIManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 1;
             Debug.Log("Cargado");
             menuObjetos.GetComponent<CanvasGroup>().alpha = 1;
-            menuStats.GetComponent<CanvasGroup>().alpha = 1;
+            menuObjetos.GetComponent<CanvasGroup>().interactable = true;
+            menuObjetos.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-            int contadorx = 0;
+            menuStats.GetComponent<CanvasGroup>().alpha = 1;
+            menuStats.GetComponent<CanvasGroup>().interactable = true;
+            menuStats.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
 
             foreach (Objeto objeto in jugador.objetos)
             {
@@ -142,7 +216,12 @@ public class UIManager : MonoBehaviour
             Debug.Log("Escondido");
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().alpha = 0;
+            menuObjetos.GetComponent<CanvasGroup>().interactable = false;
+            menuObjetos.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
             menuStats.GetComponent<CanvasGroup>().alpha = 0;
+            menuStats.GetComponent<CanvasGroup>().interactable = false;
+            menuStats.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             foreach (GameObject objeto in objetosEnMenu)
             {
@@ -320,7 +399,7 @@ public class UIManager : MonoBehaviour
 
     public void toggleInteractuar(bool activo)
     {
-        textoConjurando.transform.parent.gameObject.SetActive(activo);
+        textoInteractuar.transform.parent.gameObject.SetActive(activo);
     }
     public void toggleConjurando(bool activo)
     {

@@ -23,7 +23,7 @@ public class Slime : MonoBehaviour
             float defensaFisicaMax,
             float defensaMagicaMax,
             float velocidadDeAtaqueMax,
-            float critico,
+            float criticoMax,
             float IFrames)
         {
             this.hpMax = hpMax;
@@ -44,7 +44,8 @@ public class Slime : MonoBehaviour
             this.velocidadDeAtaqueMax = velocidadDeAtaqueMax;
             velocidadDeAtaqueActual = velocidadDeAtaqueMax;
 
-            this.critico = critico;
+            this.criticoMax = criticoMax;
+            criticoActual = criticoMax;
             this.IFrames = IFrames;
         }
     }
@@ -95,17 +96,17 @@ public class Slime : MonoBehaviour
         switch (id)
         {
             case 0:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, 0 + (partida.cueva + 1) * 1.3f, (partida.cueva + 1), ((partida.cueva + 1) * 0.7f) + 0.93f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 0.6f, (partida.cueva + 1), ((partida.cueva + 1) * 0.11f) + 0.93f, 2 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;
             case 1:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 0, 20 + (partida.cueva + 1), (partida.cueva + 1),  0 + (partida.cueva + 1) * 1.3f, ((partida.cueva + 1) * 0.7f) + 1.3f, 4 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 0, 20 + (partida.cueva + 1), (partida.cueva + 1), (partida.cueva + 1) * 0.6f, ((partida.cueva + 1) * 0.11f) + 1.3f, 4 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 1;
                 break;
             case 2:
-                slimeStats = new SlimeStats(7 + (3 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 2f, (partida.cueva + 1) * 2f, ((partida.cueva + 1) * 0.7f) + 0.93f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (3 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 1f, (partida.cueva + 1) * 1f, ((partida.cueva + 1) * 0.11f) + 0.93f, 2 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;
@@ -166,7 +167,7 @@ public class Slime : MonoBehaviour
         do { await Task.Yield(); } while (!saltoTerminado);
 
         Vector3 posicionNueva = new Vector3(jugador.transform.position.x, jugador.transform.position.y+2f, jugador.transform.position.z);
-        Instantiate(prefabProyectil, this.transform.GetChild(3).position, Quaternion.LookRotation(posicionNueva - this.transform.position)).GetComponent<proyectilSlimeSimple>().CambiarDano(slimeStats.danoMagicoActual);
+        Instantiate(prefabProyectil, this.transform.GetChild(3).position, Quaternion.LookRotation(posicionNueva - this.transform.position)).GetComponent<proyectilSlimeSimple>().CambiarDano(slimeStats.danoMagicoActual,slimeStats.criticoActual);
 
         await Task.Delay(200);
 
@@ -377,7 +378,7 @@ public class Slime : MonoBehaviour
         {
             Jugador jugador = hit.transform.GetComponent<Jugador>();
             jugador.ReboteConSlime(-(this.transform.position - jugador.transform.position).normalized * 8.5f);
-            jugador.jugadorStats.ActualizarHP(slimeStats.danoFisicoActual, 0, prefabNumeroDano);
+            jugador.jugadorStats.ActualizarHP(slimeStats.danoFisicoActual, 0, slimeStats.criticoActual, prefabNumeroDano);
             Vector3 diferencia = (this.transform.position - jugador.transform.position).normalized * 9;
             velocidad = new Vector3(diferencia.x, velocidad.y, diferencia.z);
 

@@ -5,6 +5,7 @@ public class numeroDamage : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     Vector3 posicion;
+    
     float contador;
     void Start()
     {
@@ -19,6 +20,11 @@ public class numeroDamage : MonoBehaviour
         contador += Time.deltaTime;
         if(contador > 2) { Destroy(this.transform.parent.gameObject); }
         this.transform.position = posicion;
+        Vector3 direccion = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
+
+        direccion.y = 0.7f;
+
+        transform.rotation = Quaternion.LookRotation(direccion);
     }
 
     public void CambiarNumero(float dano, int tipoDano)

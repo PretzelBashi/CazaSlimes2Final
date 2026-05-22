@@ -27,6 +27,7 @@ public class infoPartidaActual : MonoBehaviour
 
     List<GameObject> spawnersDeSlimes;
     List<GameObject> slimesSpawneados;
+    public List<Transform> tiendasSpawneadas;
 
     List<Vector3> ordenDeCoordenadas;
     public GameObject[] prefabsDrops;
@@ -47,7 +48,7 @@ public class infoPartidaActual : MonoBehaviour
 
     void Awake()
     {
-        slimesPorCuarto = 2;
+        slimesPorCuarto = 10;
         creadorDeEscenarios = GameObject.FindGameObjectWithTag("CreadorDeCuevas").GetComponent<CreadorDeEscenarios>();
         ObjetosPosibles = new List<Objeto>();
         IniciarObjetos();
@@ -58,6 +59,7 @@ public class infoPartidaActual : MonoBehaviour
         spawnersDeSlimes = new List<GameObject>();
         slimesSpawneados = new List<GameObject>();
         ordenDeCoordenadas = new List<Vector3>();
+        tiendasSpawneadas = new List<Transform>();
 
         partida.cueva = 0;
         partida.profundidad = 0;
@@ -78,13 +80,19 @@ public class infoPartidaActual : MonoBehaviour
             partida.cueva++;
             entroAlCuarto = false;
             uiManager.ActualizarNivel(partida.cueva + 1, 1);
+            if(creadorDeEscenarios.mapa.Count-1 <= partida.cueva)
+            {
+
+                await CrearNivel(false);
+                await CargarSiguienteNivel(false);
+            }
             if (creadorDeEscenarios.mapa[partida.cueva].tipoDeCuarto == 3)
             {
                 await DestruirSpawners();
                 await DestruirSlimes();
 
                 await CargarSiguienteNivel(true);
-                AparecerSlimes(slimesPorCuarto);
+                AparecerSlimes(slimesPorCuarto + (partida.cueva));
             }
             else
             {
@@ -134,14 +142,14 @@ public class infoPartidaActual : MonoBehaviour
                 slimesSpawneados.RemoveAt(i);
 
                 int drop = Random.Range(0, 101);
-                if(drop <= 100)
+                if(drop <= 50)
                 {
                     drop = Random.Range(0, 101);
                     if (drop < 55) { drop = 0; }
                     else if (drop < 85 ) { drop = 1; }
                     else if (drop < 95) { drop = 2; }
                     else { drop = 3; }
-                    Debug.Log($"Rareza: {drop}");
+
                     Instantiate(prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
                 }
                 slimesAMatar--;
@@ -154,7 +162,7 @@ public class infoPartidaActual : MonoBehaviour
         if (slimesAMatar == 0)
         {
             AbrirPuertas();
-            Debug.Log("Todos muertos");
+
         }
         return;
     }
@@ -168,7 +176,7 @@ public class infoPartidaActual : MonoBehaviour
             puertaBufferSalida.GetComponent<BoxCollider>().enabled = false;
             puertaBufferSalida.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
         }
-        catch { Debug.Log("No hay puerta de salida"); }
+        catch { }
     }
     public void EntrarAlCuarto()
     {
@@ -260,6 +268,12 @@ public class infoPartidaActual : MonoBehaviour
                     if (cuevas[i].transform.GetChild(j).tag == "puertaSalida")
                     {
                         puertaBufferEntrada = cuevas[i].transform.GetChild(j).gameObject;
+                    }
+                    if (cuevas[i].transform.GetChild(j).tag == "vendedora")
+                    {
+                        tiendasSpawneadas.Add(cuevas[i].transform.GetChild(j).transform);
+                        cuevas[i].transform.GetChild(j).transform.GetComponent<Tienda>().id = tiendasSpawneadas.Count - 1;
+                        Debug.Log("Tienda encontrada" + cuevas[i].transform.GetChild(j).transform.GetComponent<Tienda>().id);
                     }
                     if (cuevas[i].transform.GetChild(j).tag == "SpawnPosible" && cueva)
                     {

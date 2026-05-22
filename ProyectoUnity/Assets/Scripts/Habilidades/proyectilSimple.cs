@@ -18,7 +18,8 @@ public class proyectilSimple : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionGenerica>().Explotar(8, 0.3f, 0, jugadorStats.danoMagicoActual);
+        Debug.Log(jugadorStats.criticoMax);
+        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionGenerica>().Explotar(8, 0.3f, 0, jugadorStats.danoMagicoActual, jugadorStats.criticoActual);
         
         Destroy(gameObject);
     }
