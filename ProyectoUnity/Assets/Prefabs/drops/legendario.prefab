@@ -4905,6 +4905,10 @@ PrefabInstance:
       value: legendario
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a6b8a9492d26fea44a3c69dcfaba533a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a6b8a9492d26fea44a3c69dcfaba533a, type: 3}
       propertyPath: m_TagString
       value: legendario
       objectReference: {fileID: 0}

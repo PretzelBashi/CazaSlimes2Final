@@ -18,7 +18,7 @@ public class puertaCargarNivel : MonoBehaviour
             infoPartidaActual.EntrarAlCuarto();
             infoPartidaActual.ultimoSpawnPoint = transform.parent.GetChild(1).position;
             activado = true;
-            Debug.Log("Puerta activada");
+
             
         }
     }

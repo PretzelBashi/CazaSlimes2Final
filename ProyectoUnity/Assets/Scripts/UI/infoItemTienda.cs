@@ -60,7 +60,8 @@ public class infoItemTienda : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 $"Defensa Fisica = {objeto.defensaFisicaMax}\n" +
                 $"Defensa Magica = {objeto.defensaMagicaMax}\n" +
                 $"Velocidad de ataque = {objeto.velocidadDeAtaqueMax}\n" +
-                $"Critico = {objeto.critico}";
+                $"Critico = {objeto.critico}\n" +
+                $"Saltos = {objeto.saltosMax}";
             setValores = false;
         }
         infoObjeto.transform.SetParent(GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform);

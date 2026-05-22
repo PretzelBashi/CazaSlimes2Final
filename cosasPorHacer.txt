@@ -13,3 +13,9 @@
 -Agregar objetos unicos para accesorios
 -Agregar armaduras
 -Agregar mas intermedios
+
+--Cosas para guardar
+-Cuarto mas alto, slimes asesinados, slimes recolectados
+-Cosmeticos? !Prioridad
+-.exes? (Stats de personaje invertidas)
+-objetos desbloqueables !Prioridad

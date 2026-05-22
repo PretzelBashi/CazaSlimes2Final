@@ -81,7 +81,6 @@ public class CreadorDeEscenarios : MonoBehaviour
     Escenario cuartoParaAsignar;
 
     Vector3 posicionBuffer;
-    int direccionBuffer;
     int bufferDireccion;
     int cuartoActual;
     int coordenadaActual;
@@ -101,7 +100,6 @@ public class CreadorDeEscenarios : MonoBehaviour
         coordenadasBuffer = new Vector2(0, 0);
         bufferDireccion = Random.Range(0, 4);
 
-        direccionBuffer = 0;
         cuartoActual = 0;
         coordenadaActual = 0;
 
@@ -361,7 +359,7 @@ public class CreadorDeEscenarios : MonoBehaviour
                 cuartoBuffer.colisiones[bufferDireccion] = 2;
                 break;
             case 3:
-                if(Random.Range(1,21) > 4)
+                if(Random.Range(1,10) > 3)
                 {
                     id = 0;
                 } else { id = 1; }

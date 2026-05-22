@@ -33,7 +33,7 @@ public class infoItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Hover");
+
         infoObjeto.alpha = 1;
         infoObjeto.interactable = true;
 
@@ -48,7 +48,8 @@ public class infoItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 $"Defensa Fisica = {objeto.defensaFisicaMax}\n" +
                 $"Defensa Magica = {objeto.defensaMagicaMax}\n" +
                 $"Velocidad de ataque = {objeto.velocidadDeAtaqueMax}\n" +
-                $"Critico = {objeto.critico}";
+                $"Critico = {objeto.critico}\n" +
+                $"Saltos = {objeto.saltosMax}";
             setValores = false;
         }
         infoObjeto.transform.SetParent(GameObject.FindGameObjectWithTag("statsObjetosOverlay").transform);
@@ -56,7 +57,7 @@ public class infoItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Deshover");
+
         infoObjeto.alpha = 0;
         infoObjeto.interactable = false;
         infoObjeto.transform.SetParent(this.transform);

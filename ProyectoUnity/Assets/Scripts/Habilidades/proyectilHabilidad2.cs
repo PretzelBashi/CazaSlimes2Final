@@ -19,7 +19,7 @@ public class proyectilHabilidad2 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionGenerica>().Explotar(20, 0.3f, 0, jugadorStats.danoMagicoActual*0.7f, jugadorStats.criticoActual);
+        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionGenerica>().Explotar(20, 0.3f, 0, jugadorStats.danoMagicoActual*2f, jugadorStats.criticoActual);
 
         Destroy(gameObject);
     }

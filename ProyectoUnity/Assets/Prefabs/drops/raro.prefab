@@ -4905,6 +4905,10 @@ PrefabInstance:
       value: raro
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b1e873f8fe34ebd4fa1bf995adec95e4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b1e873f8fe34ebd4fa1bf995adec95e4, type: 3}
       propertyPath: m_TagString
       value: raro
       objectReference: {fileID: 0}

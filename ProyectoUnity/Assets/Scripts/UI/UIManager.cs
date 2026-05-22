@@ -92,6 +92,7 @@ public class UIManager : MonoBehaviour
                 case 5: textos[i].text = Mathf.FloorToInt(jugador.defensaMagicaActual).ToString(); break;
                 case 6: textos[i].text = Mathf.FloorToInt(jugador.velocidadDeAtaqueActual).ToString(); break;
                 case 7: textos[i].text = Mathf.FloorToInt(jugador.criticoActual).ToString(); break;
+                case 8: textos[i].text = Mathf.FloorToInt(jugador.saltosMax).ToString(); break;
             }
         }
     }
@@ -183,7 +184,7 @@ public class UIManager : MonoBehaviour
         if (!menuTABCargado)
         {
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 1;
-            Debug.Log("Cargado");
+
             menuObjetos.GetComponent<CanvasGroup>().alpha = 1;
             menuObjetos.GetComponent<CanvasGroup>().interactable = true;
             menuObjetos.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -213,7 +214,7 @@ public class UIManager : MonoBehaviour
             menuTABCargado = true;
         } else
         {
-            Debug.Log("Escondido");
+
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().interactable = false;

@@ -96,17 +96,17 @@ public class Slime : MonoBehaviour
         switch (id)
         {
             case 0:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 0.6f, (partida.cueva + 1), ((partida.cueva + 1) * 0.11f) + 0.93f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 0.6f, (partida.cueva + 1), ((partida.cueva + 1) * 0.30f) + 1f, 2 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;
             case 1:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 0, 20 + (partida.cueva + 1), (partida.cueva + 1), (partida.cueva + 1) * 0.6f, ((partida.cueva + 1) * 0.11f) + 1.3f, 4 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 0, 20 + (partida.cueva + 1), (partida.cueva + 1), (partida.cueva + 1) * 0.6f, ((partida.cueva + 1) * 0.30f) + 1.3f, 4 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 1;
                 break;
             case 2:
-                slimeStats = new SlimeStats(7 + (3 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 1f, (partida.cueva + 1) * 1f, ((partida.cueva + 1) * 0.11f) + 0.93f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + (3 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 1f, (partida.cueva + 1) * 1f, ((partida.cueva + 1) * 0.20f) + 0.93f, 2 + partida.cueva, 0.3f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;

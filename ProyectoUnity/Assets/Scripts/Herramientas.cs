@@ -61,6 +61,7 @@ public class Herramientas : MonoBehaviour
 
         public float critico;
 
+        public int saltosMax;
         public Objeto(
             string nombre,
             int id,
@@ -72,7 +73,8 @@ public class Herramientas : MonoBehaviour
             float defensaFisicaMax,
             float defensaMagicaMax,
             float velocidadDeAtaqueMax,
-            float critico
+            float critico,
+            int saltos
         )
         {
             this.nombre = nombre;
@@ -86,6 +88,7 @@ public class Herramientas : MonoBehaviour
             this.defensaMagicaMax = defensaMagicaMax;
             this.velocidadDeAtaqueMax = velocidadDeAtaqueMax;
             this.critico = critico;
+            this.saltosMax = saltos;
         }
     }
     public class Stats
@@ -120,6 +123,9 @@ public class Herramientas : MonoBehaviour
         public float IFrames = 0.2f;
         public bool Invencible = false;
 
+        public int saltosMax = 2;
+        public int saltosActual = 2;
+
         //Falta aplicar daño critico y todo eso
         public void ActualizarUIs()
         {
@@ -138,8 +144,8 @@ public class Herramientas : MonoBehaviour
         }
         async public void ActualizarHP(float danoARecibir, int tipoDeDano, float crit, GameObject prefabNumero)
         {
-            if (Invencible) return;
-            Debug.Log(crit);
+            if (Invencible ) return;
+
             if ((Random.Range(0,101)) <= crit)
             {
                 Debug.Log("Critico");
@@ -162,7 +168,12 @@ public class Herramientas : MonoBehaviour
             {
                 case 0: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual - (danoARecibir - defensaFisicaActual); danoRecibidoTotal = danoARecibir - defensaFisicaActual;  break;
                 case 1: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual - (danoARecibir - defensaMagicaActual); danoRecibidoTotal = danoARecibir - defensaMagicaActual; break;
-                case 2: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual + danoARecibir; break;
+                case 2: if (danoARecibir < 0) { danoARecibir = 0; } vidaFinal = hpActual + danoARecibir; danoRecibidoTotal = hpActual + danoRecibidoTotal; break;
+            }
+            if(tipoDeDano == 2)
+            {
+                Debug.Log(vidaFinal);
+                Debug.Log(vidaFinal > 0);
             }
 
             if (vidaFinal > hpMax)
@@ -172,6 +183,7 @@ public class Herramientas : MonoBehaviour
             else if (vidaFinal > 0)
             {
                 hpActual = vidaFinal;
+
             }
             else
             {
@@ -207,7 +219,7 @@ public class Herramientas : MonoBehaviour
             GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>().ActualizarStats();
         }
 
-        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, float velocidadDeAtaqueMax, float criticoMax, bool SumarOAbsoluto)
+        public void ActualizarStatsMaximas(float hpMax, float mpMax, float danoFisicoMax, float danoMagicoMax, float defensaFisicaMax, float defensaMagicaMax, float velocidadDeAtaqueMax, float criticoMax, int saltosMax, bool SumarOAbsoluto)
         {
             if (SumarOAbsoluto) //Sumas
             {
@@ -234,6 +246,9 @@ public class Herramientas : MonoBehaviour
 
                 if (this.criticoMax == criticoActual) { criticoActual += criticoMax; }
                 this.criticoMax += criticoMax;
+
+                if (this.saltosMax == saltosActual) { saltosActual += saltosMax; }
+                this.saltosMax += saltosMax;
             }
 
             else //Valores absolutos (Por si acaso)
@@ -281,7 +296,7 @@ public class Herramientas : MonoBehaviour
 
         public void ImprimirStats()
         {
-            Debug.Log(
+            /*Debug.Log(
                 "hpMax: " + hpMax +
                 "\nhpActual: " + hpActual +
 
@@ -305,13 +320,14 @@ public class Herramientas : MonoBehaviour
 
                 "\ncritico: " + criticoMax
 
-            );
+            );*/
         }
     }
 
     public class MagoStats : Stats
     {
         public int slimeRecolectado =0;
+
         public Habilidad[] habilidades = new Habilidad[4];
         public List<Objeto> objetos = new List<Objeto>();
         public MagoStats()
@@ -328,14 +344,14 @@ public class Herramientas : MonoBehaviour
         }
         public void AgregarObjeto(Objeto objeto)
         {
-            ActualizarStatsMaximas(objeto.hpMax,objeto.mpMax,objeto.danoFisicoMax,objeto.danoMagicoMax,objeto.defensaFisicaMax,objeto.defensaMagicaMax, objeto.velocidadDeAtaqueMax,objeto.critico,true);
+            ActualizarStatsMaximas(objeto.hpMax,objeto.mpMax,objeto.danoFisicoMax,objeto.danoMagicoMax,objeto.defensaFisicaMax,objeto.defensaMagicaMax, objeto.velocidadDeAtaqueMax,objeto.critico,objeto.saltosMax, true);
             objetos.Add(objeto);
         }
 
         public void QuitarObjeto(int indice)
         {
             Objeto objeto = objetos[indice];
-            ActualizarStatsMaximas(-objeto.hpMax, -objeto.mpMax, -objeto.danoFisicoMax, -objeto.danoMagicoMax, -objeto.defensaFisicaMax, -objeto.defensaMagicaMax, -objeto.velocidadDeAtaqueMax, -objeto.critico, true);
+            ActualizarStatsMaximas(-objeto.hpMax, -objeto.mpMax, -objeto.danoFisicoMax, -objeto.danoMagicoMax, -objeto.defensaFisicaMax, -objeto.defensaMagicaMax, -objeto.velocidadDeAtaqueMax, -objeto.critico, -objeto.saltosMax, true);
             objetos.RemoveAt(indice);
         }
     }

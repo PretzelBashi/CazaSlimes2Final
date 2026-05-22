@@ -43,9 +43,7 @@ public class Jugador : MonoBehaviour
     public Transform vendedora;
 
     bool dasheando;
-    bool salto;
     bool rebotando;
-
     bool casteando;
     bool casteoTerminado;
     bool[] habilidadesCargadas;
@@ -72,7 +70,6 @@ public class Jugador : MonoBehaviour
 
         velocidad = Vector3.zero;
 
-        salto = false;
         rebotando = false;
         casteando = false;
         casteoTerminado = false;
@@ -131,6 +128,7 @@ public class Jugador : MonoBehaviour
         if (characterController.isGrounded)
         {
             velocidad.y = -1;
+            jugadorStats.saltosActual = jugadorStats.saltosMax;
         }
 
 
@@ -272,10 +270,13 @@ public class Jugador : MonoBehaviour
         //Las acciones tienen 3 estados (Started, performed, canceled)
         if (callbackContext.performed)
         {
-            characterController.Move(Vector3.up * 0.1f);
-            velocidad.y = 10;
+            if(jugadorStats.saltosActual > 0)
+            {
+                jugadorStats.saltosActual--;
+                characterController.Move(Vector3.up * 0.1f);
+                velocidad.y = 10;
+            }
         }
-
     }
 
     public void Dash(InputAction.CallbackContext callbackContext)
@@ -568,7 +569,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 5000f));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1500f));
 
         uiManager.toggleConjurando(false);
 
@@ -621,7 +622,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 500f));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 2000f));
 
         uiManager.toggleConjurando(false);
         animator.SetInteger("EstadoBaculo", 5);

@@ -31,6 +31,7 @@ public class infoPartidaActual : MonoBehaviour
 
     List<Vector3> ordenDeCoordenadas;
     public GameObject[] prefabsDrops;
+    public GameObject[] prefabsStatDrops;
     public List<Objeto> ObjetosPosibles;
 
     CreadorDeEscenarios creadorDeEscenarios;
@@ -145,15 +146,18 @@ public class infoPartidaActual : MonoBehaviour
                 if(drop <= 50)
                 {
                     drop = Random.Range(0, 101);
-                    if (drop < 55) { drop = 0; }
-                    else if (drop < 85 ) { drop = 1; }
-                    else if (drop < 95) { drop = 2; }
+                    if (drop < 66) { drop = 0; }
+                    else if (drop < 91 ) { drop = 1; }
+                    else if (drop < 99) { drop = 2; }
                     else { drop = 3; }
 
                     Instantiate(prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
                 }
+                Instantiate(prefabsStatDrops[0], new Vector3(slime.transform.position.x + 0.3f, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
+                Instantiate(prefabsStatDrops[1], new Vector3(slime.transform.position.x - 0.3f, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
+
                 slimesAMatar--;
-                GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.slimeRecolectado += Random.Range(0,21);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.slimeRecolectado += Random.Range(20,51);
                 uiManager.ActualizarSlime();
                 break;
             }
@@ -303,7 +307,7 @@ public class infoPartidaActual : MonoBehaviour
         return (lista[Random.Range(0, lista.Count)]);
     }
 
-    public void IniciarObjetos() //0 Comun, 1 raro, 2 legendario, 3 unico
+    public void IniciarObjetos() //0 Comun, 1 raro, 2 legendario, 3 unico ID MAXIMA ACTUAL = 10
     {
         //Comunes
         ObjetosPosibles.Add(new Objeto(
@@ -317,7 +321,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0.02f, //VelocidadDeAtaque
-            0.5f //Critico
+            0.5f, //Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Ramita extrana", //Nombre
@@ -330,7 +335,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0f, //VelocidadDeAtaque
-            0.5f //Critico
+            0.5f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Pechera desgastada", //Nombre
@@ -343,7 +349,8 @@ public class infoPartidaActual : MonoBehaviour
             1f, //DefFisica
             0.5f, //DefMagica
             0f, //VelocidadDeAtaque
-            0f //Critico
+            0f,//Critico
+            0//Saltos
             ));
 
         //Raro
@@ -358,7 +365,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0.01f, //VelocidadDeAtaque
-            0.8f //Critico
+            0.8f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Hechizos sencillos Vol.1", //Nombre
@@ -371,7 +379,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0f, //VelocidadDeAtaque
-            0.5f //Critico
+            0.5f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Grebas de hierro", //Nombre
@@ -384,7 +393,8 @@ public class infoPartidaActual : MonoBehaviour
             1.5f, //DefFisica
             0.7f, //DefMagica
             0f, //VelocidadDeAtaque
-            0f //Critico
+            0f,//Critico
+            0//Saltos
             ));
 
         //Legendarios
@@ -399,7 +409,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0.2f, //VelocidadDeAtaque
-            5f //Critico
+            5f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Lanza esmaltada", //Nombre
@@ -412,7 +423,8 @@ public class infoPartidaActual : MonoBehaviour
             0f, //DefFisica
             0f, //DefMagica
             0f, //VelocidadDeAtaque
-            5f //Critico
+            5f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Casco de titanio", //Nombre
@@ -425,7 +437,8 @@ public class infoPartidaActual : MonoBehaviour
             2.5f, //DefFisica
             0.5f, //DefMagica
             0f, //VelocidadDeAtaque
-            0f //Critico
+            0f,//Critico
+            0//Saltos
             ));
         ObjetosPosibles.Add(new Objeto(
             "Casco de mitrilo", //Nombre
@@ -438,7 +451,22 @@ public class infoPartidaActual : MonoBehaviour
             0.5f, //DefFisica
             1.8f, //DefMagica
             0f, //VelocidadDeAtaque
-            0f //Critico
+            0f,//Critico
+            0//Saltos
+            ));
+        ObjetosPosibles.Add(new Objeto(
+            "Botas ligeras", //Nombre
+            10, //id
+            2, //Rareza
+            30f, //hpMax
+            0f, //mpMax
+            2f, //DanoFisico
+            2f, //DanoMagico
+            0.3f, //DefFisica
+            0.3f, //DefMagica
+            0f, //VelocidadDeAtaque
+            0f,//Critico
+            1//Saltos
             ));
 
         //Unicos
@@ -449,12 +477,15 @@ public class infoPartidaActual : MonoBehaviour
             50f, //hpMax
             50f, //mpMax
             -20f, //DanoFisico
-            30f, //DanoMagico
+            20f, //DanoMagico
             0f, //DefFisica
             0f, //DefMagica
             0f, //VelocidadDeAtaque
-            50f //Critico
+            25f,//Critico
+            0//Saltos
             ));
+
+
     }
 }
 

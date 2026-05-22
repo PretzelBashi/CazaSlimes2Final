@@ -15,7 +15,7 @@ public class Tienda : MonoBehaviour
         objetosTienda = new List<Objeto>();
         infoPartida = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
 
-        for (int i = 0; i < (infoPartida.partida.cueva + 1) / 2; ++i)
+        for (int i = 0; i < (infoPartida.partida.cueva / 2) + 1; ++i)
         {
             int drop = Random.Range(0, 101) + ((infoPartida.partida.cueva + 1) / 3);
             if (drop <= 100)
