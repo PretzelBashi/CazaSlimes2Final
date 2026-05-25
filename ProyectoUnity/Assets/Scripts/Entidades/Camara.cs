@@ -17,7 +17,7 @@ public class Camara : MonoBehaviour
 
     Vector3 rotacion;
 
-    bool cambioDeCamara;
+    public bool cambioDeCamara;
     float sensibilidadMouse;
     float sensibilidadControl;
     public bool controlador; //false es mouse, true es control
@@ -34,7 +34,7 @@ public class Camara : MonoBehaviour
         rotacion = Vector3.zero;
         controlador = true;
 
-        Herramientas.perspectiva = false;
+        Herramientas.perspectiva = true;
         cambioDeCamara = true;
         sensibilidadMouse = 0.3f;
         sensibilidadControl = 1.5f;
@@ -72,11 +72,23 @@ public class Camara : MonoBehaviour
             if (cambioDeCamara)
             {
                 camaraInterior.GetComponent<Camera>().fieldOfView = 60;
-                rotacion.y = -5.7f;
-                camaraInterior.transform.position = new Vector3(transform.position.x + 1.36f, transform.position.y, transform.position.z + -2.15f);
+                rotacion.y = 5.7f;
+                camaraInterior.transform.localPosition = new Vector3(- 1.36f, 0, -2.15f);
                 cambioDeCamara = false;
+
+                Renderer[] renders = jugador.GetComponentsInChildren<Renderer>(true);
+
+                foreach (Renderer rend in renders)
+                {
+                    if (rend.transform.name != "Mango" && rend.transform.name != "Gema" && rend.transform.name != "Mono")
+                    {
+                        rend.shadowCastingMode = ShadowCastingMode.On;
+                        rend.receiveShadows = true;
+                    }
+                }
             }
 
+            posicionDeDisparo.transform.localRotation = Quaternion.Euler(new Vector3(huesoBaculo.transform.localRotation.eulerAngles.x +90, huesoBaculo.transform.localRotation.eulerAngles.y , huesoBaculo.transform.localRotation.eulerAngles.z));
             transform.rotation = Quaternion.Euler(rotacion);
             transform.position = new Vector3 (jugador.transform.position.x, jugador.transform.position.y + 1.7f, jugador.transform.position.z);
 

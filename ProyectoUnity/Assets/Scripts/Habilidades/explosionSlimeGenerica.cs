@@ -23,6 +23,7 @@ public class explosionSlimeGenerica : MonoBehaviour
         rendersHijos = transform.GetComponentsInChildren<Renderer>();
         luz = transform.GetChild(0).GetComponent<Light>();
         crit = 0;
+        transform.GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame
@@ -80,19 +81,26 @@ public class explosionSlimeGenerica : MonoBehaviour
     }
     async private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Player")
+        try
         {
-            if (danoFisico > 0)
-            {
-                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoFisico, 0,crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
-            }
-            await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Jugador>().jugadorStats.IFrames * 1000));
-            if (danoMagico > 0)
-            {
-                collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoMagico, 1,crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
-            }
 
+            if (collision.gameObject.tag == "Player")
+            {
+                GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>().flawless = false;
+                if (danoFisico > 0)
+                {
+                    
+                    collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoFisico, 0, crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
+                }
+                await Task.Delay(Mathf.FloorToInt(collision.transform.GetComponent<Jugador>().jugadorStats.IFrames * 1000));
+                if (danoMagico > 0)
+                {
+                    collision.transform.GetComponent<Jugador>().jugadorStats.ActualizarHP(danoMagico, 1, crit, collision.transform.GetComponent<Jugador>().prefabNumeroDano);
+                }
+
+            }
         }
+        catch { }
     }
 }
 

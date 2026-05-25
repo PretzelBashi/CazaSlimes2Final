@@ -1,10 +1,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Herramientas;
+
+
 public class UIManager : MonoBehaviour
 {
     public List<Sprite> objetos;
@@ -68,11 +71,27 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         menuTABCargado = false;
         menuObjetos = GameObject.FindGameObjectWithTag("menuObjetos");
         menuStats = GameObject.FindGameObjectWithTag("menuStats");
         menuTienda = GameObject.FindGameObjectWithTag("tiendaUI").transform ;
         infoPartida = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
+    }
+
+    async public Task AparecerMuerte()
+    {
+        CanvasGroup overlayMuerte = GameObject.FindGameObjectWithTag("overlayMuerte").GetComponent<CanvasGroup>();
+
+        do
+        {
+            overlayMuerte.alpha += Time.deltaTime / 2;
+            await Task.Yield();
+        } while (overlayMuerte.alpha < 1);
+        Time.timeScale = 0;
+        return;
     }
     
     public void ActualizarMenuStats()
@@ -100,6 +119,9 @@ public class UIManager : MonoBehaviour
     {
         if (menuTiendaCargado)
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
             Debug.Log("Escondido");
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuTienda.GetComponent<CanvasGroup>().alpha = 0f;
@@ -125,6 +147,9 @@ public class UIManager : MonoBehaviour
     {
         if (!menuTiendaCargado)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
             menuTienda.GetComponent<CanvasGroup>().alpha = 1.0f;
             menuTienda.GetComponent<CanvasGroup>().interactable = true;
             menuTienda.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -157,7 +182,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuTienda.GetComponent<CanvasGroup>().alpha = 0f;
             menuTienda.GetComponent<CanvasGroup>().interactable = false;
@@ -183,6 +209,9 @@ public class UIManager : MonoBehaviour
     {
         if (!menuTABCargado)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 1;
 
             menuObjetos.GetComponent<CanvasGroup>().alpha = 1;
@@ -214,7 +243,8 @@ public class UIManager : MonoBehaviour
             menuTABCargado = true;
         } else
         {
-
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             GameObject.FindGameObjectWithTag("oscurecerUI").GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().alpha = 0;
             menuObjetos.GetComponent<CanvasGroup>().interactable = false;

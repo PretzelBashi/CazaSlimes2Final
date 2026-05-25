@@ -23,7 +23,7 @@ public class proyectilSlimeSimple : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionSlimeGenerica>().Explotar(10, 0.2f,crit, 0, danoMagico);
+        Instantiate(prefabExplosion, transform.position, Quaternion.identity).GetComponent<explosionSlimeGenerica>().Explotar(10, 0.2f, 0, danoMagico, crit);
         
         Destroy(gameObject);
     }

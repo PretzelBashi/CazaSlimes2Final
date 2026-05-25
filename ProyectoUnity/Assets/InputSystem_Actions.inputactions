@@ -25,7 +25,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Attack",
+                    "name": "<No Binding>",
                     "type": "Button",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
                     "expectedControlType": "",
@@ -127,6 +127,15 @@
                     "name": "Habilidad4",
                     "type": "Button",
                     "id": "ea25a872-e8bd-4a21-b8d0-9c52497341b8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SaltarDialogo",
+                    "type": "Button",
+                    "id": "e762f5c2-5bcd-464a-a278-6f0e7ad3906e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -306,7 +315,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -317,7 +326,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -328,7 +337,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -339,7 +348,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -350,7 +359,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -361,7 +370,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Attack",
+                    "action": "<No Binding>",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -587,6 +596,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ef5bc09e-8537-4a9d-96b3-81c1eb9c3d36",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventario",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "3bda2a3f-f45a-45fc-ba61-8afdebae3375",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -626,6 +646,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Habilidad4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e9606549-06d3-48d0-8c74-0ac57316107d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaltarDialogo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "843ca8f0-2ddc-43de-9c06-d6b86d5eed69",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaltarDialogo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

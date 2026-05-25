@@ -19,14 +19,13 @@ public class statDrop : MonoBehaviour
         Jugador jugador = other.GetComponent<Jugador>();
         if (other.tag == "Player")
         {
-            Debug.Log(hpMP);
             if (hpMP)
             {
                 Debug.Log("Curacion");
-                jugador.jugadorStats.ActualizarHP((3 * jugador.jugadorStats.hpMax) / 100, 2, jugador.jugadorStats.criticoActual, jugador.prefabNumeroDano);
+                jugador.jugadorStats.ActualizarHP((6.5f * jugador.jugadorStats.hpMax) / 100, 2, jugador.jugadorStats.criticoActual, jugador.prefabNumeroDano);
             } else
             {
-                jugador.jugadorStats.ActualizarMP((3 * jugador.jugadorStats.mpMax) / 100);
+                jugador.jugadorStats.ActualizarMP((5 * jugador.jugadorStats.mpMax) / 100);
             }
             
 

@@ -6,8 +6,19 @@ public class EfectosDeSonido : MonoBehaviour
     public AudioSource Musica;
     public AudioSource Negativos;
     public AudioSource Positivos;
+    public AudioSource Habilidades;
 
     public AudioClip JugadorDano;
+    public AudioClip Pelea;
+    public AudioClip Disparo;
+    public AudioClip DisparoPesado;
+    public AudioClip RayoLaser;
+    public AudioClip Curacion;
+    public AudioClip DanoSlime;
+    public AudioClip NivelTerminado;
+    public AudioClip intermedioGenerico;
+    public AudioClip Tienda;
+    public AudioClip Critico;
     void Start()
     {
         

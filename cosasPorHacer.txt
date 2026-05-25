@@ -19,3 +19,7 @@
 -Cosmeticos? !Prioridad
 -.exes? (Stats de personaje invertidas)
 -objetos desbloqueables !Prioridad
+
+-Ultimos detalles
+Overlay para las habilidades y que se explique en el tuto
+boton para cambiar entre sensibilidad de maus y control

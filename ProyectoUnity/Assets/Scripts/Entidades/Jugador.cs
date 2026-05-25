@@ -41,6 +41,7 @@ public class Jugador : MonoBehaviour
     float resistencia;
     float contadorIFrame;
     public Transform vendedora;
+    public EfectosDeSonido jugadorSonidos;
 
     bool dasheando;
     bool rebotando;
@@ -62,6 +63,7 @@ public class Jugador : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         contenedorCamara = GameObject.FindGameObjectWithTag("MainCamera");
         camaraInterior = contenedorCamara.transform.GetChild(0).gameObject.GetComponent<Camera>();
+        jugadorSonidos = GameObject.FindGameObjectWithTag("SonidosJugador").GetComponent<EfectosDeSonido>();
 
         playerInput = GetComponent<PlayerInput>();
 
@@ -327,6 +329,7 @@ public class Jugador : MonoBehaviour
             await Task.Yield();
         }
 
+        jugadorSonidos.Habilidades.PlayOneShot(jugadorSonidos.Disparo);
         baculoGema.material.SetColor("_EmissionColor", Color.black);
         baculoGema.material.DisableKeyword("_EMISSION");
 
@@ -396,7 +399,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 2000f));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1000f));
 
         uiManager.toggleConjurando(false);
         animator.SetInteger("EstadoBaculo", 4);
@@ -407,6 +410,7 @@ public class Jugador : MonoBehaviour
         {
             await Task.Yield();
         }
+        jugadorSonidos.Habilidades.PlayOneShot(jugadorSonidos.Disparo);
 
         baculoMango.material.SetColor("_EmissionColor", Color.black);
         baculoMango.material.DisableKeyword("_EMISSION");
@@ -476,7 +480,7 @@ public class Jugador : MonoBehaviour
 
         // tiempo de casteo
         await Task.Delay(
-            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 3000f));
+            Mathf.RoundToInt((1f / jugadorStats.velocidadDeAtaqueActual) * 1200f));
 
         uiManager.toggleConjurando(false);
         animator.SetInteger("EstadoBaculo", 5);
@@ -488,6 +492,7 @@ public class Jugador : MonoBehaviour
             await Task.Yield();
         }
 
+        jugadorSonidos.Habilidades.PlayOneShot(jugadorSonidos.DisparoPesado);
         baculoGema.material.SetColor("_EmissionColor", Color.black);
         baculoGema.material.DisableKeyword("_EMISSION");
 
@@ -582,6 +587,7 @@ public class Jugador : MonoBehaviour
             await Task.Yield();
         }
 
+        jugadorSonidos.Habilidades.PlayOneShot(jugadorSonidos.Curacion);
         baculoGema.material.SetColor("_EmissionColor", Color.black);
         baculoGema.material.DisableKeyword("_EMISSION");
 
@@ -634,6 +640,10 @@ public class Jugador : MonoBehaviour
             await Task.Yield();
         }
 
+        jugadorSonidos.Habilidades.clip = jugadorSonidos.RayoLaser;
+        jugadorSonidos.Habilidades.loop = true;
+        jugadorSonidos.Habilidades.Play();
+
         baculoGema.material.SetColor("_EmissionColor", Color.black);
         baculoGema.material.DisableKeyword("_EMISSION");
 
@@ -643,6 +653,10 @@ public class Jugador : MonoBehaviour
         GameObject.FindGameObjectWithTag("posicionDisparoBaculo").transform.GetChild(0).position;
 
         await Instantiate(rayoHabilidad4, posicion, Quaternion.identity).GetComponent<rayoHabilidad4Posicio>().IniciarRayo();
+
+        jugadorSonidos.Habilidades.Stop();
+        jugadorSonidos.Habilidades.loop = false;
+        jugadorSonidos.Habilidades.clip = null;
 
         await Task.Delay(Mathf.RoundToInt(((1f / jugadorStats.velocidadDeAtaqueActual) / 2f) * 1000f));
 

@@ -104,7 +104,16 @@ public class CreadorDeEscenarios : MonoBehaviour
         coordenadaActual = 0;
 
         infoPartidaActual = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>();
-        infoPartidaActual.PartidaNormal();
+
+        if(Herramientas.dificultad < 1)
+        {
+            infoPartidaActual.PartidaTutorial();
+            GameObject.FindGameObjectWithTag("dialogosManager").GetComponent<dialogosUI>().IniciarDialogosTutorial();
+        } else
+        {
+            infoPartidaActual.PartidaNormal();
+        }
+
     }
 
     // Update is called once per frame
@@ -146,7 +155,7 @@ public class CreadorDeEscenarios : MonoBehaviour
         }
         return;
     }
-    async public Task CargarMapa(int cantidadDeCuartos)
+    async public Task CargarMapa(int cantidadDeCuartos, bool tutorial)
     {
 
 
@@ -169,7 +178,7 @@ public class CreadorDeEscenarios : MonoBehaviour
 
             for (int i = 1; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
             {
-                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto); //Arreglar eso, problema de indices y el primer ciclo
+                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto, tutorial); //Arreglar eso, problema de indices y el primer ciclo
                 
             }
         } else
@@ -178,7 +187,7 @@ public class CreadorDeEscenarios : MonoBehaviour
             cantidadDeCuartos++;
             for (int i = 1; i < cantidadDeCuartos; i++) //Creacion del mapa entre intermedios y cuevas (probablemente)
             {
-                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto);
+                CargarCuarto(mapa.Count, mapa[mapa.Count -1].tipoDeCuarto, tutorial);
 
                 //Debug.Log(bufferDireccion);
                 
@@ -284,7 +293,7 @@ public class CreadorDeEscenarios : MonoBehaviour
         return  coordenadasCargadas.ToArray();
 
     }
-    public void CargarCuarto(int i, int cuartoActual)
+    public void CargarCuarto(int i, int cuartoActual, bool tutorial)
     {
         int direccionTemp2 = 0;
         bool coordinadasValidar2 = true;
@@ -361,7 +370,7 @@ public class CreadorDeEscenarios : MonoBehaviour
             case 3:
                 if(Random.Range(1,10) > 3)
                 {
-                    id = 0;
+                    if (tutorial) { id = 1; } else { id = 0; }
                 } else { id = 1; }
                 cuartoParaAsignar = intermediosCargados.intermediosDisponibles[id];
                 cuartoBuffer = new Escenario(cuartoParaAsignar.prefabEscenario, cuartoParaAsignar.tipoDeCuarto, cuartoParaAsignar.id);

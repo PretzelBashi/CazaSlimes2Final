@@ -23,7 +23,7 @@ public class explosionGenerica : MonoBehaviour
         tiempoEscalando = 0;
         rendersHijos = transform.GetComponentsInChildren<Renderer>();
         luz = transform.GetChild(0).GetComponent<Light>();
-
+        transform.GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame
@@ -84,7 +84,7 @@ public class explosionGenerica : MonoBehaviour
     {
         try
         {
-            Debug.Log(crit);
+
             if (collision.gameObject.tag == "Slime")
             {
                 if (danoFisico > 0)

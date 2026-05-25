@@ -1179,6 +1179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jugador
   vendedora: {fileID: 0}
+  jugadorSonidos: {fileID: 0}
   proyectilDisparo: {fileID: 375146815047238859, guid: d2de1de7090fb1e48b60c35e8c385a55, type: 3}
   proyectilMelee: {fileID: 2856598141779396680, guid: dabe72cf6a9409548872020ce87a72a7, type: 3}
   proyectilHabilidad2: {fileID: 375146815047238859, guid: e4b59e82ae5ae8440a093d8aa99d60c0, type: 3}
@@ -2546,7 +2547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.7834, y: 2244755.2}
+  m_AnchoredPosition: {x: 14.7834, y: 40804.527}
   m_SizeDelta: {x: -31.4482, y: 741.7068}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &433167854
@@ -4586,8 +4587,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1378018987}
   m_HandleRect: {fileID: 1378018986}
   m_Direction: 2
-  m_Value: -0.0026981633
-  m_Size: 0.9808199
+  m_Value: -0.000022635599
+  m_Size: 0.98182285
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4749,8 +4750,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.11
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5244,8 +5245,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.06
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6666,6 +6667,135 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114773848}
   m_CullTransparentMesh: 1
+--- !u!1 &1124097730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1124097731}
+  - component: {fileID: 1124097732}
+  m_Layer: 0
+  m_Name: Habilidades
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1124097731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124097730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1396688304}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1124097732
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124097730}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.11
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1139097646
 GameObject:
   m_ObjectHideFlags: 0
@@ -8410,6 +8540,7 @@ Transform:
   - {fileID: 820419957}
   - {fileID: 780167765}
   - {fileID: 1691147622}
+  - {fileID: 1124097731}
   m_Father: {fileID: 715137456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1396688305
@@ -8427,7 +8558,18 @@ MonoBehaviour:
   Musica: {fileID: 820419958}
   Negativos: {fileID: 780167766}
   Positivos: {fileID: 1691147623}
+  Habilidades: {fileID: 1124097732}
   JugadorDano: {fileID: 8300000, guid: 987b8a0ffd0ece24bbc6f164bd3bd317, type: 3}
+  Pelea: {fileID: 8300000, guid: 7424fc6cf580ac04cae28c31eb7d746c, type: 3}
+  Disparo: {fileID: 8300000, guid: bd4ad13a722d59243b1e3463954defe2, type: 3}
+  DisparoPesado: {fileID: 8300000, guid: 60b223bfb2209f348aa5d5bbc064ba99, type: 3}
+  RayoLaser: {fileID: 8300000, guid: c1e706707ec94f2478a52eedcc3552a3, type: 3}
+  Curacion: {fileID: 8300000, guid: 1932f89c99487e14cb38e7f3e91a9ba4, type: 3}
+  DanoSlime: {fileID: 8300000, guid: 691b5467f29764e4a8fd1fbfc5668244, type: 3}
+  NivelTerminado: {fileID: 8300000, guid: 9b0b9c0da2b5e9d429ca155a0deae71a, type: 3}
+  intermedioGenerico: {fileID: 8300000, guid: 815249af6b3685449bcbfd78d4eadfa8, type: 3}
+  Tienda: {fileID: 8300000, guid: adf3278eb85c4ed48acee0b266a2a4ee, type: 3}
+  Critico: {fileID: 0}
 --- !u!1 &1412204945
 GameObject:
   m_ObjectHideFlags: 0
@@ -9255,8 +9397,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1470258901}
   m_HandleRect: {fileID: 1470258900}
   m_Direction: 2
-  m_Value: -162953.77
-  m_Size: 0.9814349
+  m_Value: -3025.512
+  m_Size: 0.98182255
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9871,7 +10013,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.7834, y: 13.518553}
+  m_AnchoredPosition: {x: 14.7834, y: 13.482436}
   m_SizeDelta: {x: -31.4482, y: 741.7068}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1656054300
@@ -10079,8 +10221,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.11
   m_Pitch: 1
   Loop: 0
   Mute: 0

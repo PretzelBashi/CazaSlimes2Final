@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Herramientas;
 
 public class infoPartidaActual : MonoBehaviour
@@ -33,7 +34,7 @@ public class infoPartidaActual : MonoBehaviour
     public GameObject[] prefabsDrops;
     public GameObject[] prefabsStatDrops;
     public List<Objeto> ObjetosPosibles;
-
+    EfectosDeSonido jugadorSonidos;
     CreadorDeEscenarios creadorDeEscenarios;
 
     public List<GameObject> slimesExistentes;
@@ -45,16 +46,29 @@ public class infoPartidaActual : MonoBehaviour
     int slimesAMatar;
     int slimesPorCuarto;
     public Vector3 ultimoSpawnPoint;
+    int slimesDerrotadosTotal;
+    int slimeRecolectadoTotal;
+    public bool flawless;
 
-
+    bool tutorial;
+    public bool dialogoSlime;
+    public bool dialogoTutoTerminado;
+    bool primerDrop;
     void Awake()
     {
+
         slimesPorCuarto = 10;
         creadorDeEscenarios = GameObject.FindGameObjectWithTag("CreadorDeCuevas").GetComponent<CreadorDeEscenarios>();
         ObjetosPosibles = new List<Objeto>();
+        dialogoSlime = false;
+        tutorial = false;
+        dialogoTutoTerminado = false;
+        primerDrop = false;
+        flawless = true;
         IniciarObjetos();
+        ObjetosPosibles.AddRange(DatosDeGuardado.datosDeGuardado.objetosDesbloqueados);
         partida = new Partida();
-
+        jugadorSonidos = GameObject.FindGameObjectWithTag("SonidosJugador").GetComponent<EfectosDeSonido>();
         ultimoSpawnPoint = new Vector3(0,0.3f,0);
         entroAlCuarto = false;
         spawnersDeSlimes = new List<GameObject>();
@@ -65,26 +79,55 @@ public class infoPartidaActual : MonoBehaviour
         partida.cueva = 0;
         partida.profundidad = 0;
         slimesAMatar = 0;
+        slimesDerrotadosTotal = 0;
         partida.cuartosPorProfundidad = 3; //La cantidad se multiplica por 2 para tomar en cuenta puentes.
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
         //Falta ejecutar el renderizado
     }
 
-    async public void PartidaNormal()
+    async public void TerminarPartida()
     {
-        await CrearNivel(true);
-        await CargarSiguienteNivel(true);
-        AparecerSlimes(slimesPorCuarto);
+        await uiManager.AparecerMuerte();
 
-        do {
+        UltimasStats.cantidadObjetos = GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.objetos.Count ;
+        UltimasStats.cantidadSlimes = slimesDerrotadosTotal;
+        UltimasStats.cantidadCuevas = partida.cueva;
+        UltimasStats.cantidadSlimeRecolectado = slimeRecolectadoTotal;
+        UltimasStats.jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats;
+        UltimasStats.flawless = flawless;
+
+        await Task.Delay(2500);
+        SceneManager.LoadScene("PantallaMuerte");
+    }
+
+    async public void PartidaTutorial()
+    {
+        tutorial = true;
+        primerDrop = true;
+        jugadorSonidos.Musica.loop = true;
+        jugadorSonidos.Musica.clip = jugadorSonidos.intermedioGenerico;
+        jugadorSonidos.Musica.Play();
+
+        partida.cuartosPorProfundidad = 2;
+        await CrearNivel(true,true);
+        await CargarSiguienteNivel(true);
+        partida.cuartosPorProfundidad = 3;
+        do { await Task.Yield(); } while (!dialogoSlime);
+
+        AparecerSlimes(1);
+
+        do
+        {
+
+
             do { await Task.Yield(); } while (entroAlCuarto == false);
+
             partida.cueva++;
             entroAlCuarto = false;
             uiManager.ActualizarNivel(partida.cueva + 1, 1);
-            if(creadorDeEscenarios.mapa.Count-1 <= partida.cueva)
+            if (creadorDeEscenarios.mapa.Count - 1 <= partida.cueva)
             {
-
-                await CrearNivel(false);
+                await CrearNivel(false, false);
                 await CargarSiguienteNivel(false);
             }
             if (creadorDeEscenarios.mapa[partida.cueva].tipoDeCuarto == 3)
@@ -101,8 +144,55 @@ public class infoPartidaActual : MonoBehaviour
                 await DestruirSlimes();
 
                 await CargarSiguienteNivel(false);
+
+
                 AbrirPuertas();
 
+
+            }
+
+
+        } while (true);
+    }
+    async public void PartidaNormal()
+    {
+        await CrearNivel(true, false);
+        await CargarSiguienteNivel(true);
+        AparecerSlimes(slimesPorCuarto);
+
+
+        do {
+
+
+            do { await Task.Yield(); } while (entroAlCuarto == false);
+
+            partida.cueva++;
+            entroAlCuarto = false;
+            uiManager.ActualizarNivel(partida.cueva + 1, 1);
+            if(creadorDeEscenarios.mapa.Count-1 <= partida.cueva)
+            {
+                await CrearNivel(false, false);
+                await CargarSiguienteNivel(false);
+            }
+            if (creadorDeEscenarios.mapa[partida.cueva].tipoDeCuarto == 3)
+            {
+                await DestruirSpawners();
+                await DestruirSlimes();
+
+                await CargarSiguienteNivel(true);
+                AparecerSlimes(slimesPorCuarto + (partida.cueva));
+            }
+            else
+            {
+                await DestruirSpawners();
+                await DestruirSlimes();
+
+                await CargarSiguienteNivel(false);
+
+
+                AbrirPuertas();
+
+  
             }
            
 
@@ -140,24 +230,32 @@ public class infoPartidaActual : MonoBehaviour
         {
             if (slimesSpawneados[i] == slime)
             {
+                slimesDerrotadosTotal++;
                 slimesSpawneados.RemoveAt(i);
 
                 int drop = Random.Range(0, 101);
-                if(drop <= 50)
+                if(drop <= 35 || primerDrop)
                 {
                     drop = Random.Range(0, 101);
-                    if (drop < 66) { drop = 0; }
-                    else if (drop < 91 ) { drop = 1; }
+                    if (drop < 75) { drop = 0; }
+                    else if (drop < 95) { drop = 1; }
                     else if (drop < 99) { drop = 2; }
-                    else { drop = 3; }
+                    else if (partida.cueva >= 15 || Herramientas.dificultad >= 1.7) { drop = 3; }
+                    else { drop = 2; }
 
+                    if (primerDrop) 
+                    { 
+                        drop = 0; Instantiate(prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity); primerDrop = false;
+                    }
                     Instantiate(prefabsDrops[drop], new Vector3(slime.transform.position.x, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
                 }
                 Instantiate(prefabsStatDrops[0], new Vector3(slime.transform.position.x + 0.3f, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
                 Instantiate(prefabsStatDrops[1], new Vector3(slime.transform.position.x - 0.3f, slime.transform.position.y + 1, slime.transform.position.z), Quaternion.identity);
 
                 slimesAMatar--;
-                GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.slimeRecolectado += Random.Range(20,51);
+                int slimeGanado = Mathf.FloorToInt(Random.Range(20, 51) * dificultad);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Jugador>().jugadorStats.slimeRecolectado += slimeGanado;
+                slimeRecolectadoTotal += slimeGanado;
                 uiManager.ActualizarSlime();
                 break;
             }
@@ -165,10 +263,40 @@ public class infoPartidaActual : MonoBehaviour
 
         if (slimesAMatar == 0)
         {
-            AbrirPuertas();
-
+            SlimesMuertos();
         }
         return;
+    }
+    async public void SlimesMuertos()
+    {
+        if (tutorial) { do { await Task.Yield(); } while (!dialogoTutoTerminado); }
+        Herramientas.perspectiva = true;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camara>().cambioDeCamara = true;
+
+        AbrirPuertas();
+        jugadorSonidos.Musica.Stop();
+        jugadorSonidos.Musica.PlayOneShot(jugadorSonidos.NivelTerminado);
+        Debug.Log(creadorDeEscenarios.mapa[partida.cueva + 1].id);
+        if (creadorDeEscenarios.mapa[partida.cueva + 1].id == 0)
+        {
+            jugadorSonidos.Musica.clip = jugadorSonidos.intermedioGenerico;
+            jugadorSonidos.Musica.Play();
+        }
+        else
+        {
+            if(DatosDeGuardado.datosDeGuardado.dialogosTiendaEscuchados <= 13)
+            {
+                DatosDeGuardado.datosDeGuardado.dialogosTiendaEscuchados++;
+                GameObject.FindGameObjectWithTag("dialogosManager").GetComponent<dialogosUI>().IniciarDialogo(DatosDeGuardado.datosDeGuardado.dialogosTiendaEscuchados);
+            } else
+            {
+                GameObject.FindGameObjectWithTag("dialogosManager").GetComponent<dialogosUI>().IniciarDialogo(DatosDeGuardado.datosDeGuardado.dialogosTiendaEscuchados);
+            }
+
+                jugadorSonidos.Musica.clip = jugadorSonidos.Tienda;
+            jugadorSonidos.Musica.Play();
+        }
+
     }
     public void AbrirPuertas()
     {
@@ -193,12 +321,18 @@ public class infoPartidaActual : MonoBehaviour
 
     async public void AparecerSlimes(float cantidadSlimes)
     {
-        
+        Herramientas.perspectiva = false;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camara>().cambioDeCamara = true;
+        jugadorSonidos.Musica.clip = jugadorSonidos.Pelea;
+        jugadorSonidos.Musica.loop = true;
+        jugadorSonidos.Musica.Play();
+
         int slimesAparecidos = 0;
         if (cantidadSlimes == 0) { cantidadSlimes = 1; }
 
         cantidadSlimes = Mathf.FloorToInt(cantidadSlimes);
         slimesAMatar = Mathf.FloorToInt(cantidadSlimes);
+
 
         do
         {
@@ -209,21 +343,24 @@ public class infoPartidaActual : MonoBehaviour
             slimesSpawneados.Add(slimeA);
             
             slimesAparecidos++;
-            do { await Task.Delay(Random.Range(2000, 5000)); }
-            while (slimesSpawneados.Count >= 10 + partida.cueva);
+            do { await Task.Delay(Random.Range(1000, 2500)); }
+            while (slimesSpawneados.Count >= 5 + ((partida.cueva/2) * Herramientas.dificultad));
 
         } while (slimesAparecidos < cantidadSlimes);
+
+        await (Task.Delay(1000));
+
     }
-    async public Task CrearNivel(bool inicial)
+    async public Task CrearNivel(bool inicial, bool tutorial)
     {
         if (inicial)
         {
-            await creadorDeEscenarios.CargarMapa(partida.cuartosPorProfundidad * 2 - 1); //La primera generacion usa 1 cuarto menos
+            await creadorDeEscenarios.CargarMapa(partida.cuartosPorProfundidad * 2 - 1, tutorial); //La primera generacion usa 1 cuarto menos
             await creadorDeEscenarios.ReemplazarCoordenadas();
             RenderizarCuartosOrdenados(true);
         } else
         { //Cambiar esto para contar profundidad despues
-            await creadorDeEscenarios.CargarMapa(partida.cuartosPorProfundidad * 2);
+            await creadorDeEscenarios.CargarMapa(partida.cuartosPorProfundidad * 2, tutorial);
             await creadorDeEscenarios.ReemplazarCoordenadas();
             RenderizarCuartosOrdenados(false);
         }
@@ -281,6 +418,7 @@ public class infoPartidaActual : MonoBehaviour
                     }
                     if (cuevas[i].transform.GetChild(j).tag == "SpawnPosible" && cueva)
                     {
+
                         estalagtitaHija = cuevas[i].transform.GetChild(j).gameObject;
                         GameObject slimeSpawn = new GameObject($"Spawner{j}");
                         slimeSpawn.transform.position = estalagtitaHija.transform.position;
@@ -454,20 +592,6 @@ public class infoPartidaActual : MonoBehaviour
             0f,//Critico
             0//Saltos
             ));
-        ObjetosPosibles.Add(new Objeto(
-            "Botas ligeras", //Nombre
-            10, //id
-            2, //Rareza
-            30f, //hpMax
-            0f, //mpMax
-            2f, //DanoFisico
-            2f, //DanoMagico
-            0.3f, //DefFisica
-            0.3f, //DefMagica
-            0f, //VelocidadDeAtaque
-            0f,//Critico
-            1//Saltos
-            ));
 
         //Unicos
         ObjetosPosibles.Add(new Objeto(
@@ -485,7 +609,24 @@ public class infoPartidaActual : MonoBehaviour
             0//Saltos
             ));
 
+        ObjetosPosibles.Add(new Objeto(
+            "Botas ligeras", //Nombre
+            11, //id
+            2, //Rareza
+            30f, //hpMax
+            0f, //mpMax
+            2f, //DanoFisico
+            2f, //DanoMagico
+            0.3f, //DefFisica
+            0.3f, //DefMagica
+            0f, //VelocidadDeAtaque
+            0f,//Critico
+            1//Saltos
+            ));
 
+
+
+        //12 al 15 en muerteUI
     }
 }
 

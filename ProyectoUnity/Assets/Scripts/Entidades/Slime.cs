@@ -65,24 +65,31 @@ public class Slime : MonoBehaviour
     bool grounded;
     bool preSaltoActivo;
     bool cargado;
-
+    int id;
     float contadorAtorado;
     float resistencia;
+
+    AudioSource efectosSonido;
 
     Partida partida;
     public SlimeStats slimeStats;
     public GameObject prefabNumeroDano;
     public GameObject prefabProyectil;
-    
+
+    public AudioClip slimeSalto;
+    public AudioClip slimeHit;
+    public AudioClip slimeDisparo;
+    public AudioClip slimeCargando;
     public void IniciarSlime(int id)
     {
+        this.id = id;
         jugador = GameObject.FindGameObjectWithTag("Player");
         characterController = transform.GetComponent<CharacterController>();
         rotacion = Vector3.zero;
         modeloSlime = this.transform.GetChild(0).gameObject.GetComponent<Animator>();
         partida = GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>().partida;
 
-
+        efectosSonido = transform.GetComponent<AudioSource>();
         saltando = true;
         saltoTerminado = false;
         verJugador = true;
@@ -93,20 +100,21 @@ public class Slime : MonoBehaviour
         resistencia = 5;
         contadorAtorado = 0;
 
+
         switch (id)
         {
             case 0:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 0.6f, (partida.cueva + 1), ((partida.cueva + 1) * 0.30f) + 1f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + ((1.9f + dificultad) * (partida.cueva + 1)), 25 + ((partida.cueva*dificultad) + 1), 0, ((partida.cueva * dificultad) + 1) * 0.8f, ((partida.cueva * dificultad) + 1), (((partida.cueva * dificultad) + 1) * 0.15f) + 0.7f, 3 + (partida.cueva * dificultad), 0.2f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;
             case 1:
-                slimeStats = new SlimeStats(7 + (2 * (partida.cueva + 1)), 0, 20 + (partida.cueva + 1), (partida.cueva + 1), (partida.cueva + 1) * 0.6f, ((partida.cueva + 1) * 0.30f) + 1.3f, 4 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(7 + ((1.3f + dificultad) * (partida.cueva + 1)), 0, 23 + ((partida.cueva * dificultad) + 1), ((partida.cueva * dificultad) + 1), ((partida.cueva * dificultad) + 1) * 0.8f, (((partida.cueva * dificultad) + 1) * 0.17f) + 0.9f, 5 + (partida.cueva * dificultad), 0.2f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 1;
                 break;
             case 2:
-                slimeStats = new SlimeStats(7 + (3 * (partida.cueva + 1)), 24 + (partida.cueva + 1), 0, (partida.cueva + 1) * 1f, (partida.cueva + 1) * 1f, ((partida.cueva + 1) * 0.20f) + 0.93f, 2 + partida.cueva, 0.3f);
+                slimeStats = new SlimeStats(10 + ((2.5f + dificultad) * (partida.cueva + 1)), 30 + ((partida.cueva * (dificultad + 0.3f)) + 1), 0, ((partida.cueva * dificultad) + 1) * 1.2f, ((partida.cueva * dificultad) + 1) * 1.2f, (((partida.cueva * dificultad) + 1) * 0.10f) + 0.80f, 2 + (partida.cueva * dificultad), 0.2f);
                 slimeStats.padre = this.gameObject;
                 slimeStats.tipoSlime = 0;
                 break;
@@ -155,17 +163,20 @@ public class Slime : MonoBehaviour
     }
     async public Task Disparar()
     {
+
         modeloSlime.SetInteger("Estado", 1);
         modeloSlime.SetTrigger("CambioEstado");
 
         await Task.Delay(Mathf.RoundToInt((1f / slimeStats.velocidadDeAtaqueActual * 6) * 1000));
 
-        modeloSlime.speed = slimeStats.velocidadDeAtaqueActual;
+
+
+        modeloSlime.speed = slimeStats.velocidadDeAtaqueActual; //Posible optimizacion
         modeloSlime.SetInteger("Estado", 4);
         modeloSlime.SetTrigger("CambioEstado");
 
         do { await Task.Yield(); } while (!saltoTerminado);
-
+        efectosSonido.PlayOneShot(slimeDisparo);
         Vector3 posicionNueva = new Vector3(jugador.transform.position.x, jugador.transform.position.y+2f, jugador.transform.position.z);
         Instantiate(prefabProyectil, this.transform.GetChild(3).position, Quaternion.LookRotation(posicionNueva - this.transform.position)).GetComponent<proyectilSlimeSimple>().CambiarDano(slimeStats.danoMagicoActual,slimeStats.criticoActual);
 
@@ -180,6 +191,7 @@ public class Slime : MonoBehaviour
     }
     async public Task Salto()
     {
+
         modeloSlime.SetInteger("Estado", 1);
         modeloSlime.SetTrigger("CambioEstado");
 
@@ -190,7 +202,7 @@ public class Slime : MonoBehaviour
         modeloSlime.SetTrigger("CambioEstado");
 
         do { await Task.Yield(); } while (!saltoTerminado);
-
+        efectosSonido.PlayOneShot(slimeSalto);
         saltando = true;
         preSaltoActivo = true;
         grounded = false;
@@ -376,10 +388,18 @@ public class Slime : MonoBehaviour
 
         if (hit.gameObject.tag == "Player" && saltando && !rebotando)
         {
+            GameObject.FindGameObjectWithTag("infoPartidaActual").GetComponent<infoPartidaActual>().flawless = false;
             Jugador jugador = hit.transform.GetComponent<Jugador>();
             jugador.ReboteConSlime(-(this.transform.position - jugador.transform.position).normalized * 8.5f);
-            jugador.jugadorStats.ActualizarHP(slimeStats.danoFisicoActual, 0, slimeStats.criticoActual, prefabNumeroDano);
-            Vector3 diferencia = (this.transform.position - jugador.transform.position).normalized * 9;
+            if(id == 1)
+            {
+                jugador.jugadorStats.ActualizarHP(slimeStats.danoMagicoActual, 1, slimeStats.criticoActual, prefabNumeroDano);
+            } else
+            {
+                jugador.jugadorStats.ActualizarHP(slimeStats.danoFisicoActual, 0, slimeStats.criticoActual, prefabNumeroDano);
+            }
+
+                Vector3 diferencia = (this.transform.position - jugador.transform.position).normalized * 9;
             velocidad = new Vector3(diferencia.x, velocidad.y, diferencia.z);
 
 
